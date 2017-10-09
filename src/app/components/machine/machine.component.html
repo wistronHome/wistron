@@ -1,3 +1,37 @@
-<p>
-  machine works!
-</p>
+<div class="machine-wrap">
+    <div class="m-menu">
+        <ul class="custom-menu">
+            <li class="l-menu">
+                <span class="l-title l1"
+                      (dblclick)="router.navigate(['machine/room'])"
+                      (click)="open($event)">
+                    机房AAAA
+                    <em class="icon">
+                        <i class="anticon anticon-down"></i>
+                    </em>
+                </span>
+                <ul>
+                    <li class="l-menu">
+                        <span class="l-title l2" (dblclick)="router.navigate(['machine/cabinet'])">
+                            机柜CDWD
+                            <em class="icon">
+                                <i class="anticon anticon-down"></i>
+                            </em>
+                        </span>
+                        <ul>
+                            <li class="l-item">
+                                <span class="l-title l3">服务器212</span>
+                            </li>
+                            <li class="l-item">
+                                <span class="l-title l3">服务器xvvxv</span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="m-body">
+        <router-outlet></router-outlet>
+    </div>
+</div>

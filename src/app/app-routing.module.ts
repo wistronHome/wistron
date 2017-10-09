@@ -13,15 +13,17 @@ const routes: Routes = [
     },
     {
         path: 'machine',
-        component: MachineComponent
-    },
-    {
-        path: 'machine/cabinet',
-        component: CabinetComponent
-    },
-    {
-        path: 'machine/room',
-        component: RoomComponent
+        component: MachineComponent,
+        children: [
+            {
+                path: 'cabinet',
+                component: CabinetComponent
+            },
+            {
+                path: 'room',
+                component: RoomComponent
+            }
+        ]
     }
 ];
 

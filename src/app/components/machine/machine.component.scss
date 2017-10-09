@@ -1,0 +1,77 @@
+$bb: 1px solid #cccccc;
+
+.machine-wrap {
+    position: relative;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100%;
+    .m-menu {
+        width: 260px;
+        display: block;
+        height: 100%;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        bottom: 0px;
+        border-right: 1px solid #cccccc;
+        .custom-menu {
+            line-height: 30px;
+            width: 100%;
+            .l-menu, .l-item {
+                //padding: 0 0 0 20px;
+            }
+            .l-title {
+                position: relative;
+                line-height: 30px;
+                height: 30px;
+                display: block;
+                user-select: none;
+                //padding: 0 0 0 20px;
+                &:hover {
+                    background: #cccccc;
+                }
+                .icon {
+                    position: absolute;
+                    right: 10px;
+                    display: inline-block;
+                    line-height: 30px;
+                    height: 30px;
+                    width: 30px;
+                    cursor: pointer;
+                    &:hover {
+                        .anticon {
+                            color: #cccccc;
+                        }
+                    }
+                    .anticon {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        margin-left: -6px;
+                        margin-top: -6px;
+                        transition: .4s;
+                    }
+                }
+            }
+            .l1 {
+                padding: 0 0 0 20px;
+            }
+            .l2 {
+                padding: 0 0 0 40px;
+            }
+            .l3 {
+                padding: 0 0 0 60px;
+            }
+        }
+    }
+    .m-body {
+        position: absolute;
+        left: 260px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        height: 100%;
+    }
+}
