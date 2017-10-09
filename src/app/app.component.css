@@ -1,0 +1,27 @@
+.menu-left {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    width: 200px;
+    background: #ccc;
+    z-index: 999;
+}
+.menu-top {
+    position: fixed;
+    top: 0px;
+    left: 200px;
+    right: 0px;
+    box-shadow: 0 0 3px 0 #404040;
+    z-index: 999;
+}
+.main {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    padding-left: 200px;
+    padding-top: 48px;
+    background: #f3f3f3;
+}
