@@ -1,0 +1,53 @@
+.container{
+    width: 1100px;
+    position: relative;
+    .tools{
+        width: 150px;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    .machine-room{
+        position: absolute;
+        top: 0;
+        left: 148px;
+    }
+    .cabinet-info{
+        width: 150px;
+        height: 500px;
+        // background: goldenrod;
+        position: absolute;
+        top: 0;
+        right: 0;
+        h5{
+            background: gray;
+            font-size: 18px;
+        }
+        .search{
+            margin: 5px 0;
+            input{
+                width: 110px;
+                height: 30px;
+                outline: none;
+                border: none;
+                border-radius:5px; 
+                border: 1px solid #ccc;
+                padding-left: 10px;
+            }
+        }
+        table{
+            tr{
+                td:nth-of-type(1){
+                    background: pink;
+                }
+            }
+        }
+        .operation{
+            margin-top: 5px;
+            text-align: center;
+            span{
+                margin: 0 auto;
+            }
+        }
+    }
+}

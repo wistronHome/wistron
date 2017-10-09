@@ -1,3 +1,76 @@
-<p>
-  room works!
-</p>
+
+<div class="container">
+  <div class="tools">
+    <nz-collapseset [nzAccordion]="true">
+      <nz-collapse  nzTitle="机柜" nzActive="true">
+        <div>
+          <img draggable="true" src="assets/jf.svg" alt="" width="80px;">
+        </div>
+      </nz-collapse>
+      <nz-collapse  nzTitle="安全防范" nzActive="false">
+          <div><img draggable="true" src="assets/fwq.svg" alt="" width="80px;"></div>
+          <img src="assets/yun.svg" alt="" width="80px;">
+      </nz-collapse>
+      <nz-collapse  nzTitle="自定义" nzActive="false">
+          <!--<img src="assets/jfgc.svg" alt="" width="80px;">-->
+          <img draggable="true" src="assets/sjjf.svg" alt="" width="80px;">
+          <div draggable="true" style="width:30px;height:30px;background:#2898E0"></div>
+      </nz-collapse>
+    </nz-collapseset>
+  </div>
+  <div class="machine-room" id="mcRoom" style="width: 800px; height: 600px;"></div>
+  <div class="cabinet-info">
+    <h5>设备属性</h5>
+    <div class="search">
+      <input type="text" placeholder="请输入资产编号">
+      <button nz-button [nzType]="'primary'" [nzShape]="'circle'">
+      <i class="anticon anticon-search"></i>
+    </button>
+    </div>
+    <table border="1" cellpadding='0' cellspacing='0'>
+      <tr>
+        <td>资产名称</td>
+        <td>A5-05服务器机柜</td>
+      </tr>
+      <tr>
+        <td>资产编号</td>
+        <td>C-Rittal-000054</td>
+      </tr>
+      <tr>
+        <td>AMS资产卡片号</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>品牌型号</td>
+        <td>上海延华智能科技股份有限公司>Rittal>TS_IT>TS_IT</td>
+      </tr>
+      <tr>
+        <td>项目名称</td>
+        <td>基础设施>机柜>机柜</td>
+      </tr>
+      <tr>
+        <td>序列号</td>
+        <td>A9-01</td>
+      </tr>
+      <tr>
+        <td>位置</td>
+        <td>机房模块-A</td>
+      </tr>
+      <tr>
+        <td>资产分类</td>
+        <td>基础设施>机柜>机柜</td>
+      </tr>
+    </table>
+    <div class="operation">
+      <button nz-button [nzType]="'primary'" [nzGhost]="true">
+        <i class="anticon anticon-close-circle"></i>
+        <span>解绑</span>
+      </button>
+      <button nz-button [nzType]="'primary'" [nzGhost]="true">
+        <i class="anticon anticon-edit"></i>
+        <span>详情</span>
+      </button>
+      
+    </div>
+  </div>
+</div>
