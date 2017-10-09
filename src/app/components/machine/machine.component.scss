@@ -16,6 +16,26 @@ $bb: 1px solid #cccccc;
         top: 0px;
         bottom: 0px;
         border-right: 1px solid #cccccc;
+        .m-search {
+            position: relative;
+            line-height: 30px;
+            height: 30px;
+            border-bottom: 1px solid #666666;
+            margin: 10px 20px 20px 20px;
+            input {
+                outline: none;
+                border: none;
+                background: none;
+                padding-left: 5px;
+            }
+            .anticon {
+                font-size: 18px;
+                position: absolute;
+                right: 5px;
+                top: 50%;
+                margin-top: -9px;
+            }
+        }
         .custom-menu {
             line-height: 30px;
             width: 100%;

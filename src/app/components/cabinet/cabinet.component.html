@@ -1,3 +1,50 @@
-<p>
-  cabinet works!
-</p>
+<div class="cabinet-wrap">
+    <div class="cz-top">
+
+    </div>
+    <div id="canvas" class="cabinet-body"
+         (drop)="drop($event)"
+         (dragover)="dragover($event)">
+
+    </div>
+    <div class="c-panel" (click)="toggle()">
+        添加图例
+    </div>
+    <div class="c-info" [@heroState]="state">
+        <div class="i-title">图例列表</div>
+        <div class="i-search">
+            <input type="text" placeholder="search....">
+            <i class="anticon anticon-search"></i>
+        </div>
+        <div class="i-menu">
+            <ul nz-menu [nzMode]="'inline'" nzTheme='light' [nzInlineCollapsed]="isCollapsed">
+                <li nz-submenu>
+                    <span title>
+                        <i class="anticon anticon-appstore"></i>
+                        <span>Navigation Two</span>
+                    </span>
+                    <ul>
+                        <li nz-submenu>
+                            <span title>Submenu</span>
+                            <ul>
+                                <li nz-menu-item>Option 7</li>
+                                <li nz-menu-item>Option 8</li>
+                            </ul>
+                        </li>
+                        <li nz-submenu>
+                            <span title>Submenu</span>
+                            <ul>
+                                <li nz-menu-item>Option 7</li>
+                                <li nz-menu-item>Option 8</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <img style="margin: 30px 0"
+                 src="../../../assets/image/cabinet-c-3.png" width="240"
+                 [height]="height"
+                 draggable="true" (dragstart)="dragstart($event)">
+        </div>
+    </div>
+</div>
