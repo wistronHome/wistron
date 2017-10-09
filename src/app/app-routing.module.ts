@@ -16,7 +16,7 @@ const routes: Routes = [
         component: MachineComponent,
         children: [
             {
-                path: 'cabinet',
+                path: 'cabinet/:id',
                 component: CabinetComponent
             },
             {
