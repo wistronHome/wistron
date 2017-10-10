@@ -74,6 +74,7 @@ export class RoomComponent implements OnInit {
     state1: string = 'inactive';
     model="";
     id = '';
+    ChildId='';
     constructor() {
     }
 
@@ -128,12 +129,12 @@ export class RoomComponent implements OnInit {
         var src, startX, startY;
         document.onmousedown =  (e)=> {
             console.log(e.target['src']);
-            if( e.target['className'] === "img" ){
-               src= e.target['src'].includes("svg")?e.target['src'].split("/")[4]:0;
-            // src = e.target['src'].split("/")[4];
-            startX = e.offsetX;
-            startY = e.offsetY;
-            }
+            
+               src= e.target['src'] && e.target['src'].includes("svg") ? e.target['src'].split("/")[4] : 'aaaa';
+                // src = e.target['src'].split("/")[4];
+                startX = e.offsetX;
+                startY = e.offsetY;
+            
             
         }
         document.onmousemove =  (e)=> {
@@ -142,9 +143,18 @@ export class RoomComponent implements OnInit {
         }
         document.ondrop = (e)=> {
             var p = graph.toLogical(e.offsetX, e.offsetY)
-            var computer = graph.createNode("computer", p.x, p.y)
-            computer.image = 'assets/' + src;
-            computer.size = {width: 60}
+            var computer = graph.createNode("computer", p.x, p.y);
+            let image = 'assets/' + src;
+            console.log(image);
+        
+            computer.image = image;
+            computer.size = {width: 60 }
+            var alarmUI = graph.createNode( '' ,p.x+30,p.y-30)
+            alarmUI.image = 'assets/alarmred.svg';
+            alarmUI.size = { width: 30 }
+            alarmUI.zIndex=999;
+            alarmUI.host = computer;
+            alarmUI.parent = computer;
             //数据的存储
             var arr = [];
             model.forEach( (node)=> {
@@ -161,7 +171,7 @@ export class RoomComponent implements OnInit {
         }
 
 
-        var model = graph.graphModel;
+        var model = graph.graphModel; 
         this.model=model;
         //数据的渲染
         var info = [{name: 'jjj', id: '1', x: 200, y: 200}, {name: 'ppp', id: '2', x: 300, y: 300}]
@@ -175,7 +185,11 @@ export class RoomComponent implements OnInit {
             // console.log(e.getData().type);
             if( e.getData()&&e.getData().type =="Q.Node"){
                 this.id = e.getData().id;
-                this.state = 'active';
+                //子图元的id
+                if(e.getData().data){
+                this.ChildId = e.getData().data.children.datas[0].id;
+                }
+            this.state = 'active';
             }
             
         }
@@ -183,6 +197,7 @@ export class RoomComponent implements OnInit {
     }
     delCabinet(): void {
         this.model['removeById'](this.id)
+        this.model['removeById'](this.ChildId)
     }
     toggle(): void {
         if (this.state === 'active') {
