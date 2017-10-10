@@ -120,10 +120,10 @@ export class RoomComponent implements OnInit {
             // console.log(item);
             return item.name === "computer";
         };
-        graph.editable = (item)=> {
-            console.log(item);
-            return item.name === "computer";
-        }
+        // graph.editable = (item)=> {
+        //     console.log(item);
+        //     return item.name === "computer";
+        // }
         //鼠标按下之后记录按下的信息
         var src, startX, startY;
         document.onmousedown =  (e)=> {
@@ -134,7 +134,7 @@ export class RoomComponent implements OnInit {
             startX = e.offsetX;
             startY = e.offsetY;
             }
-            
+
         }
         document.onmousemove =  (e)=> {
 
@@ -177,7 +177,7 @@ export class RoomComponent implements OnInit {
                 this.id = e.getData().id;
                 this.state = 'active';
             }
-            
+
         }
 
     }
