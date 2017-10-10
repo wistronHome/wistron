@@ -1,25 +1,26 @@
 
 <div class="container">
-  <div class="tools">
+  
+  <div class="machine-room" id="mcRoom" style="width: 70%; height: 600px;"></div>
+  <div class="tools" [@toolsState]="state1">
     <nz-collapseset [nzAccordion]="true">
       <nz-collapse  nzTitle="机柜" nzActive="true">
         <div>
-          <img draggable="true" src="assets/jf.svg" alt="" width="80px;">
+          <img class="img" draggable="true" src="assets/jf.svg" alt="" width="80px;">
         </div>
       </nz-collapse>
       <nz-collapse  nzTitle="安全防范" nzActive="false">
-          <div><img draggable="true" src="assets/fwq.svg" alt="" width="80px;"></div>
-          <img src="assets/yun.svg" alt="" width="80px;">
+          <div><img class="img" draggable="true" src="assets/fwq.svg" alt="" width="80px;"></div>
+          <div><img class="img" src="assets/yun.svg" alt="" width="80px;"></div>
       </nz-collapse>
       <nz-collapse  nzTitle="自定义" nzActive="false">
           <!--<img src="assets/jfgc.svg" alt="" width="80px;">-->
-          <img draggable="true" src="assets/sjjf.svg" alt="" width="80px;">
-          <div draggable="true" style="width:30px;height:30px;background:#2898E0"></div>
+          <div><img class="img" draggable="true" src="assets/sjjf.svg" alt="" width="80px;"></div>
+          <div class="img" draggable="true" style="width:30px;height:30px;background:#2898E0"></div>
       </nz-collapse>
     </nz-collapseset>
   </div>
-  <div class="machine-room" id="mcRoom" style="width: 800px; height: 600px;"></div>
-  <div class="cabinet-info">
+  <div class="cabinet-info" [@attributeState]="state">
     <h5>设备属性</h5>
     <div class="search">
       <input type="text" placeholder="请输入资产编号">
@@ -70,7 +71,12 @@
         <i class="anticon anticon-edit"></i>
         <span>详情</span>
       </button>
-      
+      <button nz-button [nzType]="'primary'" [nzGhost]="true" (click)=delCabinet()>
+        <i class="anticon anticon-close-circle"></i>
+        <span >删除机柜</span>
+      </button>
     </div>
   </div>
+  <div class="attribute" (click)=toggle()><i class="anticon anticon-left-square"></i>设备属性</div> 
+  <div class="tools-show" (click)=toolsToggle()> <i class="anticon anticon-left-square"></i>工具栏</div>
 </div>
