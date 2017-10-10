@@ -1,5 +1,9 @@
 $bb: 1px solid #cccccc;
 
+.rotate {
+    transform: rotate(180deg);
+}
+
 .machine-wrap {
     position: relative;
     top: 0px;
@@ -51,6 +55,10 @@ $bb: 1px solid #cccccc;
                 //padding: 0 0 0 20px;
                 &:hover {
                     background: #cccccc;
+                    .deal-area {
+                        display: inline-block;
+                        background: #cccccc;
+                    }
                 }
                 .icon {
                     position: absolute;
@@ -62,7 +70,7 @@ $bb: 1px solid #cccccc;
                     cursor: pointer;
                     &:hover {
                         .anticon {
-                            color: #cccccc;
+                            color: #108ee9;
                         }
                     }
                     .anticon {
@@ -72,6 +80,24 @@ $bb: 1px solid #cccccc;
                         margin-left: -6px;
                         margin-top: -6px;
                         transition: .4s;
+                    }
+                }
+                .deal-area {
+                    display: inline-block;
+                    position: absolute;
+                    right: 50px;
+                    display: none;
+                    background: #f3f3f3;
+                    cursor: pointer;
+                    em {
+                        display: inline-block;
+                        width: 20px;
+                        text-align: center;
+                        &:hover {
+                            .anticon {
+                                color: #2898E0;
+                            }
+                        }
                     }
                 }
             }

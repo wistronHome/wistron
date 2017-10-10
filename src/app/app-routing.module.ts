@@ -20,7 +20,7 @@ const routes: Routes = [
                 component: CabinetComponent
             },
             {
-                path: 'room',
+                path: 'room/:id',
                 component: RoomComponent
             }
         ]

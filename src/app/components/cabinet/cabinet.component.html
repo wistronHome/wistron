@@ -2,15 +2,19 @@
     <div class="cz-top">
 
     </div>
+    <!-- qunee绘图区域 -->
     <div id="canvas" class="cabinet-body"
          (drop)="drop($event)"
          (dragover)="dragover($event)">
 
     </div>
-    <div class="c-panel" (click)="toggle()">
+    <div class="c-panel" (click)="toggle('a')">
         添加图例
     </div>
-    <div class="c-info" [@heroState]="state">
+    <div class="c-panel" style="top: 165px" (click)="toggle('b')">
+        设备属性
+    </div>
+    <div class="c-info" [@fadeState]="legendState">
         <div class="i-title">图例列表</div>
         <div class="i-search">
             <input type="text" placeholder="search....">
@@ -18,33 +22,48 @@
         </div>
         <div class="i-menu">
             <ul nz-menu [nzMode]="'inline'" nzTheme='light' [nzInlineCollapsed]="isCollapsed">
-                <li nz-submenu>
+                <li nz-submenu *ngFor="let item of data">
                     <span title>
                         <i class="anticon anticon-appstore"></i>
-                        <span>Navigation Two</span>
+                        <span>{{item.name}}</span>
                     </span>
                     <ul>
-                        <li nz-submenu>
-                            <span title>Submenu</span>
+                        <li nz-submenu *ngFor="let item_i of item.children">
+                            <span title>{{item_i.name}}</span>
                             <ul>
-                                <li nz-menu-item>Option 7</li>
-                                <li nz-menu-item>Option 8</li>
-                            </ul>
-                        </li>
-                        <li nz-submenu>
-                            <span title>Submenu</span>
-                            <ul>
-                                <li nz-menu-item>Option 7</li>
-                                <li nz-menu-item>Option 8</li>
+                                <li nz-menu-item
+                                    *ngFor="let item_ii of item_i.children"
+                                    (click)="checkedImage(item_ii.image)">
+                                    <span >{{item_ii.name}}</span>
+                                </li>
                             </ul>
                         </li>
                     </ul>
                 </li>
             </ul>
-            <img style="margin: 30px 0"
-                 src="../../../assets/image/cabinet-c-3.png" width="240"
+            <img class="img-area" style="margin: 30px 0;"
+                 [src]="image" width="240"
                  [height]="height"
                  draggable="true" (dragstart)="dragstart($event)">
         </div>
+    </div>
+    <div class="c-info" [@fadeState]="facilityState">
+        <div class="i-title">属性面板</div>
+        <nz-table #nzTable [nzDataSource]="menuData"
+                  [nzBordered]="true"
+                  [nzSize]="'small'"
+                  [nzIsPagination]="false">
+            <tbody nz-tbody>
+                <tr nz-tbody-tr
+                    *ngFor="let line of nzTable.data">
+                    <td nz-td width="80" style="background: #f1f1f1;text-align: right;">
+                        <span>{{line.key}}</span>
+                    </td>
+                    <td nz-td>
+                        <span>{{line.name}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
     </div>
 </div>

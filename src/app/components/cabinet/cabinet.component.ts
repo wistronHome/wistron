@@ -1,61 +1,40 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 // import { HttpClient } from '@angular/common/http';
-import {
-    trigger,
-    state,
-    style,
-    animate,
-    transition
-} from '@angular/animations';
+import { fadeLeftIn } from "../animations/fade-left-in"
+import { Servicer, ServerType, Facility } from "../models/Models";
 
 const LH: number = 17;
 const LN: number = 42;
-let LINE_ARR = [];
-for (let i = 0; i < LH; i++) {
-    LINE_ARR.push(0);
-}
+const IMAGE = {
+    A: './assets/image/cabinet-a-1.png',
+    B: './assets/image/cabinet-b-4.png',
+    C: './assets/image/cabinet-c-3.png'
+};
 
 @Component({
     selector: 'app-cabinet',
     templateUrl: './cabinet.component.html',
     styleUrls: ['./cabinet.component.scss'],
-    animations: [
-        trigger('heroState', [
-            state('inactive', style({
-                opacity: 0,
-                display: 'none'
-            })),
-            state('active', style({
-                opacity: 1,
-                display: 'block'
-            })),
-            transition('active => inactive', [
-                animate('0.3s ease-out', style({
-                    display: 'none',
-                    opacity: 0,
-                    transform: 'translateX(100%)'
-                }))
-            ]),
-            transition('inactive => active', [
-                style({
-                    transform: 'translateX(100%)'
-                }),
-                animate('0.3s ease-out', style({
-                    opacity: 1,
-                    display: 'block',
-                    transform: 'translateX(0)'
-                }))
-            ])
-        ])
-    ]
+    animations: [ fadeLeftIn ]
 })
 
 export class CabinetComponent implements OnInit {
     Q = window['Q'];
-    state: string = 'active';
+    /**
+     * 记录侧边栏展开/关闭信息，结合特效
+     * @type {string}
+     */
+    legendState: string = 'inactive';
+    facilityState: string = 'inactive';
+    data: Servicer[] = [];
+    menuData = [];
     graph = null;
-    image: string = './assets/image/cabinet-a-1.png';
+    /**
+     * 机柜模型图
+     * @type {string}
+     */
+    image: string = IMAGE.A;
     height: number = LH;
     facility = null;
     constructor(
@@ -65,6 +44,20 @@ export class CabinetComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        let facility = new Facility();
+        for (let key of Object.keys(facility)) {
+            this.menuData.push({
+                key: key,
+                name: facility[key]
+            });
+        }
+        /**
+         * mock数据
+         */
+        this.data.push(this.mock());
+        this.data.push(this.mock());
+        this.data.push(this.mock());
+
         this.graph = new this.Q.Graph('canvas');
         /**
          * 过滤选中
@@ -92,11 +85,14 @@ export class CabinetComponent implements OnInit {
          * @param evt
          */
         this.graph.onclick = evt => {
+            this.facilityState = 'inactive';
+            this.legendState = 'inactive';
             if (evt.getData() && !evt.getData().get('selected')) {
-                let {id, name, image, size} = evt.getData();
-                this.facility = {id, name, image, size};
+                this.facilityState = 'active';
+                // let {id, name, image, size} = evt.getData();
+                // this.facility = {id, name, image, size};
             } else {
-                this.facility = null;
+                // this.facility = null;
             }
         };
         // this.graph.originAtCenter = false;
@@ -117,16 +113,40 @@ export class CabinetComponent implements OnInit {
             this.graph.graphModel.add(line);
         }
     }
-    toggle(): void {
-        if (this.state === 'active') {
-            this.state = 'inactive';
-        } else {
-            this.state = 'active';
+
+    /**
+     * 展开/关闭 侧边栏
+     */
+    toggle(param): void {
+        if (param === 'a') {
+            this.facilityState = 'inactive';
+            if (this.legendState === 'active') {
+                this.legendState = 'inactive';
+            } else {
+                this.legendState = 'active';
+            }
+        } else if(param === 'b') {
+            this.legendState = 'inactive';
+            if (this.facilityState === 'active') {
+                this.facilityState = 'inactive';
+            } else {
+                this.facilityState = 'active';
+            }
         }
     }
+
+    /**
+     * 开始拖拽
+     * @param ev
+     */
     dragstart(ev): void {
         console.log('dragstart');
     }
+
+    /**
+     * 拖拽到目标元素  松开鼠标
+     * @param ev
+     */
     drop(ev): void {
         let node = new this.Q.Node();
         var p = this.graph.globalToLocal(ev);
@@ -137,10 +157,19 @@ export class CabinetComponent implements OnInit {
         node.image = this.image + '';
         this.graph.graphModel.add(node);
     }
+
+    /**
+     * 拖拽结束
+     * @param ev
+     */
     dragover(ev): void {
         console.log('dragover');
     }
 
+    checkedImage(image) {
+        this.image = image;
+        this.height = parseInt(this.image.split('-')[2].split('.')[0]) * LH;
+    }
     /**
      * 坐标修正
      * @param {number} y
@@ -163,5 +192,35 @@ export class CabinetComponent implements OnInit {
             _num = _yMin + itemLh / 2;
         }
         return _num;
+    }
+
+    private mock(): Servicer {
+        let servicer = new Servicer();
+        servicer.id = 'id_' + this.getRandom();
+        servicer.name = '服务器_' + this.getRandom();
+        for (let i = 0; i < 3; i++) {
+            let st = new ServerType();
+            st.id = 'id_' + this.getRandom();
+            st.name = '型号_' + this.getRandom();
+            st.hasChildType = true;
+            for (let i = 0; i < 4; i++) {
+                let _st = new ServerType();
+                _st.id = 'id_' + this.getRandom();
+                _st.name = 'name_' + this.getRandom();
+                let _random = Math.round(Math.random() * 3) % 3;
+                _st.image = _random === 0 ? IMAGE.A : _random === 1 ? IMAGE.B : IMAGE.C;
+                st.addChildren(_st);
+            }
+            servicer.addChildren(st);
+        }
+        return servicer;
+    }
+
+    private getRandom() {
+        let color = '';
+        for (let i = 0; i < 6; i++) {
+            color += '0123456789abcdef'[Math.floor(Math.random() * 16)];
+        }
+        return '#' + color;
     }
 }
