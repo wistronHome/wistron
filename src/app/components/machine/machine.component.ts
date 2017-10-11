@@ -3,6 +3,12 @@ import { Router } from '@angular/router';
 
 import { Room, Cabinet, Servicer } from '../models/Models';
 import { fadeLeftIn } from "../animations/fade-left-in";
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+// import {
+//     FormBuilder,
+//     FormGroup,
+//     Validators
+// } from '@angular/forms';
 
 @Component({
     selector: 'app-machine',
@@ -14,8 +20,12 @@ import { fadeLeftIn } from "../animations/fade-left-in";
 })
 export class MachineComponent implements OnInit {
     data: Room[] = [];
+    isCollapse: boolean = true;
+    isVisible: boolean = false;
     constructor(
-        private router: Router
+        private router: Router,
+        private $message: NzMessageService,
+        private $modal: NzModalService
     ) { }
 
     ngOnInit() {
@@ -26,7 +36,12 @@ export class MachineComponent implements OnInit {
         item.isOpen = !item.isOpen;
         ev.stopPropagation();
     }
-
+    createRoom() {
+        this.isVisible = true;
+    }
+    toggleCollapse(): void {
+        this.isCollapse = !this.isCollapse;
+    }
     private mock(): Room {
         let room = new Room();
         room.id = 'id_' + this.getRandom();

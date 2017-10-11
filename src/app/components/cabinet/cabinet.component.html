@@ -3,7 +3,8 @@
 
     </div>
     <!-- qunee绘图区域 -->
-    <div id="canvas" class="cabinet-body"
+    <div id="canvas"
+         class="cabinet-body"
          (drop)="drop($event)"
          (dragover)="dragover($event)">
 
@@ -14,14 +15,17 @@
     <div class="c-panel" style="top: 165px" (click)="toggle('b')">
         设备属性
     </div>
-    <div class="c-info" [@fadeState]="legendState">
+    <div class="c-legend">
         <div class="i-title">图例列表</div>
         <div class="i-search">
             <input type="text" placeholder="search....">
             <i class="anticon anticon-search"></i>
         </div>
         <div class="i-menu">
-            <ul nz-menu [nzMode]="'inline'" nzTheme='light' [nzInlineCollapsed]="isCollapsed">
+            <div class="loading" *ngIf="data.length === 0">
+                <nz-spin></nz-spin>
+            </div>
+            <ul *ngIf="data.length > 0" nz-menu [nzMode]="'inline'" nzTheme='light' [nzInlineCollapsed]="isCollapsed">
                 <li nz-submenu *ngFor="let item of data">
                     <span title>
                         <i class="anticon anticon-appstore"></i>
@@ -41,7 +45,7 @@
                     </ul>
                 </li>
             </ul>
-            <img class="img-area" style="margin: 30px 0;"
+            <img *ngIf="image" class="img-area" style="margin: 30px 0;"
                  [src]="image" width="240"
                  [height]="height"
                  draggable="true" (dragstart)="dragstart($event)">

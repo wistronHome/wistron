@@ -1,19 +1,20 @@
+
 .menu-left {
     position: fixed;
     top: 0px;
     left: 0px;
     bottom: 0px;
-    width: 200px;
-    background: #ccc;
+    background: #ffffff;
     z-index: 999;
+    transition: all 0.3s;
 }
 .menu-top {
     position: fixed;
     top: 0px;
-    left: 200px;
     right: 0px;
     box-shadow: 0 0 3px 0 #404040;
-    z-index: 999;
+    z-index: 998;
+    transition: all 0.3s;
 }
 .main {
     position: absolute;
@@ -21,7 +22,7 @@
     right: 0px;
     top: 0px;
     bottom: 0px;
-    padding-left: 200px;
     padding-top: 48px;
     background: #f3f3f3;
+    transition: all 0.3s;
 }

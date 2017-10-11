@@ -1,8 +1,11 @@
 <div class="machine-wrap">
-    <div class="m-menu">
+    <div class="m-menu"  [ngStyle]="{transform: isCollapse ? 'translateX(-100%)' : 'translateX(0)'}">
         <div class="m-search">
             <input type="text" placeholder="search....">
             <i class="anticon anticon-search"></i>
+        </div>
+        <div class="collapse" (click)="toggleCollapse()" [ngClass]="{close: isCollapse}">
+            <i class="anticon anticon-caret-left"></i>
         </div>
         <ul class="custom-menu">
             <li class="l-menu" *ngFor="let item of data">
@@ -65,11 +68,21 @@
                     line-height: 30px;
                     height: 30px;
                     color: #666;"
+                (click)="createRoom()"
                 nz-button [nzType]="'dashed'">
             <span><i class="anticon anticon-plus"></i></span>
         </button>
     </div>
-    <div class="m-body">
+    <div class="m-body" [ngStyle]="{left: isCollapse ? '0' : '260px'}">
         <router-outlet></router-outlet>
     </div>
+
+    <nz-modal [nzVisible]="isVisible"
+              [nzClosable]="false"
+              [nzMaskClosable]="false"
+              [nzContent]="modalContent" (nzOnCancel)="isVisible = false">
+        <ng-template #modalContent>
+            sfsefsees
+        </ng-template>
+    </nz-modal>
 </div>

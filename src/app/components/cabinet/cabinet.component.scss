@@ -15,11 +15,11 @@
         width: 100%;
         height: 40px;
         background: #666;
-        z-index: 99;
+        z-index: 89;
     }
     .cabinet-body {
         position: absolute;
-        left: 0px;
+        left: 240px;
         top: 40px;
         right: 0px;
         bottom: 0px;
@@ -42,7 +42,7 @@
         user-select: none;
         z-index: 999;
     }
-    .c-info {
+    .c-info, .c-legend {
         position: absolute;
         right: 30px;
         top: 0px;
@@ -51,7 +51,7 @@
         background: #ffffff;
         border-left: 1px solid #cccccc;
         width: 240px;
-        z-index: 100;
+        z-index: 96;
         .i-title {
             line-height: 40px;
             height: 40px;
@@ -84,10 +84,23 @@
         .i-menu {
             max-height: 400px;
             overflow-y: scroll;
+            .loading {
+                text-align: center;
+                height: 150px;
+                line-height: 150px;
+                vertical-align: middle;
+            }
             .img-area {
                 position: absolute;
                 bottom: 20px;
             }
+        }
+    }
+    .c-legend {
+        left: 0px;
+        .i-title {
+            border-right: 2px solid #cccccc;
+            border-left: 0;
         }
     }
 }

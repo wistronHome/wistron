@@ -8,7 +8,8 @@ import { AppComponent } from './app.component';
 import { CabinetComponent } from './components/cabinet/cabinet.component';
 import { RoomComponent } from './components/room/room.component';
 import { AppRoutingModule } from "./app-routing.module";
-import { MachineComponent } from './components/machine/machine.component'
+import { MachineComponent } from './components/machine/machine.component';
+// import { CreateRoomComponentComponent } from './components/machine/create-room-component/create-room-component.component'
 
 @NgModule({
     declarations: [
