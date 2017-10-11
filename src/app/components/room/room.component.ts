@@ -38,35 +38,7 @@ import {
                     transform: 'translateX(0)'
                 }))
             ])
-        ]),
-        trigger('toolsState', [
-            state('inactive', style({
-                opacity: 0,
-                display: 'none'
-            })),
-            state('active', style({
-                opacity: 1,
-                display: 'block'
-            })),
-            transition('active => inactive', [
-                animate('0.3s ease-out', style({
-                    display: 'none',
-                    opacity: 0,
-                    transform: 'translateX(100%)'
-                }))
-            ]),
-            transition('inactive => active', [
-                style({
-                    transform: 'translateX(100%)'
-                }),
-                animate('0.3s ease-out', style({
-                    opacity: 1,
-                    display: 'block',
-                    transform: 'translateX(0)'
-                }))
-            ])
         ])
-
     ]
 })
 export class RoomComponent implements OnInit {
@@ -122,15 +94,15 @@ export class RoomComponent implements OnInit {
             // console.log(item);
             return item.name === "computer";
         };
-        graph.editable = (item) => {
-            console.log(item);
-            return item.name === "computer";
-        }
+        // graph.editable = (item) => {
+        //     console.log(item);
+        //     return item.name === "computer";
+        // }
         //鼠标按下之后记录按下的信息
         var src, startX, startY;
         document.ondragstart = (e) => {
-            console.log(e.target['src']);
-            src = e.target['src'] && e.target['src'].includes("svg") ? e.target['src'].split("/")[4] : 'aaaa';
+            console.log(e.target['src'].split("/"));
+            src = e.target['src'] && e.target['src'].includes("svg") ? e.target['src'].split("/")[5] : 'aaaa';
             // src = e.target['src'].split("/")[4];
             startX = e.offsetX;
             startY = e.offsetY;
@@ -142,12 +114,12 @@ export class RoomComponent implements OnInit {
         document.ondrop = (e) => {
             var p = graph.toLogical(e.offsetX, e.offsetY);
             var computer = graph.createNode('computer', p.x, p.y);
-            let image = 'assets/' + src;
+            let image = 'assets/room/' + src;
             console.log(image);
             computer.image = image;
             computer.size = {width: 60};
             var alarmUI = graph.createNode('', p.x + 30, p.y - 30);
-            alarmUI.image = 'assets/alarmred.svg';
+            alarmUI.image = 'assets/room/alarm-pink.svg';
             alarmUI.size = {width: 30};
             alarmUI.zIndex = 999;
             alarmUI.host = computer;
@@ -171,9 +143,13 @@ export class RoomComponent implements OnInit {
         var model = graph.graphModel;
         this.model = model;
         //数据的渲染
-        let info = [{name: 'jjj', id: '1', x: 200, y: 200}, {name: 'ppp', id: '2', x: 300, y: 300}];
+        let info = [{name: 'jjj', id: '1', x: 200, y: 200}, {name: 'ppp', id: '2', x: 280, y: 200},{name: 'ppp', id: '3', x: 360, y: 200},
+        {name: 'jjj', id: '1', x: 200, y: 280}, {name: 'ppp', id: '2', x: 280, y: 280},{name: 'ppp', id: '3', x: 360, y: 280}
+        ];
         for (var i = 0; i < info.length; i++) {
-            graph.createNode(info[i].name, info[i].x, info[i].y);
+           var demo = graph.createNode(info[i].name, info[i].x, info[i].y);
+           demo.image='assets/room/mx-cabinet2.svg'
+           demo.size = {width: 60};
         }
         //点击机房
         graph.onclick = e => {
@@ -207,13 +183,31 @@ export class RoomComponent implements OnInit {
     }
 
     toolsToggle(): void {
-        if (this.state1 === 'active') {
-            // this.state = 'active';
-            this.state1 = 'inactive';
-        } else {
-            this.state1 = 'active';
-            this.state = 'inactive';
-        }
+        // if (this.state1 === 'active') {
+        //     // this.state = 'active';
+        //     this.state1 = 'inactive';
+        // } else {
+        //     this.state1 = 'active';
+        //     this.state = 'inactive';
+        // }
     }
+    // 弹框修改机房大小
+    isVisible = false;
+    isConfirmLoading = false;
 
+  showModal = () => {
+    this.isVisible = true;
+  }
+
+  handleOk = (e) => {
+    this.isConfirmLoading = true;
+    setTimeout(() => {
+      this.isVisible = false;
+      this.isConfirmLoading = false;
+    }, 3000);
+  }
+
+  handleCancel = (e) => {
+    this.isVisible = false;
+  }
 }

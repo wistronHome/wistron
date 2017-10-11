@@ -7,13 +7,22 @@
         height: 100%;
         position: absolute;
         top: 0;
-        right: 25px;
+        left: 0px;
         background: #f1f1f1;
+    }
+    .top-info{
+        padding: 5px;
+        width: 70%;
+        background: gray;
+        height: 40px;
+        position: absolute;
+        top: 0px;
+        left: 200px;
     }
     .machine-room{
         position: absolute;
-        top: 0;
-        left: 0px;
+        top: 55px;
+        left: 200px;
     }
     .cabinet-info{
         width: 200px;
@@ -24,8 +33,9 @@
         top: 0;
         right: 25px;
         h5{
-            background: gray;
+            background:green;
             font-size: 18px;
+            height: 40px;
         }
         .search{
             margin: 5px 0;

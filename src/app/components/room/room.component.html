@@ -1,22 +1,39 @@
 
 <div class="container">
-  
+  <div class="top-info">
+    <button nz-button [nzType]="'default'" [nzGhost]="true" (click)=delCabinet()>
+        <i class="anticon anticon-arrow-left"></i>
+        <span >返回</span>
+      </button>
+      <button nz-button [nzType]="'default'" [nzGhost]="true">
+        <i class="anticon anticon-save"></i>
+        <span>保存</span>
+      </button>
+      <button nz-button [nzType]="'default'" [nzGhost]="true">
+        <i class="anticon anticon-camera-o"></i>
+        <span>设置背景区域</span>
+      </button>
+      <button nz-button [nzType]="'default'">
+      <span>读写模式</span>
+    </button>
+  </div>
   <div class="machine-room" id="mcRoom" style="width: 70%; height: 100%;"></div>
-  <div class="tools" [@toolsState]="state1">
+  <div class="tools">
     <nz-collapseset [nzAccordion]="true">
       <nz-collapse  nzTitle="机柜" nzActive="true">
         <div>
-          <img class="img" draggable="true" src="assets/jf.svg" alt="" width="80px;">
+          <img class="img" draggable="true" src="assets/room/mx-cabinet3.svg" alt="" width="80px;">
+          <p>42U机柜600*1200(横)</p>
         </div>
+        <div><img class="img" draggable="true" src="assets/room/mx-cabinet.svg" alt="" width="80px;"><p>42U机柜600*1200(竖)</p></div>
       </nz-collapse>
       <nz-collapse  nzTitle="安全防范" nzActive="false">
-          <div><img class="img" draggable="true" src="assets/fwq.svg" alt="" width="80px;"></div>
-          <div><img class="img" src="assets/yun.svg" alt="" width="80px;"></div>
+          <div><img class="img" draggable="true" src="assets/room/mx-cabinet2.svg" alt="" width="80px;"><p>42U机柜600*1200(竖)</p></div>
+          <div><img class="img" src="assets/room/mx-cabinet4.svg" alt="" width="80px;"><p>42U机柜600*1200(竖)</p></div>
       </nz-collapse>
       <nz-collapse  nzTitle="自定义" nzActive="false">
-          <!--<img src="assets/jfgc.svg" alt="" width="80px;">-->
-          <div><img class="img" draggable="true" src="assets/sjjf.svg" alt="" width="80px;"></div>
-          <div class="img" draggable="true" style="width:30px;height:30px;background:#2898E0"></div>
+          <div><img class="img" draggable="true" src="assets/room/mx-cabinet2.svg" alt="" width="80px;"></div>
+          <div><img class="img" draggable="true" src="assets/room/mx-cabinet.svg" alt="" width="80px;"></div>
       </nz-collapse>
     </nz-collapseset>
   </div>
@@ -73,8 +90,23 @@
       </button>
       <button nz-button [nzType]="'primary'" [nzGhost]="true" (click)=delCabinet()>
         <i class="anticon anticon-close-circle"></i>
-        <span >删除机柜</span>
+        <span >删除</span>
       </button>
+      <!--<nz-popconfirm [nzTitle]="'确定要删除这个任务吗？'" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()" [nzPlacement]="'topLeft'">
+        <button nz-popconfirm nz-button class="ant-btn">删除</button>
+      </nz-popconfirm>-->
+      <button nz-button [nzType]="'primary'" [nzGhost]="true" (click)=showModal()>
+        <i class="anticon anticon-close-circle"></i>
+        <span >修改</span>
+        
+      </button>
+    <!--模态框修改机房的大小-->
+    <nz-modal [nzVisible]="isVisible" [nzTitle]="'修改机房大小'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)" [nzConfirmLoading]="isConfirmLoading">
+      <ng-template #modalContent>
+        机房长: <input type="text" placeholder="请输入机房长(单位：米)"><br>
+        机房宽: <input type="text" placeholder="请输入机房宽(单位：米)">
+      </ng-template>
+    </nz-modal>
     </div>
   </div>
   <div class="attribute" (click)=toggle()><i class="anticon anticon-left-square"></i>设备属性</div> 
