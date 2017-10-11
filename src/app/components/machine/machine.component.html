@@ -63,11 +63,8 @@
                 </ul>
             </li>
         </ul>
-        <button style="width: 100%;
-                    background: #f5f5f5;
-                    line-height: 30px;
-                    height: 30px;
-                    color: #666;"
+        <button class="add-btn"
+                title="新增机房"
                 (click)="createRoom()"
                 nz-button [nzType]="'dashed'">
             <span><i class="anticon anticon-plus"></i></span>
@@ -80,9 +77,63 @@
     <nz-modal [nzVisible]="isVisible"
               [nzClosable]="false"
               [nzMaskClosable]="false"
-              [nzContent]="modalContent" (nzOnCancel)="isVisible = false">
+              [nzContent]="modalContent"
+              [nzFooter]="modalFooter"
+              (nzOnCancel)="isVisible = false">
         <ng-template #modalContent>
-            sfsefsees
+            <div style="padding: 20px 50px;">
+                <div class="c-item">
+                    <nz-input
+                        [(ngModel)]="inputValue"
+                        [nzSize]="'large'"
+                        [nzPlaceHolder]="'机房名称'"
+                        (ngModelChange)="_console($event)">
+
+                    </nz-input>
+                </div>
+                <div class="c-item">
+                    <nz-input
+                          [(ngModel)]="inputValue"
+                          [nzSize]="'large'"
+                          [nzPlaceHolder]="'机房宽'"
+                          (ngModelChange)="_console($event)">
+
+                    </nz-input>
+                </div>
+                <div class="c-item">
+                    <nz-input
+                          [(ngModel)]="inputValue"
+                          [nzSize]="'large'"
+                          [nzPlaceHolder]="'机房高'"
+                          (ngModelChange)="_console($event)">
+
+                    </nz-input>
+                </div>
+                <div class="c-item">
+                    <div *ngIf="!roomUpload" class="img-bg">
+                        <input id="fileUpload" type="file" (change)="beforeUpload()">
+                        <span style="font-size: 14px;line-height: 70px;">
+                            <i class="anticon anticon-cloud-upload-o"></i>
+                            选择要上传的文件
+                        </span>
+                    </div>
+                    <div *ngIf="roomUpload" class="img-bg img-hover">
+                        <img [src]="roomUpload" class="img-area">
+                        <div class="mask">
+                            <p>
+                                <a title="预览图片"><i class="anticon anticon-eye-o"></i></a>
+                                <a title="清除文件" (click)="roomUpload = null"><i class="anticon anticon-delete"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #modalFooter>
+            <div class="modal-footer">
+                <button (click)="isVisible = false" class="m-btn" type="button">取&nbsp;&nbsp;消</button>
+                <button (click)="saveRoom()" class="m-btn" type="button">保&nbsp;&nbsp;存</button>
+            </div>
         </ng-template>
     </nz-modal>
 </div>

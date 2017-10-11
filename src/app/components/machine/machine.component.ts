@@ -22,6 +22,7 @@ export class MachineComponent implements OnInit {
     data: Room[] = [];
     isCollapse: boolean = true;
     isVisible: boolean = false;
+    roomUpload;
     constructor(
         private router: Router,
         private $message: NzMessageService,
@@ -38,6 +39,22 @@ export class MachineComponent implements OnInit {
     }
     createRoom() {
         this.isVisible = true;
+    }
+
+    /**
+     *
+     */
+    beforeUpload() {
+        let file = document.getElementById('fileUpload')['files'][0];
+        let _this = this;
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = ev =>{
+            _this.roomUpload = ev.target['result'];
+        }
+    }
+    saveRoom(): void {
+
     }
     toggleCollapse(): void {
         this.isCollapse = !this.isCollapse;
