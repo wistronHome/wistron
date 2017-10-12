@@ -9,6 +9,7 @@ import { CabinetComponent } from './components/cabinet/cabinet.component';
 import { RoomComponent } from './components/room/room.component';
 import { AppRoutingModule } from "./app-routing.module";
 import { MachineComponent } from './components/machine/machine.component';
+import { CreateRoomModalComponent } from './components/machine/create-room-modal/create-room-modal.component';
 // import { CreateRoomComponentComponent } from './components/machine/create-room-component/create-room-component.component'
 
 @NgModule({
@@ -16,7 +17,8 @@ import { MachineComponent } from './components/machine/machine.component';
         AppComponent,
         CabinetComponent,
         RoomComponent,
-        MachineComponent
+        MachineComponent,
+        CreateRoomModalComponent
     ],
     imports: [
         BrowserModule,

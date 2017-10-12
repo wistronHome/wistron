@@ -43,7 +43,8 @@
                 </li>
             </ul>
             <img *ngIf="image" class="img-area" style="margin: 30px 0;"
-                 [src]="image" width="240"
+                 [src]="image"
+                 [width]="width"
                  [height]="height"
                  draggable="true" (dragstart)="dragstart($event)">
         </div>
