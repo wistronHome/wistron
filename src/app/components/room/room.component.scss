@@ -72,6 +72,10 @@
         position: absolute;
         top: 0;
         right: 0px;
+        cursor: pointer;
+        &:hover{
+            background: rebeccapurple;
+        }
         
     }
     .tools-show{
