@@ -1,5 +1,6 @@
 import { AmendUtil } from "./amend-util";
 import { NzMessageService } from 'ng-zorro-antd';
+import * as TYPES from './types';
 
 export class LegendUtil {
     readonly Q: any;
@@ -22,7 +23,7 @@ export class LegendUtil {
      */
     public drawCabinetBg(LH: number, LN: number): void {
         let node = this.graph.createNode('', 0, 0);
-        node.set('type', 'CABINET_BG');
+        node.set('type', TYPES.CABINET_BG);
         node.set('selected', 'unselected');
         node.image = '../../../assets/image/cabinet.png';
         node.setStyle(this.Q.Styles.HEIGHT, 30);
@@ -32,10 +33,48 @@ export class LegendUtil {
             line.setStyle(this.Q.Styles.SHAPE_STROKE_STYLE, '#999');
             line.setStyle(this.Q.Styles.SHAPE_LINE_DASH, [2, 2]);
             line.set('selected', 'unselected');
-            line.set('type', 'bgLine');
+            line.set('type', TYPES.BG_LINE);
             line.moveTo(-100, -LH * LN / 2 + i * LH);
             line.lineTo(100, -LH * LN / 2 + i * LH);
         }
+    }
+
+    public drawCabinet(data) {
+        data.forEach(item => {
+            switch (item.type) {
+                case TYPES.CABINET:
+                    let node = new this.Q.Node();
+                    node.set('type', TYPES.CABINET);
+                    node.set('isBind', true);
+                    node.size = {
+                        width: 200,
+                        height: parseInt(item.image.split('-')[2].split('.')[0]) * 17
+                    };
+                    node.x = item.x;
+                    node.y = item.y;
+                    node.image = item.image;
+                    this.graph.graphModel.add(node);
+                    break;
+                case TYPES.GRIFF:
+                    let griff = new this.Q.Node();
+                    griff.set('type', TYPES.GRIFF);
+                    griff.set('griff', item.griffData);
+                    griff.size = {
+                        width: 200,
+                        height: parseInt(item.image.split('-')[2].split('.')[0]) * 17
+                    };
+                    griff.x = item.x;
+                    griff.y = item.y;
+                    griff.image = item.image;
+                    this.graph.graphModel.add(griff);
+                    this.drawGriffSlot(griff, item.griffData);
+                    break;
+                case TYPES.SERVER:
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     /**
@@ -46,7 +85,7 @@ export class LegendUtil {
         let griff = new this.Q.Node();
         let p = this.graph.globalToLocal(ev);
         let l = this.graph.toLogical(p.x, p.y);
-        griff.set('type', 'griff');
+        griff.set('type', TYPES.GRIFF);
         griff.set('griff', griffData);
         griff.size = {
             width: 200,
@@ -73,7 +112,7 @@ export class LegendUtil {
         let node = new this.Q.Node();
         let p = this.graph.globalToLocal(ev);
         let l = this.graph.toLogical(p.x, p.y);
-        node.set('type', 'node');
+        node.set('type', TYPES.CABINET);
         node.size = {
             width: 200,
             height: parseInt(image.split('-')[2].split('.')[0]) * LH
@@ -98,7 +137,7 @@ export class LegendUtil {
         let server = new this.Q.Node();
         let p = this.graph.globalToLocal(ev);
         let l = this.graph.toLogical(p.x, p.y);
-        server.set('type', 'server');
+        server.set('type', TYPES.SERVER);
         server.size = {
             width: parseInt(image.split('-')[1]),
             height: parseInt(image.split('-')[2].split('.')[0]) * LH
@@ -127,10 +166,10 @@ export class LegendUtil {
             _y: number = target.y - target.size.height / 2;
         data.forEach((item, index) => {
             let line = this.graph.createShapeNode();
-            // line.setStyle(this.Q.Styles.SHAPE_STROKE_STYLE, 'red');
-            // line.setStyle(this.Q.Styles.SHAPE_LINE_DASH, [2, 2]);
+            line.setStyle(this.Q.Styles.SHAPE_STROKE_STYLE, '#34dfd0');
+            line.setStyle(this.Q.Styles.SHAPE_LINE_DASH, [4, 6]);
             line.set('selected', 'unselected');
-            line.set('type', 'griffLine');
+            line.set('type', TYPES.GRIFF_LINE);
             line.moveTo(_x + item['x'], _y + item['y']);
             line.lineTo(_x + item['x'] + item['w'], _y + item['y']);
             line.lineTo(_x + item['x'] + item['w'], _y + item['y'] + item['h']);

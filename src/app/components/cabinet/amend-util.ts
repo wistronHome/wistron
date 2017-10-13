@@ -1,4 +1,5 @@
 import { NzMessageService } from 'ng-zorro-antd';
+import * as TYPES from './types';
 export class AmendUtil {
     private static Q: any;
     private static graph: any;
@@ -38,7 +39,7 @@ export class AmendUtil {
         if ((itemLh / 17) % 2 !== 0) {
             _num += lh / 2;
         }
-        if (_num >= _yMax + lh - itemLh/ 2) {
+        if (_num >= _yMax + lh - itemLh / 2) {
             _num = _yMax + lh - itemLh / 2;
         } else if (_num <= _yMin + itemLh / 2) {
             _num = _yMin + itemLh / 2;
@@ -91,7 +92,7 @@ export class AmendUtil {
             max = (target.y + target.size.height / 2) / 17,
             isOverlay = false;
         AmendUtil.graph.graphModel.forEach(item => {
-            if (item.get('type') && item.get('type') === 'node' || item.get('type') === 'griff') {
+            if (item.get('type') && item.get('type') === TYPES.CABINET || item.get('type') === TYPES.GRIFF) {
                 if (item.id !== target.id) {
                     let _min = (item.y - item.size.height / 2) / 17,
                         _max = (item.y + item.size.height / 2) / 17;
@@ -109,32 +110,6 @@ export class AmendUtil {
     }
 
     /**
-     * 绘制刀箱内卡槽位置
-     * @param target
-     * @param {Object[]} data
-     */
-    public static drawGriff(target, data: object[]): void {
-        let _x: number = target.x - target.size.width / 2,
-            _y: number = target.y - target.size.height / 2;
-        data.forEach(item => {
-            let line = AmendUtil.graph.createShapeNode();
-            // line.setStyle(this.Q.Styles.SHAPE_STROKE_STYLE, 'red');
-            // line.setStyle(this.Q.Styles.SHAPE_LINE_DASH, [2, 2]);
-            line.set('selected', 'unselected');
-            line.set('type', 'griffLine');
-            line.moveTo(_x + item['x'], _y + item['y']);
-            line.lineTo(_x + item['x'] + item['w'], _y + item['y']);
-            line.lineTo(_x + item['x'] + item['w'], _y + item['y'] + item['h']);
-            line.lineTo(_x + item['x'], _y + item['y'] + item['h']);
-            line.lineTo(_x + item['x'], _y + item['y']);
-            line.zIndex = 999;
-            line.host = target;
-            line.parent = target;
-        });
-
-    }
-
-    /**
      * 刀箱卡槽、刀片服务器偏移位置修正
      * @param target
      * @param {number} offsetY
@@ -142,7 +117,7 @@ export class AmendUtil {
     public static amendChildren(target, offsetY: number): void {
         let _minX: number = 0;
         target.children.datas.forEach((item, index) => {
-            if (item.get('type') !== 'server') {
+            if (item.get('type') !== TYPES.SERVER) {
                 if (index === 0) {
                     _minX = item.x;
                 }
@@ -169,11 +144,27 @@ export class AmendUtil {
             griffLeftSideX = griff.x - griff.size.width / 2,
             // 离刀片最近的卡槽位置
             minX = 9999,
+            minY = 9999,
+            exceptY = 0,
             except = null,
-            exceptIndex = 0;
+            exceptIndex = 0,
+            griffYs = [];
+        griff.get('griff').forEach(item => {
+            let y = item.y + griff.y - griff.size.height / 2 + item.h / 2;
+            if (!griffYs.includes(y)) {
+                griffYs.push(y)
+            }
+        });
+        griffYs.forEach(item => {
+            let _minY = Math.abs(target.y - item);
+            if (_minY < minY) {
+                minY = _minY;
+                exceptY = item;
+            }
+        });
         griff.get('griff').forEach((item, index) => {
             let _minX = Math.abs(serverLeftSideX - griffLeftSideX - item.x);
-            if (_minX < minX) {
+            if (_minX < minX ) {
                 minX = _minX;
                 except = item;
                 exceptIndex = index;
@@ -183,7 +174,7 @@ export class AmendUtil {
         target.parent = griff;
         target.set('index', exceptIndex);
         target.x = griffLeftSideX + except.x + target.size.width / 2;
-        target.y = griff.y;
+        target.y = exceptY;
     }
 
     /**
@@ -195,7 +186,7 @@ export class AmendUtil {
     public static verifyServerOverlay(target) {
         let _item = null;
         AmendUtil.graph.graphModel.forEach(item => {
-            if (item.get('type') === 'griff') {
+            if (item.get('type') === TYPES.GRIFF) {
                 let _pMinY = item.y - item.size.height / 2,
                     _pMaxY = item.y + item.size.height / 2,
                     _cMinY = target.y - target.size.height / 2,
@@ -209,22 +200,31 @@ export class AmendUtil {
         return _item;
     }
 
+    /**
+     * 拖拽刀片服务器 位置修正
+     * @param ev
+     * @param {{x: number; y: number}} previousPosition
+     */
     public static dragServer(ev, previousPosition: {x: number, y: number}) {
+        let p = this.graph.globalToLocal(ev);
+        let l = this.graph.toLogical(p.x, p.y);
+        console.log(l);
         let server = ev.getData();
         let serverX = server.x,
             serverY = server.y,
             flag = false;
         AmendUtil.graph.graphModel.forEach(griff => {
-            if (griff.get('type') === 'griff') {
+            if (griff.get('type') === TYPES.GRIFF) {
                 let griffX = griff.x,
                     griffY = griff.y;
 
                 if (serverX > griffX - griff.size.width / 2 - server.size.width
                     && serverX < griffX + griff.size.width / 2 + server.size.width
-                    && serverY > griffY - AmendUtil.LH
-                    && serverY < griffY + AmendUtil.LH
+                    && serverY > griffY - griff.size.height / 2 - AmendUtil.LH
+                    && serverY < griffY + griff.size.height/ 2 + AmendUtil.LH
                 ) {
                     flag = true;
+                    console.log(griff.x, griff.y);
                     AmendUtil.amendServer(griff, server);
                     return false;
                 }

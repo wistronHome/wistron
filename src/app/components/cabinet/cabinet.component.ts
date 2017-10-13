@@ -7,18 +7,18 @@ import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { CabinetService } from "./cabinet.service";
 import { AmendUtil } from "./amend-util";
 import { LegendUtil } from "./legend-util";
+import * as TYPES from './types';
 
 const LH: number = 17;
 const LN: number = 42;
 const IMAGE = {
     A: './assets/image/cabinet-a-1.png',
-    B: './assets/image/griff-200-4.png',
+    B: './assets/image/griff-200-10.png',
     C: './assets/image/cabinet-c-3.png',
-    D: './assets/image/server-20-4.png'
+    D: './assets/image/server-22-4.png',
+    E: './assets/image/griff-200-4.png'
 };
-const TYPES = {
-    CABINET_BG: 'CABINET_BG'
-};
+
 
 @Component({
     selector: 'app-cabinet',
@@ -47,9 +47,7 @@ export class CabinetComponent implements OnInit {
     image: string = IMAGE.B;
     width: number = 240;
     height: number = LH;
-    facility = null;
     constructor(
-        // private http: HttpClient,
         private router: Router,
         private aRouter: ActivatedRoute,
         private $message: NzMessageService,
@@ -65,6 +63,18 @@ export class CabinetComponent implements OnInit {
                 name: facility[key]
             });
         }
+        // let temp = [];
+        // setInterval(() => {
+        //     this.graph.graphModel.forEach(item => {
+        //         console.log(item.get('type'));
+        //         if (item.get('type') === TYPES.CABINET || item.get('type') === TYPES.GRIFF) {
+        //             let {x, y, image, type} = item;
+        //             temp.push({x, y, image, type});
+        //         }
+        //     });
+        //     console.log(temp);
+        // }, 15000);
+
         /**
          * mock数据
          */
@@ -90,11 +100,14 @@ export class CabinetComponent implements OnInit {
          * @param e
          * @returns {boolean}
          */
-        this.graph.isSelectable = function (e) {
-            if (e.get('selected') && e.get('selected') === 'unselected') {
+        this.graph.isSelectable = ev => {
+            if (ev.get('selected') && ev.get('selected') === 'unselected') {
                 return false;
             }
             return true;
+        };
+        this.graph.isMovable = ev => {
+            return !ev.get('isBind');
         };
         // 记录图例初始位置，用于操作无效时回滚。
         let _x: number = 0,
@@ -115,23 +128,27 @@ export class CabinetComponent implements OnInit {
          * @param evt
          */
         this.graph.enddrag = evt => {
+            if (evt.getData() && evt.getData().get('isBind')) {
+                return;
+            }
             if (evt.getData() && !evt.getData().get('selected')) {
                 let type = evt.getData().get('type');
                 let currentY = AmendUtil.amendCoordinate(evt.getData().y, evt.getData().size.height);
                 let offsetY = evt.getData().y - currentY;
-                if (type !== 'server') {
+                if (type !== TYPES.SERVER) {
                     evt.getData().x = 0;
                     evt.getData().y = currentY;
                     if (AmendUtil.verifyOverlay(evt.getData())) {
+                        offsetY += evt.getData().y - _y;
                         evt.getData().y = _y;
                         this.$message.create('error', '拖拽后位置会与其他图元发生重叠，请重新操作~');
                     }
                 }
 
                 // AmendUtil.amendWarning(evt.getData(), evt.getData().host);
-                if (type === 'griff') {
+                if (type === TYPES.GRIFF) {
                     AmendUtil.amendChildren(evt.getData(), offsetY);
-                } else if (type === 'server') {
+                } else if (type === TYPES.SERVER) {
                     AmendUtil.dragServer(evt, { x: _x, y: _y });
                 }
 
@@ -146,14 +163,14 @@ export class CabinetComponent implements OnInit {
             this.legendState = 'inactive';
             if (evt.getData() && !evt.getData().get('selected')) {
                 this.facilityState = 'active';
-                // let {id, name, image, size} = evt.getData();
-                // this.facility = {id, name, image, size};
+                console.log(evt.getData());
             } else {
                 // this.facility = null;
             }
         };
         // this.graph.originAtCenter = false;
         this.legendUtil.drawCabinetBg(LH, LN);
+        this.legendUtil.drawCabinet(this.$service.getAllNode());
     }
 
     /**
@@ -191,15 +208,17 @@ export class CabinetComponent implements OnInit {
      */
     drop(ev): void {
         let types = this.image.split('/'),
-            type = types[types.length - 1].split('-')[0];
+            type = types[types.length - 1].split('-')[0].toUpperCase();
+        let row = Math.floor(parseInt(this.image.split('-')[2].split('.')[0]) / 4);
+
         switch (type) {
-            case 'cabinet':
+            case TYPES.CABINET:
                 this.legendUtil.drawNode(this.image, ev);
                 break;
-            case 'griff':
-                this.legendUtil.drawGriff(this.image, ev, this.$service.getGriff())
+            case TYPES.GRIFF:
+                this.legendUtil.drawGriff(this.image, ev, this.$service.getGriff(11, 22, 4, row));
                 break;
-            case 'server':
+            case TYPES.SERVER:
                 this.legendUtil.drawServer(this.image, ev);
         }
     }
@@ -238,8 +257,8 @@ export class CabinetComponent implements OnInit {
                 let _st = new ServerType();
                 _st.id = 'id_' + AmendUtil.getRandomColor();
                 _st.name = 'name_' + AmendUtil.getRandomColor();
-                let _random = Math.round(Math.random() * 3) % 3;
-                _st.image = _random === 0 ? IMAGE.D : _random === 1 ? IMAGE.B : IMAGE.C;
+                let _random = Math.round(Math.random() * 4) % 4;
+                _st.image = _random === 0 ? IMAGE.D : _random === 1 ? IMAGE.B : _random === 2 ? IMAGE.C : IMAGE.E;
                 st.addChildren(_st);
             }
             servicer.addChildren(st);
