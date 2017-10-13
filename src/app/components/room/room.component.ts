@@ -51,8 +51,8 @@ export class RoomComponent implements OnInit {
     id = '';
     name = '';
     ChildId = '';
-    restX=null;
-    restY=null;
+    restX = null;
+    restY = null;
 
     constructor(
         private router: Router
@@ -60,12 +60,13 @@ export class RoomComponent implements OnInit {
 
     ngOnInit() {
         this.graph = new this.Q.Graph('mcRoom');
-        //设置坐标原点
+        // 设置坐标原点
         this.graph.originAtCenter = false;
-        //机房宽7.8米 高6米 比例1米=100px 方格为15px*15px的正方形;
-        var roomWidth = 800, roomHeight = 600;
-        tools.drawRoom(this.Q,this.graph,roomWidth,roomHeight);
-        //设置是否能被选择
+        // 机房宽7.8米 高6米 比例1米=100px 方格为15px*15px的正方形;
+        const roomWidth = 800,
+              roomHeight = 600;
+        tools.drawRoom(this.Q, this.graph, roomWidth, roomHeight);
+        // 设置是否能被选择
         this.graph.isSelectable = (item) => {
             // console.log(item.agentNode.type);
             return item.agentNode.type === 'Q.Node';
@@ -74,10 +75,13 @@ export class RoomComponent implements OnInit {
         //     console.log(item);
         //     return item.name === "computer";
         // }
-        //鼠标按下之后记录按下的信息
-        var src, startX, startY;
+        // 鼠标按下之后记录按下的信息
+        var src, startX, startY ,_width,_height;
         document.ondragstart = (e) => {
-            src = e.target['src'] && e.target['src'].includes("svg") ? e.target['src'].split("/")[5] : 'aaaa';
+            console.log(e.target['getAttribute']('_width'));
+            _width =e.target['getAttribute']('_width');
+            _height =e.target['getAttribute']('_height');
+            src = e.target['src'] && e.target['src'].includes('svg') ? e.target['src'].split("/")[5] : 'aaaa';
             startX = e.offsetX;
             startY = e.offsetY;
         }
@@ -86,19 +90,19 @@ export class RoomComponent implements OnInit {
 
         }
         document.ondrop = (e) => {
-            //位置的矫正 还没有做警示图标的矫正
+            // 位置的矫正 还没有做警示图标的矫正
             console.log(e);
             if( tools.checkOverLap(this.model,e)){
                 alert('目标重合请重试');
                 return;
             }
-            let x = tools.correctLocation( e.offsetX );
+            const x = tools.correctLocation( e.offsetX );
             let y = tools.correctLocation( e.offsetY );
             var p = this.graph.toLogical(x, y);
             var computer = this.graph.createNode('新增机柜', p.x, p.y);
             let image = 'assets/room/' + src;
             computer.image = image;
-            computer.size = {width: 60,height: 40,};
+            computer.size = {width: _width, height: _height};
             var alarmUI = this.graph.createNode('', p.x + 30, p.y - 30);
             alarmUI.image = 'assets/room/alarm-pink.svg';
             alarmUI.size = {width: 30};
@@ -140,9 +144,9 @@ export class RoomComponent implements OnInit {
         }
         //点击机房
         this.graph.onclick = e => {
-            if (e.getData() && e.getData().type == "Q.Node") {
+            if (e.getData() && e.getData().type === "Q.Node") {
                 // console.log(e.getData());
-                
+
                 this.id = e.getData().id;
                 this.name = e.getData().name;
                 //子图元的id
@@ -151,8 +155,8 @@ export class RoomComponent implements OnInit {
                 }
                 // this.state = this.state ==='active'? 'inactive':'active';
                 this.state = 'active';
-                
-                
+
+
             }
         };
         //右键改名字
@@ -171,7 +175,7 @@ export class RoomComponent implements OnInit {
                 this.restX = e.getData().x;
                 this.restY = e.getData().y;
             }
-            
+
         }
         this.graph.enddrag = e => {
             if (e.getData()&&e.getData().type !=='Q.ShapeNode') {
@@ -190,7 +194,7 @@ export class RoomComponent implements OnInit {
                     e.getData().children.datas[0].y=e.getData().y-30;
                     }
                 }
-                
+
             }
         }
     }
@@ -233,7 +237,7 @@ export class RoomComponent implements OnInit {
         this.isConfirmLoading = true;
         console.log(this.roomHeight);
         console.log(this.roomWidth);
-        
+
         setTimeout(() => {
             this.isVisible = false;
             this.isConfirmLoading = false;
@@ -307,17 +311,17 @@ class tools {
                 ((_maxx>minx&&_maxx<maxx&&_minx<minx)&&(_miny>miny&&_miny<maxy&&_maxy>maxy))
                 ){
                     isOverLap = true;
-                    return 
+                    return;
                 }
         })
-        return isOverLap
+        return isOverLap;
     }
     /**
      * 调整位置自动贴边
      * @param number
      * @returns {number}
      */
-    public static correctLocation ( number ) :number{
+    public static correctLocation ( number ):number{
         let newNumber = number % 10 >5 ?Math.ceil(number / 10) * 10 : Math.floor(number / 10) * 10;
         return newNumber;
     }
