@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Router, ActivatedRoute, CanActivate,ActivatedRouteSnapshot,RouterStateSnapshot } from '@angular/router';
 // import { HttpClient } from '@angular/common/http';
 import { fadeLeftIn } from "../animations/fade-left-in"
 import { Servicer, ServerType, Facility } from "../models/Models";
@@ -28,7 +28,7 @@ const IMAGE = {
     providers: [ CabinetService ]
 })
 
-export class CabinetComponent implements OnInit {
+export class CabinetComponent implements OnInit, OnChanges, CanActivate {
     private legendUtil: LegendUtil;
     Q = window['Q'];
     /**
@@ -44,37 +44,25 @@ export class CabinetComponent implements OnInit {
      * 机柜模型图
      * @type {string}
      */
-    image: string = IMAGE.B;
+    image: string = null;
     width: number = 240;
     height: number = LH;
     constructor(
         private router: Router,
-        private aRouter: ActivatedRoute,
+        private routeInfo: ActivatedRoute,
         private $message: NzMessageService,
         private $modal: NzModalService,
         private $service: CabinetService
     ) { }
 
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+        console.log(this.routeInfo.snapshot.params['id']);
+        return false;
+    }
+    ngOnChanges(changes: SimpleChanges) {
+        console.log(this.routeInfo.snapshot.params['id']);
+    }
     ngOnInit() {
-        let facility = new Facility();
-        for (let key of Object.keys(facility)) {
-            this.menuData.push({
-                key: key,
-                name: facility[key]
-            });
-        }
-        // let temp = [];
-        // setInterval(() => {
-        //     this.graph.graphModel.forEach(item => {
-        //         console.log(item.get('type'));
-        //         if (item.get('type') === TYPES.CABINET || item.get('type') === TYPES.GRIFF) {
-        //             let {x, y, image, type} = item;
-        //             temp.push({x, y, image, type});
-        //         }
-        //     });
-        //     console.log(temp);
-        // }, 15000);
-
         /**
          * mock数据
          */
@@ -163,9 +151,30 @@ export class CabinetComponent implements OnInit {
             this.legendState = 'inactive';
             if (evt.getData() && !evt.getData().get('selected')) {
                 this.facilityState = 'active';
-                console.log(evt.getData());
+                let { x, y, image } = evt.getData();
+                let facility = { x, y, image };
+                facility['width'] = evt.getData().size.width;
+                facility['height'] = evt.getData().size.height;
+                facility['type'] = evt.getData().get('type');
+                facility['index'] = evt.getData().get('index') || '--';
+                facility['isBind'] = evt.getData().get('isBind') || '--';
+
+                this.menuData = [];
+                for (let key of Object.keys(facility)) {
+                    this.menuData.push({
+                        key: key,
+                        name: facility[key]
+                    });
+                }
             } else {
-                // this.facility = null;
+                let facility = new Facility();
+                this.menuData = [];
+                for (let key of Object.keys(facility)) {
+                    this.menuData.push({
+                        key: key,
+                        name: facility[key]
+                    });
+                }
             }
         };
         // this.graph.originAtCenter = false;

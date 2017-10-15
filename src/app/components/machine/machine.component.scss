@@ -78,6 +78,61 @@ $transition: all 0.4s;
                 top: 50%;
                 margin-top: -9px;
             }
+            .m-search-panel {
+                background: #fff;
+                min-height: 300px;
+                z-index: 999;
+                position: absolute;
+                left: 0px;
+                top: 40px;
+                width: 100%;
+                box-shadow: 0 0 10px 0 #bbb9b9;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                padding: 0;
+                transition: all .4s;
+                .ms-title {
+                    font-size: 12px;
+                    color: #868686;
+                    line-height: 36px;
+                    padding-left: 15px;
+                    border-bottom: 1px solid #cccccc;
+                }
+                .ms-room {
+                    em {
+                        position: absolute;
+                        font-style: normal;
+                        color: #737373;
+                        .anticon {
+                            position: relative;
+                            left: 5px;
+                            margin-right: 7px;
+                            font-size: 12px;
+                        }
+                        span {
+                            font-size: 12px;
+                        }
+                    }
+                    .ms-ul {
+                        $border: 1px solid #ccc;
+                        margin-left: 60px;
+                        padding: 5px 0;
+                        border-left: $border;
+                        border-bottom: $border;
+
+                        li {
+                            padding-left: 9px;
+                            cursor: pointer;
+                            color: #333;
+                            font-size: 14px;
+                            &:hover {
+                                background: #e4e4e4;
+                                text-shadow: 1px 0px 2px #ffffff;
+                            }
+                        }
+                    }
+                }
+            }
         }
         .add-btn {
             width: 100%;

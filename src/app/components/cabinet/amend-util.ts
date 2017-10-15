@@ -183,7 +183,7 @@ export class AmendUtil {
      * @param target
      * @returns {boolean}
      */
-    public static verifyServerOverlay(target) {
+    public static verifyServerOverflow(target) {
         let _item = null;
         AmendUtil.graph.graphModel.forEach(item => {
             if (item.get('type') === TYPES.GRIFF) {
@@ -225,6 +225,7 @@ export class AmendUtil {
                 ) {
                     flag = true;
                     console.log(griff.x, griff.y);
+                    AmendUtil.verifyServerOverlay(griff, server);
                     AmendUtil.amendServer(griff, server);
                     return false;
                 }
@@ -237,5 +238,14 @@ export class AmendUtil {
             server.y = previousPosition.y;
             AmendUtil.$service.warning('无效操作！');
         }
+    }
+
+    public static verifyServerOverlay(griff, target) {
+        console.log(griff, target);
+        griff.children.datas.forEach(item => {
+            if (item.get('index')) {
+
+            }
+        });
     }
 }

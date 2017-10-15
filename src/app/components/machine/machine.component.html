@@ -1,8 +1,39 @@
 <div class="machine-wrap">
     <div class="m-menu"  [ngStyle]="{transform: isCollapse ? 'translateX(-100%)' : 'translateX(0)'}">
         <div class="m-search">
-            <input type="text" placeholder="search....">
+            <input [(ngModel)]="searchValue" (ngModelChange)="$watchSearch($event)" type="text" placeholder="search....">
             <i class="anticon anticon-search"></i>
+            <div class="m-search-panel" *ngIf="searchValue">
+                <p class="ms-title">搜"{{searchValue}}"的相关结果>></p>
+                <div class="ms-room" *ngIf="ass.rooms.length > 0">
+                    <em><i class="anticon anticon-chrome"></i><span>机房</span></em>
+                    <ul class="ms-ul">
+                        <li *ngFor="let room of ass.rooms"
+                            (click)="router.navigate(['machine/room/' + room.id])">
+                            {{room.name}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="ms-room" *ngIf="ass.cabinets.length > 0">
+                    <em><i class="anticon anticon-ie"></i><span>机柜</span></em>
+                    <ul class="ms-ul">
+                        <li *ngFor="let cabinet of ass.cabinets"
+                            [title]="'位置：' + cabinet.parent"
+                            (click)="router.navigate(['machine/cabinet/' + cabinet.id])">
+                            {{cabinet.name}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="ms-room" *ngIf="ass.servicers.length > 0">
+                    <em><i class="anticon anticon-github"></i>服务器</em>
+                    <ul class="ms-ul">
+                        <li *ngFor="let server of ass.servicers"
+                            [title]="'位置：' + server.parent">
+                            {{server.name}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
         <div class="collapse" (click)="toggleCollapse()" [ngClass]="{close: isCollapse}">
             <i class="anticon anticon-caret-left"></i>

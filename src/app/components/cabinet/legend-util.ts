@@ -3,11 +3,10 @@ import { NzMessageService } from 'ng-zorro-antd';
 import * as TYPES from './types';
 
 export class LegendUtil {
-    readonly Q: any;
-    readonly graph: any;
+
     constructor(
-        Q: any,
-        graph: any,
+        readonly Q: any,
+        readonly graph: any,
         private $message: NzMessageService
     ) {
         this.Q = Q;
@@ -58,6 +57,7 @@ export class LegendUtil {
                 case TYPES.GRIFF:
                     let griff = new this.Q.Node();
                     griff.set('type', TYPES.GRIFF);
+                    griff.set('isBind', true);
                     griff.set('griff', item.griffData);
                     griff.size = {
                         width: 200,
@@ -146,7 +146,7 @@ export class LegendUtil {
         server.y = AmendUtil.amendCoordinate(l.y, server.size.height, LH, 42);
         server.image = image;
         server.zIndex = 99;
-        let griff = AmendUtil.verifyServerOverlay(server);
+        let griff = AmendUtil.verifyServerOverflow(server);
         if (griff) {
             server.host = griff;
             server.parent = griff;

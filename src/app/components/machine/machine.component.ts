@@ -1,29 +1,17 @@
-import { Component, OnInit, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { Component, OnInit } from '@angular/core';
 
-import { Router } from '@angular/router';
-
+import { Router, ActivatedRoute } from '@angular/router';
+import { MachineService } from './machine.service'
 import { Room, Cabinet, Servicer } from '../models/Models';
 import { fadeLeftIn } from "../animations/fade-left-in";
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-import { CreateRoomModalComponent } from "./create-room-modal/create-room-modal.component";
-// import {
-//     FormBuilder,
-//     FormGroup,
-//     Validators
-// } from '@angular/forms';
-// @NgModule({
-//     declarations: [
-//         CreateRoomModalComponent
-//     ],
-//     imports: [BrowserModule ],
-//     bootstrap: [MachineComponent]
-// })
+
 
 @Component({
     selector: 'app-machine',
     templateUrl: './machine.component.html',
     styleUrls: ['./machine.component.scss'],
+    providers: [ MachineService ],
     animations: [
         fadeLeftIn
     ]
@@ -32,15 +20,65 @@ export class MachineComponent implements OnInit {
     data: Room[] = [];
     isCollapse: boolean = true;
     isVisible: boolean = false;
+    searchValue: string = '';
+    ass = {
+        rooms: [],
+        cabinets: [],
+        servicers: []
+    };
+
     constructor(
         private router: Router,
         private $message: NzMessageService,
-        private $modal: NzModalService
+        private $modal: NzModalService,
+        private $service: MachineService
     ) { }
 
     ngOnInit() {
-        this.data.push(this.mock());
-        this.data.push(this.mock());
+        this.data.push(this.$service.getMachines());
+        this.data.push(this.$service.getMachines());
+    }
+    $watchSearch(currentValue) {
+        this.searchValue = currentValue.trim();
+        if (this.searchValue) {
+            this.ass = {
+                rooms: [],
+                cabinets: [],
+                servicers: []
+            };
+            this.data.forEach(room => {
+                if (room.name.toUpperCase().includes(this.searchValue.toUpperCase())) {
+                    if (this.ass.rooms.length < 5) {
+                        let { id, name } = room;
+                        this.ass.rooms.push({ id, name });
+                    }
+                }
+                room.cabinets.forEach(cabinet => {
+                    if (cabinet.name.toUpperCase().includes(this.searchValue.toUpperCase())) {
+                        if (this.ass.cabinets.length < 5) {
+                            this.ass.cabinets.push({
+                                id: cabinet.id,
+                                name: cabinet.name,
+                                parent: room.name
+                            });
+                        }
+                    }
+                    cabinet.servicers.forEach(server => {
+                        if (server.name.toUpperCase().includes(this.searchValue.toUpperCase())) {
+                            if (this.ass.servicers.length < 5) {
+                                this.ass.servicers.push({
+                                    id: server.id,
+                                    name: server.name,
+                                    parent: room.name + ' => ' + cabinet.name
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+        } else {
+
+        }
     }
     toggleMenu(item, ev) {
         item.isOpen = !item.isOpen;
@@ -63,31 +101,5 @@ export class MachineComponent implements OnInit {
     }
     toggleCollapse(): void {
         this.isCollapse = !this.isCollapse;
-    }
-    private mock(): Room {
-        let room = new Room();
-        room.id = 'id_' + this.getRandom();
-        room.name = '机房_' + this.getRandom();
-        for (let i = 0; i < 5; i++) {
-            let cabinet = new Cabinet();
-            cabinet.id = 'id_' + this.getRandom();
-            cabinet.name = '机柜_' + this.getRandom();
-            for (let i = 0; i < 6; i++) {
-                let servicer = new Servicer();
-                servicer.id = 'id_' + this.getRandom();
-                servicer.name = '服务器_' + this.getRandom();
-                cabinet.addServicer(servicer);
-            }
-            room.addCabinet(cabinet);
-        }
-        return room;
-    }
-
-    private getRandom() {
-        let color = '';
-        for (let i = 0; i < 6; i++) {
-            color += '0123456789abcdef'[Math.floor(Math.random() * 16)];
-        }
-        return '#' + color;
     }
 }
