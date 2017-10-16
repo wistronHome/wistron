@@ -1,0 +1,179 @@
+<div class="user-manager-wrap">
+    <div class="search-area" nz-row [nzGutter]="8">
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <nz-input  [nzPlaceHolder]="'用户代码'"></nz-input>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <nz-input  [nzPlaceHolder]="'角色名称'"></nz-input>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <nz-select
+                style="width: 200px;"
+                nzAllowClear
+                [nzPlaceHolder]="'用户状态'"
+                [(ngModel)]="selectedOption"
+                [nzShowSearch]="true">
+                <nz-option
+                    *ngFor="let option of searchOptions"
+                    [nzLabel]="option.label"
+                    [nzValue]="option.value"
+                    [nzDisabled]="option.disabled">
+                </nz-option>
+            </nz-select>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="6">
+            <button nz-button [nzType]="'default'">
+                <i class="anticon anticon-search"></i><span>查询</span>
+            </button>
+        </div>
+    </div>
+    <div>
+        <div style="margin: 10px 25px;">
+            <button nz-button
+                    [disabled]="_disabledButton"
+                    [nzType]="'primary'"
+                    [nzLoading]="_operating"
+                    (click)="_operateData()">批量删除</button>
+            <span style="margin-left: 8px;" *ngIf="_checkedNumber">已选中 {{_checkedNumber}} 条</span>
+        </div>
+        <nz-table #nzTable [nzDataSource]="data" [nzBordered]="true" [nzPageSize]="10">
+            <thead nz-thead>
+            <tr>
+                <th nz-th [nzCheckbox]="true">
+                    <label nz-checkbox
+                           [(ngModel)]="_allChecked"
+                           [nzIndeterminate]="_indeterminate"
+                           (ngModelChange)="_checkAll($event)">
+                    </label>
+                </th>
+                <th nz-th><span>用户代码</span></th>
+                <th nz-th><span>用户名称</span></th>
+                <th nz-th><span>用户状态</span></th>
+                <th nz-th><span>手机号</span></th>
+                <th nz-th><span>邮箱</span></th>
+                <th nz-th><span>角色</span></th>
+                <th nz-th><span>操作</span></th>
+            </tr>
+            </thead>
+            <tbody nz-tbody>
+                <tr nz-tbody-tr *ngFor="let user of nzTable.data">
+                    <td nz-td [nzCheckbox]="true">
+                        <label nz-checkbox [(ngModel)]="user.checked" ></label>
+                    </td>
+                    <td nz-td>
+                        <span>{{user.code}}</span>
+                    </td>
+                    <td nz-td>
+                        <span>{{user.name}}</span>
+                    </td>
+                    <td nz-td>
+                        <span>{{user.state | userState}}</span>
+                    </td>
+                    <td nz-td>
+                        <span>{{user.phone}}</span>
+                    </td>
+                    <td nz-td>
+                        <span>{{user.email}}</span>
+                    </td>
+                    <td nz-td>
+                        <span>{{user.role | userRole}}</span>
+                    </td>
+                    <td nz-td>
+                        <a (click)="modifyItem(user)">修改</a>
+                        <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
+                                       (nzOnConfirm)="confirmDelete(user)"
+                                       (nzOnCancel)="cancel()">
+                            <a nz-popconfirm>删除</a>
+                        </nz-popconfirm>
+                        <a >重置密码</a>
+                        <nz-popconfirm [nzTitle]="'确认' + (user.state | userState: 'reverse') + '吗？'"
+                                       (nzOnConfirm)="confirmState(user)"
+                                       (nzOnCancel)="cancel()">
+                            <a nz-popconfirm>{{user.state | userState: 'reverse'}}</a>
+                        </nz-popconfirm>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+    <nz-modal *ngIf="currentUser"
+              [nzTitle]="modalTitle"
+              [nzContent]="modalContent"
+              [nzFooter]="modalFooter"
+              [nzVisible]="isModelShow"
+              (nzOnCancel)="isModelShow = false"
+              (nzOnOk)="handleOkMiddle($event)">
+        <ng-template #modalTitle>
+            修改
+        </ng-template>
+        <ng-template #modalContent>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    用户代码：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [ngModel]="currentUser.code" [nzPlaceHolder]="'default size'"></nz-input>
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    用户名称：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [ngModel]="currentUser.name" [nzPlaceHolder]="'default size'"></nz-input>
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    用户状态：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-radio-group [ngModel]="currentUser.state">
+                        <label nz-radio-button [nzValue]="1">
+                            <span>{{1 | userState}}</span>
+                        </label>
+                        <label nz-radio-button [nzValue]="2">
+                            <span>{{2 | userState}}</span>
+                        </label>
+                    </nz-radio-group>
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    角色：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-select style="width: 120px;" [(ngModel)]="currentUser.role">
+                        <nz-option
+                            *ngFor="let role of roles"
+                            [nzLabel]="role.label"
+                            [nzValue]="role.value">
+                        </nz-option>
+                    </nz-select>
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    手机号：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [ngModel]="currentUser.phone" [nzPlaceHolder]="'default size'"></nz-input>
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    邮箱：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [ngModel]="currentUser.email" [nzPlaceHolder]="'default size'"></nz-input>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #modalFooter>
+            <div class="modal-footer">
+                <button (click)="closeModal()" class="m-btn" type="button">取&nbsp;&nbsp;消</button>
+                <button (click)="saveUser()" class="m-btn" type="button">保&nbsp;&nbsp;存</button>
+            </div>
+        </ng-template>
+    </nz-modal>
+</div>

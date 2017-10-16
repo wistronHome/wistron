@@ -10,6 +10,9 @@ import { RoomComponent } from './components/room/room.component';
 import { AppRoutingModule } from "./app-routing.module";
 import { MachineComponent } from './components/machine/machine.component';
 import { CreateRoomModalComponent } from './components/machine/create-room-modal/create-room-modal.component';
+import { UserManagerComponent } from './components/user/user-manager/user-manager.component';
+import { UserStatePipe } from './pipes/user-state.pipe';
+import { UserRolePipe } from './pipes/user-role.pipe';
 // import { CreateRoomComponentComponent } from './components/machine/create-room-component/create-room-component.component'
 
 @NgModule({
@@ -18,15 +21,19 @@ import { CreateRoomModalComponent } from './components/machine/create-room-modal
         CabinetComponent,
         RoomComponent,
         MachineComponent,
-        CreateRoomModalComponent
+        CreateRoomModalComponent,
+        UserManagerComponent,
+        UserStatePipe,
+        UserRolePipe
     ],
     imports: [
         BrowserModule,
         FormsModule,
         HttpModule,
         BrowserAnimationsModule,
-        AppRoutingModule,
-        NgZorroAntdModule.forRoot()
+        NgZorroAntdModule.forRoot(),
+        // 路由模块最后导入。
+        AppRoutingModule
     ],
     bootstrap: [AppComponent]
 })

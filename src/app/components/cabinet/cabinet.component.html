@@ -22,7 +22,11 @@
             <div class="loading" *ngIf="data.length === 0">
                 <nz-spin></nz-spin>
             </div>
-            <ul *ngIf="data.length > 0" nz-menu [nzMode]="'inline'" nzTheme='light' [nzInlineCollapsed]="isCollapsed">
+            <ul *ngIf="data.length > 0"
+                nz-menu
+                [nzMode]="'inline'"
+                nzTheme='light'
+                [nzInlineCollapsed]="isCollapsed">
                 <li nz-submenu *ngFor="let item of data">
                     <span title>
                         <i class="anticon anticon-appstore"></i>

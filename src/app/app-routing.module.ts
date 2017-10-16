@@ -3,12 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CabinetComponent } from "./components/cabinet/cabinet.component"
 import { RoomComponent } from "./components/room/room.component"
-import { MachineComponent } from "./components/machine/machine.component"
+import { MachineComponent } from "./components/machine/machine.component";
+import { UserManagerComponent } from './components/user/user-manager/user-manager.component'
 
 const routes: Routes = [
     {
         path: '',
         redirectTo: 'capital',
+
         pathMatch: 'full'
     },
     {
@@ -24,6 +26,10 @@ const routes: Routes = [
                 component: RoomComponent
             }
         ]
+    },
+    {
+        path: 'user/manager',
+        component: UserManagerComponent
     }
 ];
 

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AmendUtil } from "./amend-util";
 import * as TYPES from "./types";
 
 
@@ -18,8 +17,8 @@ let data = [
 
 @Injectable()
 export class CabinetService {
-    constructor() { }
 
+    constructor() { }
     public getGriff1() {
 
     }

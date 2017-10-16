@@ -1,8 +1,16 @@
 import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { Router, ActivatedRoute, CanActivate,ActivatedRouteSnapshot,RouterStateSnapshot } from '@angular/router';
+import {
+    Router,
+    ActivatedRoute,
+    CanActivate,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
+    ParamMap
+} from '@angular/router';
+import 'rxjs/add/operator/switchMap';
 // import { HttpClient } from '@angular/common/http';
-import { fadeLeftIn } from "../animations/fade-left-in"
-import { Servicer, ServerType, Facility } from "../models/Models";
+import { fadeLeftIn } from "../../animations/fade-left-in"
+import { Servicer, ServerType, Facility } from "../../models/Models";
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { CabinetService } from "./cabinet.service";
 import { AmendUtil } from "./amend-util";
@@ -28,7 +36,7 @@ const IMAGE = {
     providers: [ CabinetService ]
 })
 
-export class CabinetComponent implements OnInit, OnChanges, CanActivate {
+export class CabinetComponent implements OnInit, OnChanges {
     private legendUtil: LegendUtil;
     Q = window['Q'];
     /**
@@ -55,14 +63,15 @@ export class CabinetComponent implements OnInit, OnChanges, CanActivate {
         private $service: CabinetService
     ) { }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        console.log(this.routeInfo.snapshot.params['id']);
-        return false;
-    }
     ngOnChanges(changes: SimpleChanges) {
-        console.log(this.routeInfo.snapshot.params['id']);
+        console.log('onChanges');
     }
     ngOnInit() {
+        // this.routeInfo.paramMap.switchMap((params: ParamMap) => {
+        //     console.log(params.get('id'));
+        //     return 'asfse';
+        // });
+        console.log(this.routeInfo.snapshot.params['id']);
         /**
          * mock数据
          */
