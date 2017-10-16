@@ -62,9 +62,10 @@ export class RoomComponent implements OnInit {
         this.graph = new this.Q.Graph('mcRoom');
         // 设置坐标原点
         this.graph.originAtCenter = false;
-        // 机房宽7.8米 高6米 比例1米=100px 方格为15px*15px的正方形;
-        const roomWidth = 800,
-              roomHeight = 600;
+        // 机房宽12米 高12米 比例1米=100px 方格为10px*10px 20cm*20cm 的正方形 1px= 2cm;
+        
+        const roomWidth = 600,//px
+              roomHeight = 600;//px
         tools.drawRoom(this.Q, this.graph, roomWidth, roomHeight);
         // 设置是否能被选择
         this.graph.isSelectable = (item) => {
@@ -77,7 +78,7 @@ export class RoomComponent implements OnInit {
         // }
         // 鼠标按下之后记录按下的信息
         var src, startX, startY ,_width,_height;
-        document.ondragstart = (e) => {
+        document.getElementById('tools').ondragstart = (e) => {
             console.log(e.target['getAttribute']('_width'));
             _width =e.target['getAttribute']('_width');
             _height =e.target['getAttribute']('_height');
@@ -85,66 +86,70 @@ export class RoomComponent implements OnInit {
             startX = e.offsetX;
             startY = e.offsetY;
         }
-        document.onmousemove = (e) => {
-
-
-        }
-        document.ondrop = (e) => {
+        document.getElementById('mcRoom').ondrop = (e) => {
             // 位置的矫正 还没有做警示图标的矫正
             console.log(e);
             if( tools.checkOverLap(this.model,e)){
                 alert('目标重合请重试');
                 return;
             }
-            const x = tools.correctLocation( e.offsetX );
-            let y = tools.correctLocation( e.offsetY );
+            const x = tools.correctLocation( e.offsetX, _width );
+            let y = tools.correctLocation( e.offsetY, _height);
             var p = this.graph.toLogical(x, y);
-            var computer = this.graph.createNode('新增机柜', p.x, p.y);
-            let image = 'assets/room/' + src;
-            computer.image = image;
-            computer.size = {width: _width, height: _height};
-            var alarmUI = this.graph.createNode('', p.x + 30, p.y - 30);
-            alarmUI.image = 'assets/room/alarm-pink.svg';
-            alarmUI.size = {width: 30};
-            alarmUI.zIndex = 999;
-            alarmUI.host = computer;
-            alarmUI.parent = computer;
+            // var computer = this.graph.createNode('', p.x, p.y);
+            // // var computer = this.graph.createText('', p.x, p.y);
+            // let image = 'assets/room/' + src;
+            // image='assets/room/mx-cabinet4white.svg'
+            // computer.image = image;
+            // computer.name = '007'
+            // computer.set('type','cabinet')
+            // computer.size = {width: _width, height: _height};
+            // computer.setStyle(this.Q.Styles.LABEL_OFFSET_Y, -_height/2)
+            // computer.setStyle(this.Q.Styles.BORDER, 1);
+            // computer.setStyle(this.Q.Styles.BORDER_RADIUS,0)
+            // computer.setStyle(this.Q.Styles.BACKGROUND_COLOR,'#2898E0')
+            // // let size = new this.Q.Size (+_width,+_height )
+            // // computer.setStyle(this.Q.Styles.LABEL_SIZE, size)
+            // var alarmUI = this.graph.createNode('', p.x + 30, p.y - 30);
+            // alarmUI.image = 'assets/room/alarmred.svg';
+            // alarmUI.set('type','alarm')
+            // alarmUI.size = {width: 30};
+            // alarmUI.zIndex = 999;
+            // alarmUI.host = computer;
+            // alarmUI.parent = computer;
+            tools.drawCabinet(this.Q,this.graph,'007',p.x,p.y,_width,_height,0)
         };
 
 
         var model = this.graph.graphModel;
         this.model = model;
         //假数据的渲染
-        let info = [{name: "jjj", id: 429, x: 60, y: 60, w: 60, img:"assets/room/mx-cabinet2.svg"},
-        {name: "ppp", id: 430, x: 150, y: 60, w: 60, img:"assets/room/mx-cabinet2.svg"},
-        {name: "ppp", id: 431, x: 240, y: 60, w: 60, img:"assets/room/mx-cabinet2.svg"},
-        {name: "ppp", id: 431, x: 330, y: 60, w: 60, img:"assets/room/mx-cabinet2.svg"},
-        {name: "42U机柜600*1200(竖)", id: 432, x: 60, y: 165, w: 60, img:"assets/room/mx-cabinet2.svg"},
-        {name: "42U机柜(竖)", id: 433, x: 420, y: 60, w: 60, img:"assets/room/mx-cabinet2.svg"},
-        {name: "新增机柜", id: 711, x: 150, y: 165, w: 60, img:"assets/room/mx-cabinet2.svg"},
-        {name: "新增机柜", id: 719, x: 240, y: 165, w: 60, img:"assets/room/mx-cabinet2.svg"},
-        {name: "新增机柜", id: 727, x: 330, y: 165, w: 60, img:"assets/room/mx-cabinet2.svg"},
-        {name: "新增机柜", id: 735, x: 420, y: 165, w: 60, img:"assets/room/mx-cabinet2.svg"},
-        {name: "新增机柜(绿色)", id: 743, x: 60, y: 315, w: 60, img:"assets/room/mx-cabinet4.svg"},
-        {name: "新增机柜(绿色)", id: 751, x: 150, y: 315, w: 60, img:"assets/room/mx-cabinet4.svg"},
-        {name: "新增机柜(绿色)", id: 759, x: 240, y: 315, w: 60, img:"assets/room/mx-cabinet4.svg"},
-        {name: "新增机柜(绿色)", id: 767, x: 330, y: 315, w: 60, img:"assets/room/mx-cabinet4.svg"},
-        {name: "新增机柜(绿色)", id: 775, x: 420, y: 315, w: 60, img:"assets/room/mx-cabinet4.svg"}
+        let info = [{name: "jjj", id: 429, x: 100, y: 150, w: 60,h:40,img:"assets/room/mx-cabinet4red.svg"},
+        {name: "ppp", id: 430, x: 100, y: 190, w: 60,h:40, img:"assets/room/mx-cabinet4red.svg"},
+        {name: "ppp", id: 431, x: 100, y: 230, w: 60,h:40, img:"assets/room/mx-cabinet4.svg"},
+        {name: "ppp", id: 431, x: 100, y: 270, w: 60, h:40,img:"assets/room/mx-cabinet4.svg"},
+        {name: "42U", id: 432, x: 100, y: 310, w: 60, h:40,img:"assets/room/mx-cabinet4.svg"},
+        {name: "42U023", id: 433, x: 230, y: 145, w: 60, h:30, img:"assets/room/mx1red.svg"},
+        {name: "007", id: 711, x: 230, y: 175, w: 60, h:30,img:"assets/room/mx-cabinet4red.svg"}
         ]
         for (var i = 0; i < info.length; i++) {
-            var demo = this.graph.createNode(info[i].name, info[i].x, info[i].y);
-            demo.image = info[i].img
-            demo.size = {width: info[i].w};
-            let alarmUI = this.graph.createNode('', info[i].x + 30, info[i].y - 30);
-            alarmUI.image = 'assets/room/alarm-pink.svg';
-            alarmUI.size = {width: 30};
-            alarmUI.zIndex = 999;
-            alarmUI.host = demo;
-            alarmUI.parent = demo;
+            // var demo = this.graph.createNode(info[i].name, info[i].x, info[i].y);
+            // demo.image = info[i].img
+            // demo.size = {width: info[i].w,height: info[i].h};
+            // demo.setStyle(this.Q.Styles.LABEL_OFFSET_Y, -info[i].h/2)
+            // demo.setStyle(this.Q.Styles.BORDER, 1);
+            // demo.setStyle(this.Q.Styles.BORDER_RADIUS,0)
+            // let alarmUI = this.graph.createNode('', info[i].x + 30, info[i].y - 30);
+            // alarmUI.image = 'assets/room/alarmred.svg';
+            // alarmUI.size = {width: 30};
+            // alarmUI.zIndex = 999;
+            // alarmUI.host = demo;
+            // alarmUI.parent = demo;
+            tools.drawCabinet(this.Q,this.graph,info[i].name,info[i].x,info[i].y,info[i].w,info[i].h,info[i].img)
         }
         //点击机房
         this.graph.onclick = e => {
-            if (e.getData() && e.getData().type === "Q.Node") {
+            if (e.getData() && e.getData().get('type') === "cabinet") {
                 // console.log(e.getData());
 
                 this.id = e.getData().id;
@@ -186,8 +191,8 @@ export class RoomComponent implements OnInit {
                     e.getData().children.datas[0].y=e.getData().y-30;
                     alert('目标重合了 请重试');
                 }else{
-                    e.getData().x = tools.correctLocation(e.getData().x);
-                    e.getData().y = tools.correctLocation(e.getData().y);
+                    e.getData().x = tools.correctLocation(e.getData().x,e.getData().size.width);
+                    e.getData().y = tools.correctLocation(e.getData().y,e.getData().size.height);
                     //设置告警图标的位置
                     if( e.getData().childrenCount !==0 ){
                     e.getData().children.datas[0].x=e.getData().x+30;
@@ -215,13 +220,7 @@ export class RoomComponent implements OnInit {
     }
 
     toolsToggle(): void {
-        // if (this.state1 === 'active') {
-        //     // this.state = 'active';
-        //     this.state1 = 'inactive';
-        // } else {
-        //     this.state1 = 'active';
-        //     this.state = 'inactive';
-        // }
+        
     }
 
     // 弹框修改机房大小
@@ -254,7 +253,7 @@ export class RoomComponent implements OnInit {
     roomSave = () => {
         let arr = [];
         this.model['forEach']((item) => {
-            if (item.agentNode.type === 'Q.Node') {
+            if (item.get('type') === 'cabinet') {
                 console.log(item);
                 var element = {name: '', id: '', x: '', y: '',w:'',h:'',img:'',alarm: null };
                 element.name = item.name;
@@ -262,7 +261,7 @@ export class RoomComponent implements OnInit {
                 element.x = item.x;
                 element.y = item.y;
                 element.w = item.size.width;
-                element.h = item.h;
+                element.h = item.size.height;
                 element.img= item.image;
                 if(item.childrenCount==1){
                     element.alarm = item.children.datas[0]
@@ -298,9 +297,11 @@ class tools {
             isOverLap=false;
             }
         model['forEach'](item =>{
-            if( !item.size||item.type=='Q.ShapeNode'||item.host){
+            if( !item.size||item.type=='Q.ShapeNode'||item.host||item.get('type')==='alarm'){
+
                 return;
-            }
+            }else if (item.get('type')==='cabinet'){
+
             let minx = item.x-item.size.width/2,
                 maxx = item.x+item.size.width/2,
                 miny = item.y -item.size.width/2,
@@ -312,18 +313,25 @@ class tools {
                 ){
                     isOverLap = true;
                     return;
-                }
+                }}
         })
         return isOverLap;
     }
     /**
      * 调整位置自动贴边
      * @param number
+     * @param size
      * @returns {number}
      */
-    public static correctLocation ( number ):number{
+    public static correctLocation ( number, size):number{
         let newNumber = number % 10 >5 ?Math.ceil(number / 10) * 10 : Math.floor(number / 10) * 10;
-        return newNumber;
+        if (+size%4==0){
+            return newNumber;
+        }else if(+size%4!=0){
+            console.log('单数');
+            return newNumber+5;
+        }
+        
     }
     /**
      * 绘制机房
@@ -333,7 +341,7 @@ class tools {
      * @param roomHeight
      */
     public static drawRoom (Q,graph,roomWidth ,roomHeight) :void {
-        //绘制横线
+        //绘制横线 比例1米=100px 方格为10px*10px 20cm*20cm 的正方形 1px= 2cm;
         var roomWidth = roomWidth, roomHeight = roomHeight;
         roomWidth = roomWidth % 30 == 0 ? roomWidth : Math.floor(roomWidth / 30) * 20;
         roomHeight = roomHeight % 30 == 0 ? roomHeight : Math.floor(roomHeight / 30) * 20;
@@ -370,5 +378,31 @@ class tools {
 
             }
         }
+    }
+    /**
+     * 绘制机柜
+     * @param Q
+     * @param graph
+     * @param x
+     * @param y
+     * @param w
+     * @param h
+     * @param name
+     * @param image
+     */
+    public static drawCabinet (Q, graph,name, x, y, w, h,image) :void{
+        let demo = graph.createNode(name, x, y);
+        demo.image = image||'assets/room/mx-cabinet4white.svg';
+        demo.size = {width: w,height: h};
+        demo.set('type','cabinet')
+        demo.setStyle(Q.Styles.LABEL_OFFSET_Y, -h/2);
+        demo.setStyle(Q.Styles.BORDER, 1);
+        demo.setStyle(Q.Styles.BORDER_RADIUS,0);
+        let alarmUI = graph.createNode('', x + 30, y - 30);
+        alarmUI.image = 'assets/room/alarmred.svg';
+        alarmUI.size = {width: 30};
+        alarmUI.zIndex = 999;
+        alarmUI.host = demo;
+        alarmUI.parent = demo;
     }
 }
