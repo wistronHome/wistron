@@ -15,7 +15,7 @@ export class UserManagerService {
      */
     public getAllUser(): User[] {
         let tmp: User[] = [];
-        for (let i = 0; i < 23; i++) {
+        for (let i = 0; i < 22; i++) {
             tmp.push(this.createUser());
         }
         return tmp;
@@ -23,18 +23,16 @@ export class UserManagerService {
 
     /**
      * 分页获取用户信息
-     * @param {{pageSize: number; pageIndex: number}} param
-     * @returns {User[]}
+     * @param {number} pageIndex
+     * @param {number} pageSize
+     * @returns {{users: User[]; total: number}}
      */
-    public getUserPagination(param: { pageSize: number, pageIndex: number }) {
+    public getUserPagination(pageIndex: number, pageSize: number): Promise<{ users: User[], total: number }> {
         let _users: User[] = [];
-        for (let i = param.pageSize * (param.pageIndex - 1); i < param.pageSize * param.pageIndex; i++) {
+        for (let i = pageSize * (pageIndex - 1); i < pageSize * pageIndex && i < this.users.length; i++) {
             _users.push(this.users[i]);
         }
-        return {
-            users: _users,
-            total: this.users.length
-        };
+        return Promise.resolve({ users: _users, total: this.users.length});
     }
 
     /**
@@ -42,7 +40,7 @@ export class UserManagerService {
      * @param {User} user
      * @returns {{result: boolean}}
      */
-    public modifyUser(user: User) {
+    public modifyUser(user: User): Promise<{ result: boolean }> {
         this.users.forEach(item => {
             if (item.id === user.id) {
                 item.name = user.name;
@@ -53,7 +51,7 @@ export class UserManagerService {
                 item.phone = user.phone;
             }
         });
-        return { result: true };
+        return Promise.resolve({result: true});
     }
 
     /**
@@ -61,7 +59,7 @@ export class UserManagerService {
      * @param {string[]} ids
      * @returns {User[]}
      */
-    public deleteUsers(ids: string[], pageSize: number, pageIndex: number) {
+    public deleteUsers(ids: string[], pageSize: number, pageIndex: number): Promise<{ users: User[], total: number }> {
         let users: User[] = [];
         this.users.forEach(item => {
             if (!ids.includes(item.id)) {
@@ -70,13 +68,10 @@ export class UserManagerService {
         });
         this.users = users;
         let _users: User[] = [];
-        for (let i = pageSize * (pageIndex - 1); i < pageSize * pageIndex; i++) {
+        for (let i = pageSize * (pageIndex - 1); i < pageSize * pageIndex && i < this.users.length; i++) {
             _users.push(this.users[i]);
         }
-        return {
-            users: _users,
-            total: this.users.length
-        };
+        return Promise.resolve({ users: _users, total: this.users.length });
     }
 
     public getDemo() {
@@ -102,6 +97,7 @@ export class UserManagerService {
         user.phone = _phone;
         user.role = this.getState(4);
         user.password = '123456';
+        user.checked = false;
         return user;
     }
 
