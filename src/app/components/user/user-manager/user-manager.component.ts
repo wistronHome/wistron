@@ -1,30 +1,24 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UserManagerService } from './user-manager.service'
 import { User, Password } from '../../../models/Models';
 import { NzMessageService } from 'ng-zorro-antd';
+import { MissionService } from '../../../mission-store/mission.service';
 
 @Component({
     selector: 'app-user-manager',
     templateUrl: './user-manager.component.html',
     styleUrls: ['./user-manager.component.scss'],
-    providers: [ UserManagerService ]
+    providers: [ UserManagerService, MissionService ]
 })
-export class UserManagerComponent implements OnInit, OnChanges {
+export class UserManagerComponent implements OnInit {
     data: User[] = [];
     isModalShow: boolean = false;
     password: Password;
     isModifyPasswordShow: boolean = false;
     currentUser: User;
-    @Input() pageSize: number = 10;
-    page: {
-        pageSize: number,
-        pageIndex: number,
-        total: number
-    } = {
-        pageSize: 10,
-        pageIndex: 1,
-        total: 1
-    };
+    pageSize: number = 10;
+    pageIndex: number = 1;
+    total: number = 1;
     roles = [
         {
             value: 1,
@@ -46,8 +40,19 @@ export class UserManagerComponent implements OnInit, OnChanges {
 
     constructor(
         private $service: UserManagerService,
-        private $message: NzMessageService
-    ) { }
+        private $message: NzMessageService,
+        private $mission: MissionService
+    ) {
+        // 订阅页码改变事件
+        $mission.pageChangeHook.subscribe(page => {
+            this.pageSize = page.pageSize;
+            this.pageIndex = page.pageIndex;
+            this.$service.getUserPagination( this.pageIndex, this.pageSize ).then(result => {
+                this.data = result.users;
+                this.total = result.total;
+            });
+        });
+    }
 
     /**
      * 新增用户
@@ -115,25 +120,27 @@ export class UserManagerComponent implements OnInit, OnChanges {
      * @param {User} user
      */
     confirmDelete(user: User) {
-        let result = this.$service.deleteUsers([user.id], this.pageSize, this.page.pageIndex);
-        this.data = result.users;
-        this.page.total = result.total;
-        this.$message.info('删除成功~')
+        this.$service.deleteUsers([user.id], this.pageSize, this.pageIndex).then(result => {
+            this.data = result.users;
+            this.total = result.total;
+            this.$message.info('删除成功~')
+        });
     };
+
+    /**
+     * 启用/停用
+     * @param {User} user
+     */
     confirmState(user: User) {
         user.state = user.state === 1 ? 2 : 1;
         this.$message.info('success~')
     }
     ngOnInit() {
-        let result = this.$service.getUserPagination({ pageSize: this.pageSize, pageIndex: this.page.pageIndex });
-        this.data = result.users;
-        this.page.total = result.total;
+        this.$service.getUserPagination( this.pageIndex, this.pageSize ).then(result => {
+            this.data = result.users;
+            this.total = result.total;
+        });
     }
-
-    ngOnChanges(changes: SimpleChanges) {
-        console.dir(changes);
-    }
-
 
     private cloneUser(user: User): User {
         let _clone = new User();

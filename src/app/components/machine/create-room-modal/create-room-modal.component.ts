@@ -35,7 +35,7 @@ export class CreateRoomModalComponent implements OnInit {
         let _this = this;
         let reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = ev =>{
+        reader.onload = ev => {
             _this.roomUpload = ev.target['result'];
         }
     }

@@ -14,6 +14,7 @@ import { CreateRoomModalComponent } from './components/machine/create-room-modal
 import { UserManagerComponent } from './components/user/user-manager/user-manager.component';
 import { UserStatePipe } from './pipes/user-state.pipe';
 import { UserRolePipe } from './pipes/user-role.pipe';
+import { PaginationComponent } from './components/pagination/pagination.component';
 // import { CreateRoomComponentComponent } from './components/machine/create-room-component/create-room-component.component'
 
 @NgModule({
@@ -25,7 +26,8 @@ import { UserRolePipe } from './pipes/user-role.pipe';
         CreateRoomModalComponent,
         UserManagerComponent,
         UserStatePipe,
-        UserRolePipe
+        UserRolePipe,
+        PaginationComponent
     ],
     imports: [
         BrowserModule,
