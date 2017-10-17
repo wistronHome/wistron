@@ -8,6 +8,7 @@ export class User {
     private _email: string;
     private _role: number;
     private _checked: boolean = false;
+    private _password: string;
     constructor() {}
 
     set id(id: string) {
@@ -65,4 +66,12 @@ export class User {
     get checked(): boolean {
         return this._checked;
     }
+
+    set password(pwd: string) {
+        this._password = pwd;
+    }
+    get password(): string {
+        return this._password;
+    }
+
 }

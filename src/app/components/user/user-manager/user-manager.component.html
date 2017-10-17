@@ -23,7 +23,7 @@
         </div>
         <div nz-col class="gutter-row" [nzSpan]="6">
             <button nz-button [nzType]="'default'">
-                <i class="anticon anticon-search"></i><span>查询</span>
+                <i class="anticon anticon-search"></i><span>查&nbsp;&nbsp;询</span>
             </button>
         </div>
     </div>
@@ -33,10 +33,17 @@
                     [disabled]="_disabledButton"
                     [nzType]="'primary'"
                     [nzLoading]="_operating"
-                    (click)="_operateData()">批量删除</button>
+                    (click)="_operateData()">
+                <i class="anticon anticon-delete"></i>
+                <span>批量删除</span>
+            </button>
+            <button nz-button [nzType]="'default'" (click)="createUser()">
+                <i class="anticon anticon-plus"></i>
+                <span>新&nbsp;&nbsp;增</span>
+            </button>
             <span style="margin-left: 8px;" *ngIf="_checkedNumber">已选中 {{_checkedNumber}} 条</span>
         </div>
-        <nz-table #nzTable [nzDataSource]="data" [nzBordered]="true" [nzPageSize]="10">
+        <nz-table #nzTable [nzDataSource]="data" [nzIsPagination]="false" [nzBordered]="true" [nzPageSize]="10">
             <thead nz-thead>
             <tr>
                 <th nz-th [nzCheckbox]="true">
@@ -67,7 +74,10 @@
                         <span>{{user.name}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{user.state | userState}}</span>
+                        <nz-switch [nzDisabled]="true" [ngModel]="user.state === 1">
+                            <span checked>{{user.state | userState}}</span>
+                            <span unchecked>{{user.state | userState}}</span>
+                        </nz-switch>
                     </td>
                     <td nz-td>
                         <span>{{user.phone}}</span>
@@ -85,7 +95,7 @@
                                        (nzOnCancel)="cancel()">
                             <a nz-popconfirm>删除</a>
                         </nz-popconfirm>
-                        <a >重置密码</a>
+                        <a (click)="modifyPassword(user)">重置密码</a>
                         <nz-popconfirm [nzTitle]="'确认' + (user.state | userState: 'reverse') + '吗？'"
                                        (nzOnConfirm)="confirmState(user)"
                                        (nzOnCancel)="cancel()">
@@ -95,16 +105,26 @@
                 </tr>
             </tbody>
         </nz-table>
+        <div style="margin: 20px 30px;text-align: right;">
+            <nz-pagination
+                [(nzPageIndex)]="page.pageIndex"
+                [nzTotal]="page.total"
+                nzShowSizeChanger
+                [(nzPageSize)]="pageSize">
+
+            </nz-pagination>
+        </div>
     </div>
     <nz-modal *ngIf="currentUser"
               [nzTitle]="modalTitle"
               [nzContent]="modalContent"
               [nzFooter]="modalFooter"
-              [nzVisible]="isModelShow"
-              (nzOnCancel)="isModelShow = false"
+              [nzVisible]="isModalShow"
+              [nzMaskClosable]="false"
+              (nzOnCancel)="closeModal()"
               (nzOnOk)="handleOkMiddle($event)">
         <ng-template #modalTitle>
-            修改
+            {{currentUser.id ? '修改' : '新增'}}
         </ng-template>
         <ng-template #modalContent>
             <div nz-row class="m-item">
@@ -112,7 +132,7 @@
                     用户代码：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [ngModel]="currentUser.code" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [(ngModel)]="currentUser.code" [nzPlaceHolder]="'default size'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -120,7 +140,7 @@
                     用户名称：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [ngModel]="currentUser.name" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [(ngModel)]="currentUser.name" [nzPlaceHolder]="'default size'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -128,7 +148,7 @@
                     用户状态：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-radio-group [ngModel]="currentUser.state">
+                    <nz-radio-group [(ngModel)]="currentUser.state">
                         <label nz-radio-button [nzValue]="1">
                             <span>{{1 | userState}}</span>
                         </label>
@@ -157,7 +177,7 @@
                     手机号：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [ngModel]="currentUser.phone" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [(ngModel)]="currentUser.phone" [nzPlaceHolder]="'default size'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -165,7 +185,23 @@
                     邮箱：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [ngModel]="currentUser.email" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [(ngModel)]="currentUser.email" [nzPlaceHolder]="'default size'"></nz-input>
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    密码：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [(ngModel)]="currentUser.password" [nzPlaceHolder]="'default size'"></nz-input>
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    密码有效期：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [ngModel]="currentUser.password" [nzPlaceHolder]="'default size'"></nz-input>
                 </div>
             </div>
         </ng-template>
@@ -173,6 +209,50 @@
             <div class="modal-footer">
                 <button (click)="closeModal()" class="m-btn" type="button">取&nbsp;&nbsp;消</button>
                 <button (click)="saveUser()" class="m-btn" type="button">保&nbsp;&nbsp;存</button>
+            </div>
+        </ng-template>
+    </nz-modal>
+
+    <nz-modal *ngIf="currentUser && password" [nzTitle]="modalPwdTitle"
+            [nzContent]="modalPwdContent"
+            [nzMaskClosable]="false"
+            [nzFooter]="modalPwdFooter"
+            [nzVisible]="isModifyPasswordShow"
+            (nzOnCancel)="isModifyPasswordShow = false"
+            (nzOnOk)="handleOkMiddle($event)">
+        <ng-template #modalPwdTitle>
+            修改密码
+        </ng-template>
+        <ng-template #modalPwdContent>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    旧密码：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [(ngModel)]="password.oldPwd" [nzPlaceHolder]="'default size'"></nz-input>
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    新密码：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [(ngModel)]="password.newPwd" [nzPlaceHolder]="'default size'"></nz-input>
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    确认新密码：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [(ngModel)]="password.rePwd" [nzPlaceHolder]="'default size'"></nz-input>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #modalPwdFooter>
+            <div class="modal-footer">
+                <button (click)="isModifyPasswordShow = false" class="m-btn" type="button">取&nbsp;&nbsp;消</button>
+                <button (click)="savePassword()" class="m-btn" type="button">保&nbsp;&nbsp;存</button>
             </div>
         </ng-template>
     </nz-modal>

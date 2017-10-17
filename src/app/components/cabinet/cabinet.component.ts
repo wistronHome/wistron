@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import {
     Router,
     ActivatedRoute,
+    Params,
     CanActivate,
     ActivatedRouteSnapshot,
     RouterStateSnapshot,
@@ -67,11 +68,6 @@ export class CabinetComponent implements OnInit, OnChanges {
         console.log('onChanges');
     }
     ngOnInit() {
-        // this.routeInfo.paramMap.switchMap((params: ParamMap) => {
-        //     console.log(params.get('id'));
-        //     return 'asfse';
-        // });
-        console.log(this.routeInfo.snapshot.params['id']);
         /**
          * mock数据
          */
@@ -187,8 +183,10 @@ export class CabinetComponent implements OnInit, OnChanges {
             }
         };
         // this.graph.originAtCenter = false;
-        this.legendUtil.drawCabinetBg(LH, LN);
-        this.legendUtil.drawCabinet(this.$service.getAllNode());
+        this.routeInfo.params.subscribe((params: Params) => {
+            this.legendUtil.drawCabinetBg(LH, LN);
+            this.legendUtil.drawCabinet(this.$service.getAllNode());
+        });
     }
 
     /**

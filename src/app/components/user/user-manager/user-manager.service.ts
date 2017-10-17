@@ -1,18 +1,94 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { User } from '../../../models/User';
 
 @Injectable()
 export class UserManagerService {
+    users: User[] = this.getAllUser();
+    constructor(
+        private $http: HttpClient
+    ) { }
 
-    constructor() { }
-
+    /**
+     * 获取所有用户
+     * @returns {Promise<User[]>}
+     */
     public getAllUser(): User[] {
         let tmp: User[] = [];
-        for (let i = 0; i < 489; i++) {
+        for (let i = 0; i < 23; i++) {
             tmp.push(this.createUser());
         }
         return tmp;
     }
+
+    /**
+     * 分页获取用户信息
+     * @param {{pageSize: number; pageIndex: number}} param
+     * @returns {User[]}
+     */
+    public getUserPagination(param: { pageSize: number, pageIndex: number }) {
+        let _users: User[] = [];
+        for (let i = param.pageSize * (param.pageIndex - 1); i < param.pageSize * param.pageIndex; i++) {
+            _users.push(this.users[i]);
+        }
+        return {
+            users: _users,
+            total: this.users.length
+        };
+    }
+
+    /**
+     * 修改用户信息
+     * @param {User} user
+     * @returns {{result: boolean}}
+     */
+    public modifyUser(user: User) {
+        this.users.forEach(item => {
+            if (item.id === user.id) {
+                item.name = user.name;
+                item.state = user.state;
+                item.role = user.role;
+                item.email = user.email;
+                item.code = user.code;
+                item.phone = user.phone;
+            }
+        });
+        return { result: true };
+    }
+
+    /**
+     * 删除n条用户
+     * @param {string[]} ids
+     * @returns {User[]}
+     */
+    public deleteUsers(ids: string[], pageSize: number, pageIndex: number) {
+        let users: User[] = [];
+        this.users.forEach(item => {
+            if (!ids.includes(item.id)) {
+                users.push(item);
+            }
+        });
+        this.users = users;
+        let _users: User[] = [];
+        for (let i = pageSize * (pageIndex - 1); i < pageSize * pageIndex; i++) {
+            _users.push(this.users[i]);
+        }
+        return {
+            users: _users,
+            total: this.users.length
+        };
+    }
+
+    public getDemo() {
+        this.$http.get('/api/mongo/list').subscribe(result => {
+            console.log(result);
+        });
+    }
+
+
+
+
+
 
     private createUser(): User {
         let user = new User();
@@ -25,6 +101,7 @@ export class UserManagerService {
         user.email =  _phone + '@163.com';
         user.phone = _phone;
         user.role = this.getState(4);
+        user.password = '123456';
         return user;
     }
 
