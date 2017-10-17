@@ -79,20 +79,19 @@ export class RoomComponent implements OnInit {
               roomHeight = 600;//px
         tools.drawRoom(this.Q, this.graph, roomWidth, roomHeight);
         // 设置是否能被选择
+        
+       
         this.graph.isSelectable = (item) => {
             // console.log(item.agentNode.type);
             return item.agentNode.type === 'Q.Node';
         };
-        // graph.editable = (item) => {
-        //     console.log(item);
-        //     return item.name === "computer";
-        // }
         // 鼠标按下之后记录按下的信息
-        var src, startX, startY ,_width,_height;
+        var src, startX, startY ,_width,_height,_type;
         document.getElementById('tools').ondragstart = (e) => {
             console.log(e.target['getAttribute']('_width'));
             _width =e.target['getAttribute']('_width');
             _height =e.target['getAttribute']('_height');
+            _type =e.target['getAttribute']('_type')
             src = e.target['src'] && e.target['src'].includes('svg') ? e.target['src'].split("/")[5] : 'aaaa';
             startX = e.offsetX;
             startY = e.offsetY;
@@ -129,6 +128,10 @@ export class RoomComponent implements OnInit {
             // alarmUI.zIndex = 999;
             // alarmUI.host = computer;
             // alarmUI.parent = computer;
+            if(_type==='roomWall'){
+                tools.drawRoomWall(this.Q,this.graph,p.x,p.y)
+                return;
+            }
             tools.drawCabinet(this.Q,this.graph,'007',p.x,p.y,_width,_height,0)
         };
 
@@ -139,10 +142,12 @@ export class RoomComponent implements OnInit {
         let info = [{name: "jjj", id: 429, x: 100, y: 150, w: 60,h:40,img:"assets/room/mx-cabinet4red.svg"},
         {name: "ppp", id: 430, x: 100, y: 190, w: 60,h:40, img:"assets/room/mx-cabinet4red.svg"},
         {name: "ppp", id: 431, x: 100, y: 230, w: 60,h:40, img:"assets/room/mx-cabinet4.svg"},
-        {name: "ppp", id: 431, x: 100, y: 270, w: 60, h:40,img:"assets/room/mx-cabinet4.svg"},
+        {name: "ppp", id: 4331, x: 100, y: 270, w: 60, h:40,img:"assets/room/mx-cabinet4.svg"},
         {name: "42U", id: 432, x: 100, y: 310, w: 60, h:40,img:"assets/room/mx-cabinet4.svg"},
         {name: "42U023", id: 433, x: 230, y: 145, w: 60, h:30, img:"assets/room/mx1red.svg"},
-        {name: "007", id: 711, x: 230, y: 175, w: 60, h:30,img:"assets/room/mx-cabinet4red.svg"}
+        {name: "007", id: 71, x: 230, y: 175, w: 60, h:30,img:"assets/room/mx-cabinet4red.svg"},
+        {name: "", id: 711, x: 5, y: 302.5, w: 10, h:594,img:"assets/room/mx-cabinet2.svg",type:'roomWall'},
+        {name: "", id: 1038, x: 307, y:595, w: 627, h:13,img:"assets/room/mx-cabinet2.svg",type:'roomWall'}
         ]
         // this.info = info;
         for (var i = 0; i < info.length; i++) {
@@ -158,7 +163,14 @@ export class RoomComponent implements OnInit {
             // alarmUI.zIndex = 999;
             // alarmUI.host = demo;
             // alarmUI.parent = demo;
+            if(info[i]['type']){
+                let demo = this.graph.createNode(info[i].name,info[i].x,info[i].y);
+                demo.set('type',info[i]['type']);
+                demo.image =info[i].img;
+                demo.size= {width: info[i].w, height: info[i].h}
+            }else{
             tools.drawCabinet(this.Q,this.graph,info[i].name,info[i].x,info[i].y,info[i].w,info[i].h,info[i].img)
+            }
         }
         //点击机房
         this.graph.onclick = e => {
@@ -173,16 +185,22 @@ export class RoomComponent implements OnInit {
                 }
                 // this.state = this.state ==='active'? 'inactive':'active';
                 this.state = 'active';
+                this.graph.editable = false;
 
-
+            }else if(e.getData()&& e.getData().get('type')==='roomWall'){
+                this.graph.editable = true;
+            }else{
+                this.graph.editable = false;
             }
+            
         };
+        
         //右键改名字
         /**
          * 双击进入机柜页面
          */
         this.graph.ondblclick = e => {
-            if( e.getData() && e.getData().type == 'Q.Node'){
+            if( e.getData() && e.getData().type == 'Q.Node'&&e.getData().get('type') ==='cabinet'){
                 this.router.navigate(['machine/cabinet/' + e.getData().id])
             }
         }
@@ -270,7 +288,7 @@ export class RoomComponent implements OnInit {
     roomSave = () => {
         let arr = [];
         this.model['forEach']((item) => {
-            if (item.get('type') === 'cabinet') {
+            if (item.get('type') === 'cabinet'||item.get( 'type')==='roomWall') {
                 console.log(item);
                 var element = {name: '', id: '', x: '', y: '',w:'',h:'',img:'',alarm: null };
                 element.name = item.name;
@@ -289,6 +307,8 @@ export class RoomComponent implements OnInit {
             }
         });
         this.info = arr
+        console.log(arr);
+        
     }
 }
 class tools {
@@ -428,5 +448,13 @@ class tools {
     }
     /**
      * 绘制基建
+     * @param Q
+     * @param graph
      */
+    public static drawRoomWall (Q, graph,x ,y) :void{
+        let demo = graph.createNode ('',x,y)
+        demo.image = 'assets/room/mx-cabinet2.svg';
+        demo.size = {width :10,height:60};
+        demo.set('type','roomWall')
+    }
 }
