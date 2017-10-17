@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { NgModel } from '@angular/forms';
+import {NgForm} from '@angular/forms';
 import {
     trigger,
     state,
@@ -53,12 +55,21 @@ export class RoomComponent implements OnInit {
     ChildId = '';
     restX = null;
     restY = null;
-
+    roomId=null;
+    _roomWidth: number = 0;
+    _roomHeight: number = 0;
+    info = null;
     constructor(
-        private router: Router
+        private router: Router,
+        private routerInfo: ActivatedRoute
     ) { }
 
-    ngOnInit() {
+    ngOnInit() { 
+        this.roomId = this.routerInfo.params.subscribe((params) => {
+            this.roomId=params['id'];
+            console.log(this.roomId);
+        })
+        this.roomId = this.routerInfo.snapshot.params['id']
         this.graph = new this.Q.Graph('mcRoom');
         // 设置坐标原点
         this.graph.originAtCenter = false;
@@ -89,7 +100,8 @@ export class RoomComponent implements OnInit {
         document.getElementById('mcRoom').ondrop = (e) => {
             // 位置的矫正 还没有做警示图标的矫正
             console.log(e);
-            if( tools.checkOverLap(this.model,e)){
+            
+            if( tools.checkOverLap(this.model,e,{'_width':_width,'_height':_height})){
                 alert('目标重合请重试');
                 return;
             }
@@ -132,6 +144,7 @@ export class RoomComponent implements OnInit {
         {name: "42U023", id: 433, x: 230, y: 145, w: 60, h:30, img:"assets/room/mx1red.svg"},
         {name: "007", id: 711, x: 230, y: 175, w: 60, h:30,img:"assets/room/mx-cabinet4red.svg"}
         ]
+        // this.info = info;
         for (var i = 0; i < info.length; i++) {
             // var demo = this.graph.createNode(info[i].name, info[i].x, info[i].y);
             // demo.image = info[i].img
@@ -184,7 +197,7 @@ export class RoomComponent implements OnInit {
         }
         this.graph.enddrag = e => {
             if (e.getData()&&e.getData().type !=='Q.ShapeNode') {
-                if( tools.checkOverLap(this.model,e)){
+                if( tools.checkOverLap(this.model,e,null)){
                     e.getData().x = this.restX;
                     e.getData().y = this.restY;
                     e.getData().children.datas[0].x=e.getData().x+30;
@@ -234,14 +247,18 @@ export class RoomComponent implements OnInit {
 
     handleOk = (e) => {
         this.isConfirmLoading = true;
-        console.log(this.roomHeight);
-        console.log(this.roomWidth);
-
+        console.log(this._roomHeight);
+        console.log(this._roomWidth);
+        this.graph.clear()
         setTimeout(() => {
             this.isVisible = false;
             this.isConfirmLoading = false;
-
+            tools.drawRoom(this.Q, this.graph, this._roomWidth*50,this._roomHeight*50)
+            for (var i = 0; i < this.info.length; i++) {
+            tools.drawCabinet(this.Q,this.graph,this.info[i].name,this.info[i].x,this.info[i].y,this.info[i].w,this.info[i].h,this.info[i].img)
+        }
         }, 2000);
+        
     }
 
     handleCancel = (e) => {
@@ -271,7 +288,7 @@ export class RoomComponent implements OnInit {
                 arr.push(element);
             }
         });
-        console.dir(arr);
+        this.info = arr
     }
 }
 class tools {
@@ -279,21 +296,23 @@ class tools {
      * 判断机柜之间是否都重叠
      * @param model
      * @param e
+     * @param obj 
      * @returns {boolean}
      */
-    public static checkOverLap (model, e) :boolean {
+    public static checkOverLap (model, e,obj) :boolean {
         if(e.getData){
             var _minx = e.getData().x- e.getData().size.width/2,
                 _maxx = e.getData().x + e.getData().size.width/2,
-                _miny = e.getData().y- e.getData().size.width/2,
-                _maxy = e.getData().y + e.getData().size.width/2,
+                _miny = e.getData().y- e.getData().size.height/2,
+                _maxy = e.getData().y + e.getData().size.height/2,
                 isOverLap=false;
         }else{
-            let width = 50 ;
+            //拖拽过来之后的大小 
+            let width = obj._width ,height = obj._height;
             _minx = e.offsetX - width/2,
             _maxx = e.offsetX + width/2,
-            _miny = e.offsetY- width/2,
-            _maxy = e.offsetY + width/2,
+            _miny = e.offsetY- height/2,
+            _maxy = e.offsetY + height/2,
             isOverLap=false;
             }
         model['forEach'](item =>{
@@ -301,15 +320,16 @@ class tools {
 
                 return;
             }else if (item.get('type')==='cabinet'){
-
             let minx = item.x-item.size.width/2,
                 maxx = item.x+item.size.width/2,
-                miny = item.y -item.size.width/2,
-                maxy = item.y + item.size.width/2;
-                if(((_minx>minx&&_minx<maxx&&_maxx>maxx)&&(_miny>miny&&_miny<maxy&&_maxy>maxy||_miny==miny))||
-                ((_minx>minx&&_minx<maxx&&_maxx>maxx)&&(_maxy>miny&&_maxy<maxy)&&_miny<miny)||
-                ((_maxx>minx&&_maxx<maxx&&_minx<minx)&&((_maxy>miny&&_maxy<maxy)&&_miny<miny))||
-                ((_maxx>minx&&_maxx<maxx&&_minx<minx)&&(_miny>miny&&_miny<maxy&&_maxy>maxy))
+                miny = item.y -item.size.height/2,
+                maxy = item.y + item.size.height/2;
+                if(
+                    ((_minx>minx&&_minx<maxx&&_maxx>maxx)&&(_miny>miny&&_miny<maxy&&_maxy>maxy||_miny==miny))
+                || ((_minx>minx&&_minx<maxx&&_maxx>maxx||_minx == minx)&&(_maxy>miny&&_maxy<maxy)&&_miny<miny)
+                || ((_maxx>minx&&_maxx<maxx&&_minx<minx)&&((_maxy>miny&&_maxy<maxy)&&_miny<miny))
+                || ((_maxx>minx&&_maxx<maxx&&_minx<minx)&&(_miny>miny&&_miny<maxy&&_maxy>maxy))
+                
                 ){
                     isOverLap = true;
                     return;
@@ -343,8 +363,9 @@ class tools {
     public static drawRoom (Q,graph,roomWidth ,roomHeight) :void {
         //绘制横线 比例1米=100px 方格为10px*10px 20cm*20cm 的正方形 1px= 2cm;
         var roomWidth = roomWidth, roomHeight = roomHeight;
-        roomWidth = roomWidth % 30 == 0 ? roomWidth : Math.floor(roomWidth / 30) * 20;
-        roomHeight = roomHeight % 30 == 0 ? roomHeight : Math.floor(roomHeight / 30) * 20;
+        //对多的数据进行取整
+        // roomWidth = roomWidth % 30 == 0 ? roomWidth : Math.floor(roomWidth / 30) * 20;
+        // roomHeight = roomHeight % 30 == 0 ? roomHeight : Math.floor(roomHeight / 30) * 20;
         var rowNumber = roomHeight / 10
         for (var i = 0; i < rowNumber + 1; i++) {
             var row = graph.createShapeNode();
@@ -405,4 +426,7 @@ class tools {
         alarmUI.host = demo;
         alarmUI.parent = demo;
     }
+    /**
+     * 绘制基建
+     */
 }
