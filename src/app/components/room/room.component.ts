@@ -9,6 +9,7 @@ import {
     animate,
     transition
 } from '@angular/animations';
+import {RoomSerService} from "./room-ser.service";
 
 @Component({
     selector: 'app-room',
@@ -42,7 +43,8 @@ import {
                 }))
             ])
         ])
-    ]
+    ],
+    providers: [ RoomSerService ]
 })
 export class RoomComponent implements OnInit {
     state: string = 'active';
@@ -55,43 +57,43 @@ export class RoomComponent implements OnInit {
     ChildId = '';
     restX = null;
     restY = null;
-    roomId=null;
+    roomId= null;
     _roomWidth: number = 0;
     _roomHeight: number = 0;
     info = null;
     constructor(
         private router: Router,
-        private routerInfo: ActivatedRoute
+        private routerInfo: ActivatedRoute,
+        private RoomSerService: RoomSerService
     ) { }
 
-    ngOnInit() { 
-        this.roomId = this.routerInfo.params.subscribe((params) => {
-            this.roomId=params['id'];
+    ngOnInit() { this.roomId = this.routerInfo.params.subscribe((params) => {
+            this.roomId = params['id'];
             console.log(this.roomId);
         })
-        this.roomId = this.routerInfo.snapshot.params['id']
+        this.roomId = this.routerInfo.snapshot.params['id'];
         this.graph = new this.Q.Graph('mcRoom');
         // 设置坐标原点
         this.graph.originAtCenter = false;
         // 机房宽12米 高12米 比例1米=100px 方格为10px*10px 20cm*20cm 的正方形 1px= 2cm;
-        
-        const roomWidth = 600,//px
-              roomHeight = 600;//px
+        const roomWidth = 600, // px
+              roomHeight = 600; // px
         tools.drawRoom(this.Q, this.graph, roomWidth, roomHeight);
         // 设置是否能被选择
-        
-       
         this.graph.isSelectable = (item) => {
             // console.log(item.agentNode.type);
             return item.agentNode.type === 'Q.Node';
         };
+        this.graph.isMovable = (e) => {
+            return !e.get('isLock');
+        }
         // 鼠标按下之后记录按下的信息
-        var src, startX, startY ,_width,_height,_type;
+        var src, startX, startY , _width, _height, _type;
         document.getElementById('tools').ondragstart = (e) => {
             console.log(e.target['getAttribute']('_width'));
-            _width =e.target['getAttribute']('_width');
-            _height =e.target['getAttribute']('_height');
-            _type =e.target['getAttribute']('_type')
+            _width = e.target['getAttribute']('_width');
+            _height = e.target['getAttribute']('_height');
+            _type = e.target['getAttribute']('_type');
             src = e.target['src'] && e.target['src'].includes('svg') ? e.target['src'].split("/")[5] : 'aaaa';
             startX = e.offsetX;
             startY = e.offsetY;
@@ -99,8 +101,7 @@ export class RoomComponent implements OnInit {
         document.getElementById('mcRoom').ondrop = (e) => {
             // 位置的矫正 还没有做警示图标的矫正
             console.log(e);
-            
-            if( tools.checkOverLap(this.model,e,{'_width':_width,'_height':_height})){
+            if ( tools.checkOverLap(this.model, e, {'_width': _width, '_height': _height})) {
                 alert('目标重合请重试');
                 return;
             }
@@ -128,29 +129,30 @@ export class RoomComponent implements OnInit {
             // alarmUI.zIndex = 999;
             // alarmUI.host = computer;
             // alarmUI.parent = computer;
-            if(_type==='roomWall'){
-                tools.drawRoomWall(this.Q,this.graph,p.x,p.y)
+            if ( _type === 'roomWall') {
+                tools.drawRoomWall(this.Q, this.graph, p.x, p.y)
                 return;
             }
-            tools.drawCabinet(this.Q,this.graph,'007',p.x,p.y,_width,_height,0)
+            tools.drawCabinet(this.Q, this.graph, '007', p.x, p.y, _width, _height, 0);
         };
 
 
         var model = this.graph.graphModel;
         this.model = model;
-        //假数据的渲染
-        let info = [{name: "jjj", id: 429, x: 100, y: 150, w: 60,h:40,img:"assets/room/mx-cabinet4red.svg"},
-        {name: "ppp", id: 430, x: 100, y: 190, w: 60,h:40, img:"assets/room/mx-cabinet4red.svg"},
-        {name: "ppp", id: 431, x: 100, y: 230, w: 60,h:40, img:"assets/room/mx-cabinet4.svg"},
-        {name: "ppp", id: 4331, x: 100, y: 270, w: 60, h:40,img:"assets/room/mx-cabinet4.svg"},
-        {name: "42U", id: 432, x: 100, y: 310, w: 60, h:40,img:"assets/room/mx-cabinet4.svg"},
-        {name: "42U023", id: 433, x: 230, y: 145, w: 60, h:30, img:"assets/room/mx1red.svg"},
-        {name: "007", id: 71, x: 230, y: 175, w: 60, h:30,img:"assets/room/mx-cabinet4red.svg"},
-        {name: "", id: 711, x: 5, y: 302.5, w: 10, h:594,img:"assets/room/mx-cabinet2.svg",type:'roomWall'},
-        {name: "", id: 1038, x: 307, y:595, w: 627, h:13,img:"assets/room/mx-cabinet2.svg",type:'roomWall'}
-        ]
-        // this.info = info;
-        for (var i = 0; i < info.length; i++) {
+        // 假数据的渲染
+        // let info = [{name: "jjj", id: 429, x: 100, y: 150, w: 60,h:40,img:"assets/room/mx-cabinet4red.svg"},
+        // {name: "ppp", id: 430, x: 100, y: 190, w: 60,h:40, img:"assets/room/mx-cabinet4red.svg"},
+        // {name: "ppp", id: 431, x: 100, y: 230, w: 60,h:40, img:"assets/room/mx-cabinet4.svg"},
+        // {name: "ppp", id: 4331, x: 100, y: 270, w: 60, h:40,img:"assets/room/mx-cabinet4.svg"},
+        // {name: "42U", id: 432, x: 100, y: 310, w: 60, h:40,img:"assets/room/mx-cabinet4.svg"},
+        // {name: "42U023", id: 433, x: 230, y: 145, w: 60, h:30, img:"assets/room/mx1red.svg"},
+        // {name: "007", id: 71, x: 230, y: 175, w: 60, h:30,img:"assets/room/mx-cabinet4red.svg"},
+        // {name: "", id: 711, x: 5, y: 302.5, w: 10, h:594,img:"assets/room/mx-cabinet2.svg",type:'roomWall'},
+        // {name: "", id: 1038, x: 307, y:595, w: 627, h:13,img:"assets/room/mx-cabinet2.svg",type:'roomWall'}
+        // ]
+        let info = this.RoomSerService.getCabinetInfo();
+        console.log(info);
+        for ( var i = 0; i < info.length; i++) {
             // var demo = this.graph.createNode(info[i].name, info[i].x, info[i].y);
             // demo.image = info[i].img
             // demo.size = {width: info[i].w,height: info[i].h};
@@ -164,62 +166,57 @@ export class RoomComponent implements OnInit {
             // alarmUI.host = demo;
             // alarmUI.parent = demo;
             if(info[i]['type']){
-                let demo = this.graph.createNode(info[i].name,info[i].x,info[i].y);
-                demo.set('type',info[i]['type']);
-                demo.image =info[i].img;
-                demo.size= {width: info[i].w, height: info[i].h}
+                let demo = this.graph.createNode(info[i].name, info[i].x, info[i].y);
+                demo.set('type', info[i]['type']);
+                demo.image = info[i].img;
+                demo.size = {width: info[i].w, height: info[i].h};
             }else{
-            tools.drawCabinet(this.Q,this.graph,info[i].name,info[i].x,info[i].y,info[i].w,info[i].h,info[i].img)
+            tools.drawCabinet(this.Q, this.graph, info[i].name, info[i].x, info[i].y, info[i].w, info[i].h, info[i].img);
             }
         }
         //点击机房
         this.graph.onclick = e => {
-            if (e.getData() && e.getData().get('type') === "cabinet") {
-                // console.log(e.getData());
-
+            if (e.getData() && e.getData().get('type') === 'cabinet' || e.getData().get('type') === 'roomWall') {
                 this.id = e.getData().id;
                 this.name = e.getData().name;
                 //子图元的id
                 if (e.getData().data) {
                     this.ChildId = e.getData().data.children.datas[0].id;
                 }
-                // this.state = this.state ==='active'? 'inactive':'active';
                 this.state = 'active';
                 this.graph.editable = false;
 
-            }else if(e.getData()&& e.getData().get('type')==='roomWall'){
+            }else if( e.getData() && e.getData().get('type') === 'roomWall') {
                 this.graph.editable = true;
-            }else{
+            }else {
                 this.graph.editable = false;
             }
-            
         };
-        
-        //右键改名字
+        // 右键改名字
         /**
          * 双击进入机柜页面
          */
         this.graph.ondblclick = e => {
-            if( e.getData() && e.getData().type == 'Q.Node'&&e.getData().get('type') ==='cabinet'){
-                this.router.navigate(['machine/cabinet/' + e.getData().id])
+            if( e.getData() && e.getData().type == 'Q.Node' && e.getData().get('type') === 'cabinet'){
+                this.router.navigate(['machine/cabinet/' + e.getData().id]);
             }
         }
-        //图元的拖拽位置吸附
+        // 图元的拖拽位置吸附
         this.graph.startdrag = e => {
-            //记录下位置让目标退回到原来的位置
-            if(e.getData()&&e.getData().type !=='Q.ShapeNode'){
+            // 记录下位置让目标退回到原来的位置
+            if ( e.getData() && e.getData().type !== 'Q.ShapeNode') {
                 this.restX = e.getData().x;
                 this.restY = e.getData().y;
             }
 
         }
         this.graph.enddrag = e => {
-            if (e.getData()&&e.getData().type !=='Q.ShapeNode') {
-                if( tools.checkOverLap(this.model,e,null)){
+            if (e.getData() && e.getData().type !== 'Q.ShapeNode' && !e.getData().get('isLock')) {
+                if ( tools.checkOverLap(this.model, e, null)) {
                     e.getData().x = this.restX;
                     e.getData().y = this.restY;
-                    e.getData().children.datas[0].x=e.getData().x+30;
-                    e.getData().children.datas[0].y=e.getData().y-30;
+                    e.getData().children.datas[0].x = e.getData().x + 30;
+                    e.getData().children.datas[0].y = e.getData().y - 30;
                     alert('目标重合了 请重试');
                 }else{
                     e.getData().x = tools.correctLocation(e.getData().x,e.getData().size.width);
@@ -239,7 +236,20 @@ export class RoomComponent implements OnInit {
         this.model['removeById'](this.id);
         this.model['removeById'](this.ChildId);
     }
-
+    lockCabinet(): void {
+        this.model['forEach'](e =>{
+            if(e.id==this.id){
+                e.set('isLock',true)
+            }
+        })
+    }
+    unLockCabinet(): void {
+        this.model['forEach'](e =>{
+            if(e.id==this.id){
+                e.set('isLock',false)
+            }
+        })
+    }
     toggle(): void {
         if (this.state === 'active') {
             this.state = 'inactive';
@@ -251,18 +261,27 @@ export class RoomComponent implements OnInit {
     }
 
     toolsToggle(): void {
-        
+
     }
 
     // 弹框修改机房大小
+    iisVisible= false;
     isVisible = false;
     isConfirmLoading = false;
     roomWidth = null;
     roomHeight = null;
+    showCabinetModal(){
+        this.iisVisible=true;
+    }
+    handleOkcabinet(){
+        this.iisVisible= false;
+    }
+    hiddenCabinet(){
+        this.iisVisible= false;
+    }
     showModal = () => {
         this.isVisible = true;
     }
-
     handleOk = (e) => {
         this.isConfirmLoading = true;
         console.log(this._roomHeight);
@@ -276,7 +295,7 @@ export class RoomComponent implements OnInit {
             tools.drawCabinet(this.Q,this.graph,this.info[i].name,this.info[i].x,this.info[i].y,this.info[i].w,this.info[i].h,this.info[i].img)
         }
         }, 2000);
-        
+
     }
 
     handleCancel = (e) => {
@@ -308,7 +327,7 @@ export class RoomComponent implements OnInit {
         });
         this.info = arr
         console.log(arr);
-        
+
     }
 }
 class tools {
@@ -316,7 +335,7 @@ class tools {
      * 判断机柜之间是否都重叠
      * @param model
      * @param e
-     * @param obj 
+     * @param obj
      * @returns {boolean}
      */
     public static checkOverLap (model, e,obj) :boolean {
@@ -327,7 +346,7 @@ class tools {
                 _maxy = e.getData().y + e.getData().size.height/2,
                 isOverLap=false;
         }else{
-            //拖拽过来之后的大小 
+            //拖拽过来之后的大小
             let width = obj._width ,height = obj._height;
             _minx = e.offsetX - width/2,
             _maxx = e.offsetX + width/2,
@@ -349,7 +368,7 @@ class tools {
                 || ((_minx>minx&&_minx<maxx&&_maxx>maxx||_minx == minx)&&(_maxy>miny&&_maxy<maxy)&&_miny<miny)
                 || ((_maxx>minx&&_maxx<maxx&&_minx<minx)&&((_maxy>miny&&_maxy<maxy)&&_miny<miny))
                 || ((_maxx>minx&&_maxx<maxx&&_minx<minx)&&(_miny>miny&&_miny<maxy&&_maxy>maxy))
-                
+
                 ){
                     isOverLap = true;
                     return;
@@ -371,7 +390,7 @@ class tools {
             console.log('单数');
             return newNumber+5;
         }
-        
+
     }
     /**
      * 绘制机房
@@ -451,10 +470,10 @@ class tools {
      * @param Q
      * @param graph
      */
-    public static drawRoomWall (Q, graph,x ,y) :void{
-        let demo = graph.createNode ('',x,y)
+    public static drawRoomWall ( Q, graph, x, y): void {
+        let demo = graph.createNode ('', x, y);
         demo.image = 'assets/room/mx-cabinet2.svg';
-        demo.size = {width :10,height:60};
-        demo.set('type','roomWall')
+        demo.size = {width: 10, height: 60};
+        demo.set('type', 'roomWall');
     }
 }

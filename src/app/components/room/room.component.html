@@ -19,6 +19,10 @@
       <button nz-button [nzType]="'default'">
       <span>{{roomId}}</span>
     </button>
+    <button nz-button [nzType]="'default'"  (click)=showModal()>
+        <i class="anticon anticon-file-excel"></i>
+        <span >编辑大小</span>
+      </button>
   </div>
   <div class="machine-room" id="mcRoom" style="width: 70%; height: 100%;"></div>
   <div class="tools" id="tools">
@@ -33,22 +37,24 @@
         <div><img class="img" src="assets/room/mx-cabinet4.svg" alt="" width="80px;" _width="60"_height="40"><p>42U机柜800*1200(横)</p></div>
       </nz-collapse>
       <nz-collapse  nzTitle="安全防范" nzActive="false">
-          <div><img class="img" draggable="true" src="assets/room/mx-cabinet2.svg" alt="" width="80px;"></div>
+          <!--<div><img class="img" draggable="true" src="assets/room/mx-cabinet2.svg" alt="" width="80px;"></div>-->
       </nz-collapse>
       <nz-collapse  nzTitle="自定义" nzActive="false">
           <div><img class="img" draggable="true" src="assets/room/mx-cabinet2.svg" alt="" width="40px;" _width= '15' _height= '80' _type='roomWall'><p>基建</p></div>
+          <div><img class="img" draggable="true" src="assets/room/mx-cabinet4.svg" alt="" width="80px;" _width= '15' _height= '80' _type='roomConditioner'><p>环境空调</p></div>
       </nz-collapse>
     </nz-collapseset>
   </div>
   <div class="cabinet-info" [@attributeState]="state">
     <h5>设备属性</h5>
-    <div class="search">
+    <!--搜索框-->
+    <!--<div class="search">
       <input type="text" placeholder="请输入资产编号">
       <button nz-button [nzType]="'primary'" [nzShape]="'circle'">
       <i class="anticon anticon-search"></i>
     </button>
-    </div>
-    <table border="1" cellpadding='0' cellspacing='0'>
+    </div>-->
+    <!--<table border="1" cellpadding='0' cellspacing='0'>
       <tr>
         <td>资产名称</td>
         <td style="font-size :16px;">{{name}}</td>
@@ -81,37 +87,120 @@
         <td>资产分类</td>
         <td>基础设施>机柜>机柜</td>
       </tr>
-    </table>
+    </table>-->
+    <div>
+      <form nz-form  >
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col >
+          <label>机柜名称</label>
+        </div>
+        <div nz-form-control nz-col  >
+          <nz-input  [nzPlaceHolder]="name" [nzSize]="'large'" [(ngModel)]='name' name= 'first'>
+          </nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col>
+          <label>资产编号</label>
+        </div>
+        <div nz-form-control nz-col  >
+          <nz-input   [nzPlaceHolder]="'资产编号'" [nzSize]="'large'">
+          </nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col>
+          <label>品牌编号</label>
+        </div>
+        <div nz-form-control nz-col  >
+          <nz-input   [nzPlaceHolder]="'品牌编号'" [nzSize]="'large'">
+          </nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col>
+          <label>系列号</label>
+        </div>
+        <div nz-form-control nz-col  >
+          <nz-input   [nzPlaceHolder]="id" [nzSize]="'large'">
+          </nz-input>
+        </div>
+      </div>
+    </form>
+    </div>
     <div class="operation">
-      <button nz-button [nzType]="'primary'" [nzGhost]="true">
-        <i class="anticon anticon-close-circle"></i>
-        <span>解绑</span>
+      <button nz-button [nzType]="'primary'" [nzGhost]="true" (click) = lockCabinet()>
+        <i class="anticon anticon-lock"></i>
+        <span>锁定</span>
       </button>
-      <button nz-button [nzType]="'primary'" [nzGhost]="true">
+      <button nz-button [nzType]="'primary'" [nzGhost]="true" (click) = unLockCabinet()>
         <i class="anticon anticon-edit"></i>
-        <span>详情</span>
+        <span>解锁</span>
       </button>
-      <button nz-button [nzType]="'primary'" [nzGhost]="true" (click)=delCabinet()>
+      <button nz-button [nzType]="'primary'" [nzGhost]="true" (click) = delCabinet()>
         <i class="anticon anticon-close-circle"></i>
         <span >删除</span>
       </button>
       <!--<nz-popconfirm [nzTitle]="'确定要删除这个任务吗？'" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()" [nzPlacement]="'topLeft'">
         <button nz-popconfirm nz-button class="ant-btn">删除</button>
       </nz-popconfirm>-->
-      <button nz-button [nzType]="'primary'" [nzGhost]="true" (click)=showModal()>
+      <button nz-button [nzType]="'primary'" [nzGhost]="true"(click)="showCabinetModal()">
         <i class="anticon anticon-close-circle"></i>
         <span >修改</span>
-        
       </button>
     <!--模态框修改机房的大小-->
+    
+    </div>
+  </div>
+  <div class="attribute" (click)=toggle()><i class="anticon anticon-left-square"></i>设备属性</div> 
+  <!--<div class="tools-show" (click)=toolsToggle()> <i class="anticon anticon-left-square"></i>工具栏</div>-->
+  
+    <nz-modal [nzVisible]="iisVisible" [nzTitle]="'机柜属性'" [nzContent]="mmodalContent" (nzOnCancel)="hiddenCabinet($event)" (nzOnOk)="handleOkcabinet($event)">
+      <ng-template #mmodalContent>
+        <form nz-form  >
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col >
+          <label>机柜名称</label>
+        </div>
+        <div nz-form-control nz-col  >
+          <nz-input  [nzPlaceHolder]="name" [nzSize]="'large'">
+          </nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col>
+          <label>资产编号</label>
+        </div>
+        <div nz-form-control nz-col  >
+          <nz-input   [nzPlaceHolder]="'资产编号'" [nzSize]="'large'">
+          </nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col>
+          <label>品牌编号</label>
+        </div>
+        <div nz-form-control nz-col  >
+          <nz-input   [nzPlaceHolder]="'品牌编号'" [nzSize]="'large'">
+          </nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col>
+          <label>系列号</label>
+        </div>
+        <div nz-form-control nz-col  >
+          <nz-input   [nzPlaceHolder]="id" [nzSize]="'large'">
+          </nz-input>
+        </div>
+      </div>
+    </form>
+      </ng-template>
+    </nz-modal>
     <nz-modal [nzVisible]="isVisible" [nzTitle]="'修改机房大小'" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)" [nzConfirmLoading]="isConfirmLoading">
       <ng-template #modalContent>
         机房长: <input type="text" placeholder="请输入机房长(单位：米)" [(ngModel)]='_roomWidth' ><br>
         机房宽: <input type="text" placeholder="请输入机房宽(单位：米)" [(ngModel)]='_roomHeight'>
       </ng-template>
     </nz-modal>
-    </div>
-  </div>
-  <div class="attribute" (click)=toggle()><i class="anticon anticon-left-square"></i>设备属性</div> 
-  <div class="tools-show" (click)=toolsToggle()> <i class="anticon anticon-left-square"></i>工具栏</div>
 </div>
