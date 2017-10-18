@@ -1,17 +1,8 @@
 
-.menu-left {
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    bottom: 0px;
-    background: #ffffff;
-    border-right: 1px solid #cccccc;
-    z-index: 999;
-    transition: all 0.3s;
-}
 .menu-top {
     position: fixed;
     top: 0px;
+    left: 0px;
     right: 0px;
     box-shadow: 0 0 3px 0 #404040;
     z-index: 998;
@@ -23,7 +14,7 @@
     right: 0px;
     top: 0px;
     bottom: 0px;
-    padding-top: 48px;
+    padding-top: 40px;
     background: #f3f3f3;
     transition: all 0.3s;
 }

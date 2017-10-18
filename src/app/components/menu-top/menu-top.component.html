@@ -1,0 +1,42 @@
+<!--<ul nz-menu [nzMode]="'horizontal'">-->
+    <!--<li nz-menu-item routerLink="/machine"><i class="anticon anticon-mail"></i>机房管理</li>-->
+    <!--<li nz-menu-item routerLink="/user/manager"><i class="anticon anticon-mail"></i>设置</li>-->
+<!--</ul>-->
+<div class="menu-wrap">
+    <!-- 一级目录 -->
+    <ul class="custom-ul">
+        <li *ngFor="let item of menuData;let index = index"
+            [ngClass]="{'menu-right-side': index > 4}">
+            <em class="bias-left"></em>
+            <span class="bias-title">{{item.name}}</span>
+            <em class="bias-right"></em>
+            <!-- 二级目录 -->
+            <ul *ngIf="item.items.length > 0" class="custom-item-menu menu-parent">
+                <li *ngFor="let item of item.items">
+                    <span>{{item.name}}</span>
+                    <i *ngIf="item.items.length > 0" class="anticon anticon-right"></i>
+                    <!-- 三级目录 -->
+                    <ul *ngIf="item.items.length > 0" class="custom-item-menu menu-child">
+                        <li *ngFor="let item of item.items">
+                            <span>设备</span>
+                            <i *ngIf="item.items.length > 0" class="anticon anticon-right"></i>
+                            <!-- 四级目录 -->
+                            <ul *ngIf="item.items.length > 0" class="custom-item-menu menu-child">
+                                <li *ngFor="let item of item.items">
+                                    <span>{{item.name}}</span>
+                                    <i *ngIf="item.items.length > 0" class="anticon anticon-right"></i>
+                                    <!-- 五级目录 -->
+                                    <ul *ngIf="item.items.length > 0" class="custom-item-menu menu-child">
+                                        <li *ngFor="let item of item.items">
+                                            <span>{{item.name}}</span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

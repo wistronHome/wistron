@@ -15,6 +15,7 @@ import { UserManagerComponent } from './components/user/user-manager/user-manage
 import { UserStatePipe } from './pipes/user-state.pipe';
 import { UserRolePipe } from './pipes/user-role.pipe';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import { MenuTopComponent } from './components/menu-top/menu-top.component';
 // import { CreateRoomComponentComponent } from './components/machine/create-room-component/create-room-component.component'
 
 @NgModule({
@@ -27,7 +28,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
         UserManagerComponent,
         UserStatePipe,
         UserRolePipe,
-        PaginationComponent
+        PaginationComponent,
+        MenuTopComponent
     ],
     imports: [
         BrowserModule,

@@ -1,0 +1,113 @@
+$bigRed: #da2619;
+$reColor: #8e8b8b;
+$transition: all 0.4s;
+.menu-wrap {
+
+}
+
+.custom-ul {
+    padding-left: 40px;
+    position: relative;
+    background: $reColor;
+    li {
+        display: inline-block;
+        position: relative;
+        line-height: 40px;
+        cursor: pointer;
+        &:hover {
+            .bias-left {
+                border-bottom: 40px solid $bigRed;
+            }
+            .bias-title {
+                background: $bigRed;
+            }
+            .bias-right {
+                border-top: 40px solid $bigRed;
+            }
+            .menu-parent {
+                display: block;
+                li:hover {
+                    >.menu-child {
+                        display: block;
+                        li:hover {
+                            >.menu-child {
+                                display: block;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .bias-left {
+            width: 0;
+            height: 0;
+            float: left;
+            border-bottom: 40px solid $reColor;
+            border-left: 14px solid transparent;
+            transition: $transition;
+        }
+        .bias-title {
+            padding: 0 20px;
+            color: #ffffff;
+            display: inline-block;
+            background: $reColor;
+            transition: $transition
+        }
+        .bias-right {
+            width: 0;
+            height: 0;
+            float: right;
+            border-top: 40px solid $reColor;
+            border-right: 14px solid transparent;
+            transition: $transition;
+        }
+        .custom-item-menu {
+            position: absolute;
+            background: #ffffff;
+            border: 1px solid #cccccc;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 3px;
+            border-top: 2px solid $bigRed;
+            li {
+                display: block;
+                position: relative;
+                padding-left: 16px;
+                line-height: 28px;
+                &:hover {
+                    background: #f3f3f3;
+                }
+                .anticon {
+                    position: absolute;
+                    right: 5px;
+                    top: 50%;
+                    margin-top: -6px;
+                }
+            }
+        }
+    }
+}
+
+.menu-parent {
+    display: none;
+    left: 0;
+    right: -100%;
+    transition: all .4s;
+}
+.menu-child {
+    display: none;
+    left: 100%;
+    right: -100%;
+    top: 0px;
+}
+
+.menu-right-side {
+    .menu-parent {
+        right: 0;
+        left: -100%;
+    }
+    .menu-child {
+        right: 100%;
+        left: -100%;
+    }
+}
+

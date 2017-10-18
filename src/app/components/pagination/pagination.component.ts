@@ -1,6 +1,5 @@
-import { Component, OnInit, Input, Output, NgModule, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, NgModule } from '@angular/core';
 import { MissionService } from '../../mission-store/mission.service';
-import { Subscription }   from 'rxjs/Subscription';
 
 @NgModule({
     imports:      [],
