@@ -16,6 +16,9 @@ import { UserStatePipe } from './pipes/user-state.pipe';
 import { UserRolePipe } from './pipes/user-role.pipe';
 import { PaginationComponent } from './components/pagination/pagination.component';
 import { MenuTopComponent } from './components/menu-top/menu-top.component';
+import { AlarmBadgeComponent } from './components/alarm-badge/alarm-badge.component';
+import { TranslateComponent } from './components/css3/translate/translate.component';
+import { RotatePipe } from './pipes/rotate.pipe';
 // import { CreateRoomComponentComponent } from './components/machine/create-room-component/create-room-component.component'
 
 @NgModule({
@@ -29,7 +32,10 @@ import { MenuTopComponent } from './components/menu-top/menu-top.component';
         UserStatePipe,
         UserRolePipe,
         PaginationComponent,
-        MenuTopComponent
+        MenuTopComponent,
+        AlarmBadgeComponent,
+        TranslateComponent,
+        RotatePipe
     ],
     imports: [
         BrowserModule,

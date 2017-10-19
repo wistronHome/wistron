@@ -18,7 +18,7 @@
                     <!-- 三级目录 -->
                     <ul *ngIf="item.items.length > 0" class="custom-item-menu menu-child">
                         <li *ngFor="let item of item.items">
-                            <span>设备</span>
+                            <span>{{item.name}}</span>
                             <i *ngIf="item.items.length > 0" class="anticon anticon-right"></i>
                             <!-- 四级目录 -->
                             <ul *ngIf="item.items.length > 0" class="custom-item-menu menu-child">
@@ -39,4 +39,7 @@
             </ul>
         </li>
     </ul>
+    <div class="alarm">
+        <app-alarm-badge></app-alarm-badge>
+    </div>
 </div>

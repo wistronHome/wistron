@@ -1,8 +1,8 @@
 import { Component, OnInit, NgModule } from '@angular/core';
-import { MenuTopService } from './menu-top.service'
+import { MenuTopService } from './menu-top.service';
 
 @NgModule({
-    imports:      [],
+    imports:      [  ],
     declarations: [ MenuTopComponent ],
     bootstrap:    [ MenuTopComponent ]
 })

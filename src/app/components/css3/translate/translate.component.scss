@@ -1,0 +1,94 @@
+$deg: 90deg;
+$perspective: perspective(100px);
+$translate: 50px;
+.wrap {
+    position: relative;
+    text-align: center;
+    height: 100%;
+    background: #ffffff;
+    backface-visibility: hidden;
+    .component {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -200px;
+        margin-top: -200px;
+        height: 400px;
+        width: 400px;
+        border: 1px solid #cccccc;
+        transform-style: preserve-3d;
+        display: inline-block;
+        transition: all 1s;
+        div {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            height: 100px;
+            width: 100px;
+            text-align: center;
+            line-height: 100px;
+            background: #cccccc;
+            display: inline-block;
+            box-shadow: 0px 0px 12px 0px black;
+            border: 1px solid #55cc18;
+        }
+        em {
+            display: inline-block;
+            position: absolute;
+            height: 30px;
+            width: 30px;
+            line-height: 30px;
+        }
+    }
+}
+#x, #y, #z {
+    position: absolute;
+    border-radius: 0;
+    border: 1px solid #1362a0;
+    width: 400px;
+    height: 400px;
+    opacity: 0.4;
+    .p-line {
+        background: red;
+        border: 1px solid red;
+        width: 1px;
+        height: 100%;
+        position: absolute;
+        left: 50%;
+        margin-left: -1px;
+        top: 0;
+    }
+}
+#x {
+    transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0);
+}
+#y {
+    transform: translate3d(0px, 0, 0px) rotateX(90deg) rotateY(90deg) rotateZ(0);
+}
+#z {
+    transform: translate3d(0, 0px, 0px) rotateX(90deg) rotateY(0) rotateZ(90deg);
+}
+.left {
+    transform: translate3d(100px, 150px, 0px)  rotateX(0) rotateY(90deg) rotateZ(0);
+}
+.right {
+    transform: translate3d(200px, 150px, 0)  rotateX(0) rotateY(-90deg) rotateZ(0);
+}
+.top {
+    transform: translate3d(150px, 100px, 0)  rotateX(-90deg) rotateY(0) rotateZ(0);
+}
+.bottom {
+    transform: translate3d(150px, 200px, 0)  rotateX(90deg) rotateY(0) rotateZ(0);
+}
+.up {
+    transform: translate3d(150px, 150px, 50px)  rotateX(0) rotateY(0) rotateZ(0);
+}
+.down {
+    transform: translate3d(150px, 150px, -50px)  rotateX(0) rotateY(0) rotateZ(0);
+}
+
+.line {
+    display: inline-block;
+    width: 30px;
+    background: red;
+}

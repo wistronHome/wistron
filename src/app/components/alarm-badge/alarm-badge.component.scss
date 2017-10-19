@@ -1,0 +1,38 @@
+.wrap {
+    cursor: pointer;
+    display: inline-block;
+    user-select: none;
+    margin: 0 8px 0 0;
+    .anticon {
+        font-size: 16px;
+    }
+    em {
+        font-style: normal;
+    }
+}
+.line {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    margin-top: -10px;
+    height: 20px;
+    width: 2px;
+    background: #ffffff;
+    border-left: 1px solid #b1b1b1;
+}
+.alarm-error {
+    color: rgba(189, 10, 17, 0.8);
+}
+.alarm-warning {
+    color: #d88826;
+}
+.alarm-info {
+    color: #e0da19;
+}
+.alarm-primary {
+    color: #0399df;
+}
+.alarm-success {
+    color: #55cc18;
+}
+
