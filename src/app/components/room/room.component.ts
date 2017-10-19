@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgModel } from '@angular/forms';
@@ -64,10 +65,13 @@ export class RoomComponent implements OnInit {
     constructor(
         private router: Router,
         private routerInfo: ActivatedRoute,
-        private RoomSerService: RoomSerService
+        private RoomSerService: RoomSerService,
+        private http : HttpClient
     ) { }
 
-    ngOnInit() { this.roomId = this.routerInfo.params.subscribe((params) => {
+    ngOnInit() { 
+        this.getrooms();
+        this.roomId = this.routerInfo.params.subscribe((params) => {
             this.roomId = params['id'];
             console.log(this.roomId);
         })
@@ -176,7 +180,7 @@ export class RoomComponent implements OnInit {
         }
         //点击机房
         this.graph.onclick = e => {
-            if (e.getData() && e.getData().get('type') === 'cabinet' || e.getData().get('type') === 'roomWall') {
+            if (e.getData() && e.getData().get('type') === 'cabinet' || e.getData()&& e.getData().get('type') !== 'roomWall') {
                 this.id = e.getData().id;
                 this.name = e.getData().name;
                 //子图元的id
@@ -187,6 +191,7 @@ export class RoomComponent implements OnInit {
                 this.graph.editable = false;
 
             }else if( e.getData() && e.getData().get('type') === 'roomWall') {
+                this.id = e.getData().id;
                 this.graph.editable = true;
             }else {
                 this.graph.editable = false;
@@ -328,6 +333,12 @@ export class RoomComponent implements OnInit {
         this.info = arr
         console.log(arr);
 
+    }
+    getrooms(){
+        this.http.get('http://localhost:2016/api/weather/movie/index?title=%E9%9D%9E%E8%AF%9A%E5%8B%BF%E6%89%B0&smode=&pagesize=&offset=&dtype=&key=66079956ab6ea6b3747cac2645318c45').subscribe(data=>{
+            console.log(data);
+                       
+        })
     }
 }
 class tools {
