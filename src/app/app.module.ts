@@ -19,6 +19,9 @@ import { MenuTopComponent } from './components/menu-top/menu-top.component';
 import { AlarmBadgeComponent } from './components/alarm-badge/alarm-badge.component';
 import { TranslateComponent } from './components/css3/translate/translate.component';
 import { RotatePipe } from './pipes/rotate.pipe';
+import { PlaneComponent } from './components/css3/plane/plane.component';
+import { ThreeDimensionalComponent } from './components/css3/three-dimensional/three-dimensional.component';
+import { FilterComponent } from './components/css3/filter/filter.component';
 // import { CreateRoomComponentComponent } from './components/machine/create-room-component/create-room-component.component'
 
 @NgModule({
@@ -35,7 +38,10 @@ import { RotatePipe } from './pipes/rotate.pipe';
         MenuTopComponent,
         AlarmBadgeComponent,
         TranslateComponent,
-        RotatePipe
+        RotatePipe,
+        PlaneComponent,
+        ThreeDimensionalComponent,
+        FilterComponent,
     ],
     imports: [
         BrowserModule,

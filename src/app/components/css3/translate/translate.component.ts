@@ -6,21 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./translate.component.scss']
 })
 export class TranslateComponent implements OnInit {
-    cRotateX: number = 50;
-    cRotateY: number = 10;
-    cRotateZ: number = 10;
+    cRotateX: number = 0;
+    cRotateY: number = 0;
+    cRotateZ: number = 0;
     perspective: number = 600;
     originX: number = 70;
     originY: number = 70;
     constructor() { }
 
     ngOnInit() {
-        setInterval(() => {
-            this.cRotateX = Math.random() * 180;
-            this.cRotateY = Math.random() * 180;
-            this.cRotateZ = Math.random() * 180;
-            // this.perspective += 100;
-        }, 1000);
+
     }
 
 }
