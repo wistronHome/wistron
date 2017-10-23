@@ -1,5 +1,5 @@
 {
-    "/api": {
+    "/itm": {
         "target": "http://10.5.112.40:8080",
         "secure": false
     }

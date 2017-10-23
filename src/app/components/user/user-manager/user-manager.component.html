@@ -1,28 +1,30 @@
 <div class="user-manager-wrap">
-    <div class="search-area" nz-row [nzGutter]="8">
+    <div class="search-area" nz-row >
         <div nz-col class="gutter-row" [nzSpan]="6">
-            <nz-input  [nzPlaceHolder]="'用户代码'"></nz-input>
+            <nz-input [(ngModel)]="search.code" [nzPlaceHolder]="'用户代码'"></nz-input>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="6">
-            <nz-input  [nzPlaceHolder]="'角色名称'"></nz-input>
+            <nz-input [(ngModel)]="search.name" [nzPlaceHolder]="'角色名称'"></nz-input>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="6">
             <nz-select
                 style="width: 200px;"
                 nzAllowClear
                 [nzPlaceHolder]="'用户状态'"
-                [(ngModel)]="selectedOption"
+                [(ngModel)]="search.state"
                 [nzShowSearch]="true">
                 <nz-option
-                    *ngFor="let option of searchOptions"
-                    [nzLabel]="option.label"
-                    [nzValue]="option.value"
-                    [nzDisabled]="option.disabled">
+                    [nzLabel]="'启用'"
+                    [nzValue]="1">
+                </nz-option>
+                <nz-option
+                    [nzLabel]="'停用'"
+                    [nzValue]="2">
                 </nz-option>
             </nz-select>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="6">
-            <button nz-button [nzType]="'default'">
+            <button nz-button (click)="searchByField()" [nzType]="'default'">
                 <i class="anticon anticon-search"></i><span>查&nbsp;&nbsp;询</span>
             </button>
         </div>
@@ -81,7 +83,7 @@
                             <nz-row-expand-icon [(nzExpand)]="user.expand"></nz-row-expand-icon>
                         </td>
                         <td nz-td [nzCheckbox]="true">
-                            <label nz-checkbox [(ngModel)]="user.checked" ></label>
+                            <label nz-checkbox [(ngModel)]="user.checked" (ngModelChange)="_refreshStatus($event)"></label>
                         </td>
                         <td nz-td>
                             <span>{{user.code}}</span>
@@ -130,8 +132,7 @@
         <div style="margin: 20px 30px;text-align: right;">
             <app-pagination [pageIndex]="pageIndex"
                             [pageSize]="pageSize"
-                            [total]="total"
-                            (pageChange)="pageChange($event)">
+                            [total]="total">
 
             </app-pagination>
         </div>

@@ -9,6 +9,7 @@ export class User {
     private _role: number;
     private _checked: boolean = false;
     private _password: string;
+    private _lastLogin: Date;
     constructor() {}
 
     set id(id: string) {
@@ -74,4 +75,10 @@ export class User {
         return this._password;
     }
 
+    set lastLogin(time: Date) {
+        this._lastLogin = time;
+    }
+    get lastLogin(): Date {
+        return this._lastLogin;
+    }
 }

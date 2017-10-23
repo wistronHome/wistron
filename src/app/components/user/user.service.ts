@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { User } from '../../../models/User';
+import { HttpClient } from '@angular/common/http'
+import { User, Role } from '../../models/Models'
 
 @Injectable()
-export class UserManagerService {
+export class UserService {
     users: User[] = this.getAllUser();
+    roles: Role[] = this.getAllRole();
     constructor(
         private $http: HttpClient
     ) { }
@@ -21,6 +22,14 @@ export class UserManagerService {
         return tmp;
     }
 
+    public getAllRole(): Role[] {
+        let tmp: Role[] = [];
+        for (let i = 0; i < 9; i++) {
+            tmp.push(this.createRole());
+        }
+        return tmp;
+    }
+
     /**
      * 分页获取用户信息
      * @param {number} pageIndex
@@ -28,6 +37,9 @@ export class UserManagerService {
      * @returns {{users: User[]; total: number}}
      */
     public getUserPagination(pageIndex: number, pageSize: number): Promise<{ users: User[], total: number }> {
+        this.$http.post('/itm/users', { pageNum: 1, pageSize: 10 }).subscribe(result => {
+            console.log(result);
+        });
         let _users: User[] = [];
         for (let i = pageSize * (pageIndex - 1); i < pageSize * pageIndex && i < this.users.length; i++) {
             _users.push(this.users[i]);
@@ -74,10 +86,18 @@ export class UserManagerService {
         return Promise.resolve({ users: _users, total: this.users.length });
     }
 
-    public getDemo() {
-        this.$http.get('/api/mongo/list').subscribe(result => {
-            console.log(result);
-        });
+    /**
+     * 分页获取角色裂变
+     * @param {number} pageIndex
+     * @param {number} pageSize
+     * @returns {Promise<{roles: Role[]; total: number}>}
+     */
+    public getRolePagination(pageIndex: number, pageSize: number): Promise<{ roles: Role[], total: number }> {
+        let _roles: Role[] = [];
+        for (let i = pageSize * (pageIndex - 1); i < pageSize * pageIndex && i < this.roles.length; i++) {
+            _roles.push(this.roles[i]);
+        }
+        return Promise.resolve({ roles: _roles, total: this.roles.length});
     }
 
 
@@ -98,7 +118,18 @@ export class UserManagerService {
         user.role = this.getState(4);
         user.password = '123456';
         user.checked = false;
+        user.lastLogin = new Date()
         return user;
+    }
+
+    private createRole(): Role {
+        let role = new Role();
+        let _random = this.getRandomColor();
+        role.id = 'id' + _random;
+        role.name = 'name' + _random;
+        role.desc = 'desc' + _random;
+        role.checked = false;
+        return role;
     }
 
     private getRandomColor(): string {

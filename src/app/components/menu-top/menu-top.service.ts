@@ -62,6 +62,10 @@ export class MenuTopService {
                     { name: '用户', items: [] },
                     { name: '日志', items: [] }
                 ]
+            },
+            {
+                name: '资产管理',
+                items: []
             }
         ]
     }

@@ -18,6 +18,10 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { MenuTopComponent } from './components/menu-top/menu-top.component';
 import { AlarmBadgeComponent } from './components/alarm-badge/alarm-badge.component';
 import { RotatePipe } from './pipes/rotate.pipe';
+import { UserOnlineComponent } from './components/user/user-online/user-online.component';
+import { UserRolesComponent } from './components/user/user-roles/user-roles.component';
+import { RoleDetailComponent } from './components/user/role-detail/role-detail.component';
+import { AssetComponent } from './components/asset/asset.component';
 // import { CreateRoomComponentComponent } from './components/machine/create-room-component/create-room-component.component'
 
 @NgModule({
@@ -33,7 +37,11 @@ import { RotatePipe } from './pipes/rotate.pipe';
         PaginationComponent,
         MenuTopComponent,
         AlarmBadgeComponent,
-        RotatePipe
+        RotatePipe,
+        UserOnlineComponent,
+        UserRolesComponent,
+        RoleDetailComponent,
+        AssetComponent
 
     ],
     imports: [

@@ -1,0 +1,16 @@
+.asset-wrap {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    .menu-left {
+        flex: 0 1 240px;
+        background: #ffffff;
+    }
+    .asset-main {
+        flex: 0 1 auto;
+    }
+}
+
+

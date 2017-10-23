@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UserManagerService } from './user-manager.service'
+import { UserService } from '../user.service'
 import { User, Password } from '../../../models/Models';
 import { NzMessageService } from 'ng-zorro-antd';
 import { MissionService } from '../../../mission-store/mission.service';
@@ -8,10 +8,15 @@ import { MissionService } from '../../../mission-store/mission.service';
     selector: 'app-user-manager',
     templateUrl: './user-manager.component.html',
     styleUrls: ['./user-manager.component.scss'],
-    providers: [ UserManagerService, MissionService ]
+    providers: [ UserService, MissionService ]
 })
 export class UserManagerComponent implements OnInit {
     data: User[] = [];
+    search: { code: string, name: string, state: number } = {
+        code: '',
+        name: '',
+        state: 0
+    };
     isModalShow: boolean = false;
     password: Password;
     isModifyPasswordShow: boolean = false;
@@ -39,7 +44,7 @@ export class UserManagerComponent implements OnInit {
     ];
 
     constructor(
-        private $service: UserManagerService,
+        private $service: UserService,
         private $message: NzMessageService,
         private $mission: MissionService
     ) {
@@ -52,6 +57,58 @@ export class UserManagerComponent implements OnInit {
                 this.total = result.total;
             });
         });
+    }
+
+    _allChecked = false;
+    _disabledButton = true;
+    _checkedNumber = 0;
+    _displayData: Array<any> = [];
+    _operating = false;
+    _indeterminate = false;
+
+    _displayDataChange($event) {
+        this._displayData = $event;
+    };
+
+    _refreshStatus() {
+        const allChecked = this.data.every(user => user.checked === true);
+        const allUnChecked = this.data.every(user => !user.checked);
+        this._allChecked = allChecked;
+        this._indeterminate = (!allChecked) && (!allUnChecked);
+        this._disabledButton = !this.data.some(value => value.checked);
+        this._checkedNumber = this.data.filter(value => value.checked).length;
+    };
+
+    _checkAll(value) {
+        if (value) {
+            this.data.forEach(user => {
+                user.checked = true;
+            });
+        } else {
+            this.data.forEach(user => {
+                user.checked = false;
+            });
+        }
+        this._refreshStatus();
+    };
+
+    _operateData() {
+        this._operating = true;
+        setTimeout(() => {
+            this.data.forEach(user => user.checked = false);
+            this._refreshStatus();
+            this._operating = false;
+        }, 1000);
+    };
+
+
+
+
+    /**
+     * 模糊查询
+     */
+    searchByField() {
+        console.log(this.search);
     }
 
     /**
