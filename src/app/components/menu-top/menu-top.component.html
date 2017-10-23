@@ -3,6 +3,7 @@
     <!-- 一级目录 -->
     <ul class="custom-ul">
         <li *ngFor="let item of menuData;let index = index"
+            (click)="navigate(item)"
             [ngClass]="{'menu-right-side': index > 4}">
             <em class="bias-left"></em>
             <span class="bias-title">{{item.name}}</span>

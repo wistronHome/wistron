@@ -9,10 +9,12 @@ export class MenuTopService {
         return [
             {
                 name: '首页',
+                router: '/asset',
                 items: []
             },
             {
                 name: '资源',
+                router: '/asset',
                 items: [
                     { name: '网管概览', items: [] },
                     { name: '机柜', items: []},
@@ -34,6 +36,7 @@ export class MenuTopService {
             },
             {
                 name: '拓扑',
+                router: '/asset',
                 items: [
                     { name: '业务图', items: [
                         { name: '告警', items: []},
@@ -46,18 +49,22 @@ export class MenuTopService {
             },
             {
                 name: '告警',
+                router: '/asset',
                 items: []
             },
             {
                 name: '监控',
+                router: '/asset',
                 items: []
             },
             {
                 name: '报表',
+                router: '/asset',
                 items: []
             },
             {
                 name: '系统',
+                router: '/asset',
                 items: [
                     { name: '用户', items: [] },
                     { name: '日志', items: [] }
@@ -65,6 +72,7 @@ export class MenuTopService {
             },
             {
                 name: '资产管理',
+                router: '/asset',
                 items: []
             }
         ]

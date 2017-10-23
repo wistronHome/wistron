@@ -11,7 +11,7 @@ import {
 import 'rxjs/add/operator/switchMap';
 // import { HttpClient } from '@angular/common/http';
 import { fadeLeftIn } from "../../animations/fade-left-in"
-import { Servicer, ServerType, Facility } from "../../models/Models";
+import { Servicer, ServerType, Facility } from "../../models/index";
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { CabinetService } from "./cabinet.service";
 import { AmendUtil } from "./amend-util";

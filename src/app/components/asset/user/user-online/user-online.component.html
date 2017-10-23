@@ -1,13 +1,13 @@
 <div class="online-wrap">
     <div class="search-area" nz-row>
         <div nz-col class="gutter-row" [nzSpan]="6">
-            <nz-input  [nzPlaceHolder]="'用户代码'"></nz-input>
+            <nz-input [(ngModel)]="search.code" [nzPlaceHolder]="'用户代码'"></nz-input>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="6">
-            <nz-input  [nzPlaceHolder]="'角色名称'"></nz-input>
+            <nz-input [(ngModel)]="search.name" [nzPlaceHolder]="'角色名称'"></nz-input>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="6">
-            <button nz-button [nzType]="'default'">
+            <button nz-button (click)="searchByField()" [nzType]="'default'">
                 <i class="anticon anticon-search"></i><span>查&nbsp;&nbsp;询</span>
             </button>
         </div>

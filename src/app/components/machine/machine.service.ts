@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Room, Cabinet, Servicer } from '../../models/Models'
+import { Room, Cabinet, Servicer } from '../../models/index'
 
 function createRoom() {
     let room = new Room();

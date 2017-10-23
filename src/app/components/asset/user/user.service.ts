@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { User, Role } from '../../models/Models'
+import { User, Role } from '../../../models/index'
 
 @Injectable()
 export class UserService {
@@ -17,7 +17,7 @@ export class UserService {
     public getAllUser(): User[] {
         let tmp: User[] = [];
         for (let i = 0; i < 22; i++) {
-            tmp.push(this.createUser());
+            tmp.push(this._createUser());
         }
         return tmp;
     }
@@ -55,11 +55,24 @@ export class UserService {
     }
 
     /**
+     * 新增用户
+     * @param {User} user
+     */
+    public createUser(user: User): void {
+        this.$http.post('/itm/users', user).subscribe(result => {
+            console.log(result);
+        });
+    }
+
+    /**
      * 修改用户信息
      * @param {User} user
      * @returns {{result: boolean}}
      */
     public modifyUser(user: User): Promise<{ result: boolean }> {
+        // this.$http.put('/itm/users', user).subscribe(result => {
+        //     console.log(result);
+        // });
         this.users.forEach(item => {
             if (item.id === user.id) {
                 item.name = user.name;
@@ -71,6 +84,16 @@ export class UserService {
             }
         });
         return Promise.resolve({result: true});
+    }
+
+    /**
+     * 删除多条用户
+     * @param {string[]} ids
+     */
+    public deleteUser(ids: string[]) {
+        // this.$http.delete('/itm/users/' + ids + '').subscribe(result => {
+        //     console.log(result);
+        // });
     }
 
     /**
@@ -112,7 +135,7 @@ export class UserService {
 
 
 
-    private createUser(): User {
+    private _createUser(): User {
         let user = new User();
         let _random = this.getRandomColor();
         let _phone = this.getPhone();

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../../models/User'
+import { User } from '../../../../models'
 import { UserService } from '../user.service'
-import { MissionService } from '../../../mission-store/mission.service'
+import { MissionService } from '../../../../mission-store/mission.service'
 @Component({
     selector: 'app-user-online',
     templateUrl: './user-online.component.html',
@@ -10,6 +10,10 @@ import { MissionService } from '../../../mission-store/mission.service'
 })
 export class UserOnlineComponent implements OnInit {
     data: User[] = [];
+    search = {
+        code: '',
+        name: ''
+    };
     pageSize: number = 10;
     pageIndex: number = 1;
     total: number = 1;
@@ -34,7 +38,15 @@ export class UserOnlineComponent implements OnInit {
             this.total = result.total;
         });
     }
-    pageChange(ev) {
+    searchByField() {
+        console.log(this.search);
+    }
+
+    confirmDelete(user: User) {
+        console.log(user);
+    }
+
+    cancel() {
 
     }
 }

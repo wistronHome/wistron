@@ -4,11 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { CabinetComponent } from "./components/cabinet/cabinet.component"
 import { RoomComponent } from "./components/room/room.component"
 import { MachineComponent } from "./components/machine/machine.component";
-import { UserManagerComponent } from './components/user/user-manager/user-manager.component'
-import { UserOnlineComponent } from './components/user/user-online/user-online.component'
-import { UserRolesComponent } from './components/user/user-roles/user-roles.component'
-import { RoleDetailComponent } from './components/user/role-detail/role-detail.component'
+import { UserManagerComponent } from './components/asset/user/user-manager/user-manager.component'
+import { UserOnlineComponent } from './components/asset/user/user-online/user-online.component'
+import { UserRolesComponent } from './components/asset/user/user-roles/user-roles.component'
+import { RoleDetailComponent } from './components/asset/user/role-detail/role-detail.component'
 import { AssetComponent } from './components/asset/asset.component'
+import { MaintenanceComponent } from './components/asset/maintenance/maintenance.component'
+
 const routes: Routes = [
     {
         path: '',
@@ -54,6 +56,10 @@ const routes: Routes = [
                     }
                 ]
             },
+            {
+                path: 'maintenance',
+                component: MaintenanceComponent
+            }
         ]
     }
 ];

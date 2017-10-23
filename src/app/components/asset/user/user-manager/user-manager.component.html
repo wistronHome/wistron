@@ -107,7 +107,7 @@
                             <span>{{user.role | userRole}}</span>
                         </td>
                         <td nz-td>
-                            <a (click)="modifyItem(user)">修改</a>
+                            <a (click)="modifyUser(user)">修改</a>
                             <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
                                            (nzOnConfirm)="confirmDelete(user)"
                                            (nzOnCancel)="cancel()">
@@ -154,7 +154,7 @@
                     用户代码：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [(ngModel)]="currentUser.code" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [(ngModel)]="currentUser.code" [nzPlaceHolder]="'请填写'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -162,7 +162,7 @@
                     用户名称：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [(ngModel)]="currentUser.name" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [(ngModel)]="currentUser.name" [nzPlaceHolder]="'请填写'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -199,7 +199,7 @@
                     手机号：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [(ngModel)]="currentUser.phone" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [(ngModel)]="currentUser.phone" [nzPlaceHolder]="'请填写'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -207,7 +207,7 @@
                     邮箱：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [(ngModel)]="currentUser.email" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [(ngModel)]="currentUser.email" [nzPlaceHolder]="'请填写'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -215,7 +215,7 @@
                     密码：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [(ngModel)]="currentUser.password" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [(ngModel)]="currentUser.password" [nzPlaceHolder]="'请填写'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -223,7 +223,7 @@
                     密码有效期：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [ngModel]="currentUser.password" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [ngModel]="currentUser.password" [nzPlaceHolder]="'请填写'"></nz-input>
                 </div>
             </div>
         </ng-template>

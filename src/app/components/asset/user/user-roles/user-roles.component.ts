@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Role } from '../../../models/Models'
+import { Router } from '@angular/router'
+import { Role } from '../../../../models'
 import { UserService } from '../user.service'
-import { MissionService } from '../../../mission-store/mission.service'
+import { MissionService } from '../../../../mission-store/mission.service'
+import { NzModalService } from 'ng-zorro-antd'
+
 @Component({
     selector: 'app-user-roles',
     templateUrl: './user-roles.component.html',
@@ -10,12 +13,17 @@ import { MissionService } from '../../../mission-store/mission.service'
 })
 export class UserRolesComponent implements OnInit {
     data: Role[] = [];
+    search = {
+        name: ''
+    };
     pageSize: number = 10;
     pageIndex: number = 1;
     total: number = 1;
     constructor(
         private $mission: MissionService,
-        private $service: UserService
+        private $service: UserService,
+        private $modal: NzModalService,
+        private $router: Router
     ) {
         $mission.pageChangeHook.subscribe(page => {
             this.pageSize = page.pageSize;
@@ -33,5 +41,20 @@ export class UserRolesComponent implements OnInit {
             this.total = result.total;
         });
     }
+    searchByField() {
+        console.log(this.search);
+    }
 
+    modifyRole(role: Role) {
+        this.$modal.info({
+            title: '修改角色',
+            content: '12/8版本不做要求'
+        })
+    }
+
+    cancel() { }
+
+    confirmDelete(role: Role) {
+        console.log(role);
+    }
 }

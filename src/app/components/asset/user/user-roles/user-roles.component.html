@@ -1,10 +1,10 @@
 <div class="roles-wrap">
     <div class="search-area" nz-row>
         <div nz-col class="gutter-row" [nzSpan]="6">
-            <nz-input  [nzPlaceHolder]="'角色名'"></nz-input>
+            <nz-input [(ngModel)]="search.name" [nzPlaceHolder]="'角色名'"></nz-input>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="6">
-            <button nz-button [nzType]="'default'">
+            <button nz-button (click)="searchByField()" [nzType]="'default'">
                 <i class="anticon anticon-search"></i><span>查&nbsp;&nbsp;询</span>
             </button>
         </div>
@@ -50,17 +50,13 @@
                         <label nz-checkbox [(ngModel)]="role.checked" ></label>
                     </td>
                     <td nz-td>
-                        <a>{{role.name}}</a>
+                        <a (click)="$router.navigate(['/asset/user/role/' + role.id])">{{role.name}}</a>
                     </td>
                     <td nz-td>
                         <span>{{role.desc}}</span>
                     </td>
                     <td nz-td>
-                        <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
-                                       (nzOnConfirm)="confirmDelete(role)"
-                                       (nzOnCancel)="cancel()">
-                            <a nz-popconfirm>修改</a>
-                        </nz-popconfirm>
+                        <a (click)="modifyRole(role)">修改</a>
                         <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
                                        (nzOnConfirm)="confirmDelete(role)"
                                        (nzOnCancel)="cancel()">

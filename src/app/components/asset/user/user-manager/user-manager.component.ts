@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../user.service'
-import { User, Password } from '../../../models/Models';
+import { User, Password } from '../../../../models';
 import { NzMessageService } from 'ng-zorro-antd';
-import { MissionService } from '../../../mission-store/mission.service';
+import { MissionService } from '../../../../mission-store/mission.service';
 
 @Component({
     selector: 'app-user-manager',
@@ -117,13 +117,14 @@ export class UserManagerComponent implements OnInit {
     createUser() {
         this.isModalShow = true;
         this.currentUser = new User();
+        this.$service.createUser(new User());
     }
 
     /**
      * 修改用户
      * @param {User} user
      */
-    modifyItem(user: User) {
+    modifyUser(user: User) {
         this.isModalShow = true;
         this.currentUser = this.cloneUser(user);
     }

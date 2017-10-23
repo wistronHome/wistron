@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { MachineService } from './machine.service'
-import { Room, Cabinet, Servicer } from '../../models/Models';
+import { Room, Cabinet, Servicer } from '../../models/index';
 import { fadeLeftIn } from "../../animations/fade-left-in";
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 
