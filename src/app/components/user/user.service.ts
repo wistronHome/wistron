@@ -36,8 +36,15 @@ export class UserService {
      * @param {number} pageSize
      * @returns {{users: User[]; total: number}}
      */
-    public getUserPagination(pageIndex: number, pageSize: number): Promise<{ users: User[], total: number }> {
-        this.$http.post('/itm/users', { pageNum: 1, pageSize: 10 }).subscribe(result => {
+    public getUserPagination(pageIndex: number, pageSize: number, search = { code: '', name: '', state: 0 }): Promise<{ users: User[], total: number }> {
+        let body = {
+            pageNum: pageIndex,
+            pageSize: pageSize,
+            code: search.code,
+            name: search.name,
+            state: search.state
+        }
+        this.$http.post('/itm/users', body).subscribe(result => {
             console.log(result);
         });
         let _users: User[] = [];
