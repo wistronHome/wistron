@@ -5,10 +5,7 @@ import { CabinetComponent } from "./components/cabinet/cabinet.component"
 import { RoomComponent } from "./components/room/room.component"
 import { MachineComponent } from "./components/machine/machine.component";
 import { UserManagerComponent } from './components/user/user-manager/user-manager.component'
-import { TranslateComponent } from './components/css3/translate/translate.component'
-import { PlaneComponent } from './components/css3/plane/plane.component'
-import { ThreeDimensionalComponent } from './components/css3/three-dimensional/three-dimensional.component'
-import { FilterComponent } from './components/css3/filter/filter.component'
+
 
 const routes: Routes = [
     {
@@ -33,27 +30,6 @@ const routes: Routes = [
     {
         path: 'user/manager',
         component: UserManagerComponent
-    },
-    {
-        path: 'css',
-        children: [
-            {
-                path: 'translate',
-                component: TranslateComponent
-            },
-            {
-                path: 'plane',
-                component: PlaneComponent
-            },
-            {
-                path: 'three',
-                component: ThreeDimensionalComponent
-            },
-            {
-                path: 'filter',
-                component: FilterComponent
-            }
-        ]
     }
 ];
 
