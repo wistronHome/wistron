@@ -5,7 +5,7 @@ import { MachineService } from './machine.service'
 import { Room, Cabinet, Servicer } from '../../models/index';
 import { fadeLeftIn } from "../../animations/fade-left-in";
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-machine',
@@ -26,17 +26,20 @@ export class MachineComponent implements OnInit {
         cabinets: [],
         servicers: []
     };
-
+    datas: any ;
+    cabinetDatas :any;
     constructor(
         private router: Router,
         private $message: NzMessageService,
         private $modal: NzModalService,
-        private $service: MachineService
+        private $service: MachineService,
+        private http: HttpClient
     ) { }
 
     ngOnInit() {
         this.data.push(this.$service.getMachines());
         this.data.push(this.$service.getMachines());
+        this.getRoomDatas();
     }
     $watchSearch(currentValue) {
         this.searchValue = currentValue.trim();
@@ -80,8 +83,9 @@ export class MachineComponent implements OnInit {
 
         }
     }
-    toggleMenu(item, ev) {
+    toggleMenu(item, roomId, ev) {
         item.isOpen = !item.isOpen;
+        this.getCabinetDatas(roomId,item);
         ev.stopPropagation();
     }
     createRoom() {
@@ -101,5 +105,18 @@ export class MachineComponent implements OnInit {
     }
     toggleCollapse(): void {
         this.isCollapse = !this.isCollapse;
+    }
+    getRoomDatas() {
+        this.http.get('/itm/rooms').subscribe(data => {
+            console.log(data);
+            this.datas = data['data'];
+        });
+    }
+    getCabinetDatas(roomId,item) {
+        this.http.get(`/itm/rooms/queryRoom/${roomId}`).subscribe(data => {
+            console.log(data);
+            // this.datas = data['data'];
+            item.cabinetDatas = data['data'].cabinetSet;
+        });
     }
 }

@@ -23,10 +23,13 @@
         position: absolute;
         top: 55px;
         left: 200px;
+        //background: url("../../../assets/image/floor.jpg");
+        //background-size: 100%;
     }
     .cabinet-info{
         width: 200px;
         // height: 500px;
+        border-left: 1px solid #cccccc;
         height: 100%;
         background: #f1f1f1;
         position: absolute;
@@ -44,10 +47,13 @@
                 height: 30px;
                 outline: none;
                 border: none;
-                border-radius:5px; 
+                border-radius:5px;
                 border: 1px solid #ccc;
                 padding-left: 10px;
             }
+        }
+        .info-detail{
+            margin-left: 10px;
         }
         table{
             tr{
@@ -63,6 +69,12 @@
                 margin: 0 auto;
             }
         }
+        .ant-form-item {
+            font-size: 12px;
+            margin-bottom: 10px;
+            color: rgba(0, 0, 0, 0.65);
+            vertical-align: top;
+        }
     }
     .attribute{
         padding: 5px;
@@ -76,7 +88,7 @@
         &:hover{
             background: rebeccapurple;
         }
-        
+
     }
     .tools-show{
         padding: 5px;

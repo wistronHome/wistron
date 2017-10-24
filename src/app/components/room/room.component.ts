@@ -65,6 +65,7 @@ export class RoomComponent implements OnInit {
     isCustomCabinet = false; // 自定义机柜显示修改宽高选项
     width = ''; // 自定义机柜的宽
     height = ''; // 自定义机柜的高
+    Unumber =''; // 自定义机柜的u数
     constructor(
         private router: Router,
         private routerInfo: ActivatedRoute,
@@ -73,7 +74,7 @@ export class RoomComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.getrooms();
+
         this.roomId = this.routerInfo.params.subscribe((params) => {
             this.roomId = params['id'];
             console.log(this.roomId);
@@ -187,7 +188,7 @@ export class RoomComponent implements OnInit {
         }
         //点击机房
         this.graph.onclick = e => {
-            if (e.getData() && e.getData().get('type') === 'cabinet' || e.getData()&& e.getData().get('type') !== 'roomWall') {
+            if (e.getData() && e.getData().get('type') === 'cabinet' || e.getData() && e.getData().get('type') !== 'roomWall') {
                 this.id = e.getData().id;
                 this.name = e.getData().name;
                 //子图元的id
@@ -217,7 +218,7 @@ export class RoomComponent implements OnInit {
          * 双击进入机柜页面
          */
         this.graph.ondblclick = e => {
-            if (e.getData() && e.getData().type == 'Q.Node' && e.getData().get('type') === 'cabinet'){
+            if (e.getData() && e.getData().type === 'Q.Node' && e.getData().get('type') === 'cabinet'){
                 this.router.navigate(['machine/cabinet/' + e.getData().id]);
             }
         }
@@ -241,7 +242,7 @@ export class RoomComponent implements OnInit {
                     e.getData().children.datas[0].y = e.getData().y - 30;
                     }
                     alert('目标重合了 请重试');
-                }else{
+                }else {
                     e.getData().x = tools.correctLocation(e.getData().x,e.getData().size.width);
                     e.getData().y = tools.correctLocation(e.getData().y,e.getData().size.height);
                     // 设置告警图标的位置
@@ -277,8 +278,9 @@ export class RoomComponent implements OnInit {
         this.model['forEach'](e => {
             if (e.id === this.id ) {
                 e.name = this.name;
-                console.log(e);
-                e.size = { width : this.width, height : this.height};
+                if (e.get('type') === 'customCabinet') {
+                    e.size = { width : this.width, height : this.height};
+                }
             }
         });
     }
@@ -362,10 +364,10 @@ export class RoomComponent implements OnInit {
         console.log(arr);
 
     };
-    getrooms() {
+    /*获取机房详情*/
+    getRoomsDetail() {
         this.http.get('/itm/rooms').subscribe(data => {
-            console.log(data);
-
+            this.info = data;
         });
     }
 }

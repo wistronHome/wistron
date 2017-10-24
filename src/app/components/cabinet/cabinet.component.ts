@@ -19,7 +19,7 @@ import { LegendUtil } from "./legend-util";
 import * as TYPES from './types';
 
 const LH: number = 17;
-const LN: number = 42;
+const LN: number = 32;
 const IMAGE = {
     A: './assets/image/cabinet-a-1.png',
     B: './assets/image/griff-200-10.png',
@@ -56,6 +56,7 @@ export class CabinetComponent implements OnInit, OnChanges {
     image: string = null;
     width: number = 240;
     height: number = LH;
+    currentId :number;
     constructor(
         private router: Router,
         private routeInfo: ActivatedRoute,
@@ -171,6 +172,8 @@ export class CabinetComponent implements OnInit, OnChanges {
                         name: facility[key]
                     });
                 }
+                // 记录下点击图元的id
+                this.currentId = evt.getData()['id'];
             } else {
                 let facility = new Facility();
                 this.menuData = [];
@@ -209,7 +212,10 @@ export class CabinetComponent implements OnInit, OnChanges {
             }
         }
     }
-
+    /*点击删除当前图元*/
+     delServer(): void {
+        this.graph.graphModel['removeById'](this.currentId);
+    }
     /**
      * 开始拖拽
      * @param ev

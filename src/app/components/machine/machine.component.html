@@ -93,6 +93,61 @@
                     </li>
                 </ul>
             </li>
+            <!--复制过后的机房菜单项-->
+            <li class="l-menu" *ngFor="let item of datas">
+                <span class="l-title l1"
+                      (dblclick)="router.navigate(['machine/room/' + item.id])">
+                    {{item.roomName}}
+                    <div class="deal-area">
+                        <em title="新增机柜">
+                            <i class="anticon anticon-plus-square-o"></i>
+                        </em>
+                        <em title="删除机柜">
+                            <i class="anticon anticon-minus-square-o"></i>
+                        </em>
+                        <em title="修改机柜">
+                            <i class="anticon anticon-edit"></i>
+                        </em>
+                    </div>
+                    <em class="icon" [title]="item.isOpen ? '收起' : '展开'" (click)="toggleMenu(item, item.roomId,$event)">
+                        <i class="anticon anticon-down"
+                           [ngClass]="{'rotate': item.isOpen}"></i>
+                    </em>
+                </span>
+                <ul [@fadeState]="item.isOpen ? 'active' : 'inactive'">
+                    <li class="l-menu" *ngFor="let item_i of item.cabinetDatas let index = index">
+                        <span class="l-title l2"
+                              (dblclick)="router.navigate(['machine/cabinet/' + item_i.id])">
+                              {{item_i.cabinetName}}
+                            <div class="deal-area">
+                                <em title="新增服务器">
+                                    <i class="anticon anticon-plus-square-o"></i>
+                                </em>
+                                <em title="删除服务器">
+                                    <i class="anticon anticon-minus-square-o"></i>
+                                </em>
+                                <em title="修改服务器">
+                                    <i class="anticon anticon-edit"></i>
+                                </em>
+                            </div>
+                            <em class="icon"
+                                [title]="item_i.isOpen ? '收起' : '展开'"
+                                (click)="toggleMenu(item_i, $event)">
+                                <i class="anticon anticon-down" [ngClass]="{'rotate': item_i.isOpen}">
+
+                                </i>
+                            </em>
+                        </span>
+                        <ul [@fadeState]="item_i.isOpen ? 'active' : 'inactive'">
+                            <li class="l-item" *ngFor="let item_ii of item_i.servicers">
+                                <span class="l-title l3">
+                                    {{item_ii.name}}
+                                </span>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
         </ul>
         <button class="add-btn"
                 title="新增机房"

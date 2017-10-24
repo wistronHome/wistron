@@ -1,4 +1,5 @@
 import { Component, OnInit, NgModule, Input, Output, EventEmitter } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
     imports:      [],
@@ -15,7 +16,10 @@ export class CreateRoomModalComponent implements OnInit {
     @Input() isVisible: boolean;
     @Output() onVoted = new EventEmitter<boolean>();
     roomUpload = null;
-    constructor() { }
+    roomName = '';
+    roomWith = '';
+    roomLength = '';
+    constructor( private http: HttpClient) { }
 
     ngOnInit() {
     }
@@ -37,6 +41,19 @@ export class CreateRoomModalComponent implements OnInit {
         reader.readAsDataURL(file);
         reader.onload = ev => {
             _this.roomUpload = ev.target['result'];
-        }
+        };
+    }
+    saveRoom() {
+        const body = {roomName: this.roomName, roomMaxCabinet: '50', roomLength: this.roomLength, roomWith: this.roomWith,
+            roomImage: '', roomRemark: ''};
+        this.http.post('/itm/rooms/addRoom', body).subscribe(data => {
+            console.log(data);
+            if (data['code'] === 0) {
+                alert('新增成功');
+                this.onVoted.emit(false);
+            }else {
+                alert('网络异常，请重试');
+            }
+        });
     }
 }

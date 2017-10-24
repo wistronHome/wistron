@@ -24,7 +24,16 @@ export class LegendUtil {
         let node = this.graph.createNode('', 0, 0);
         node.set('type', TYPES.CABINET_BG);
         node.set('selected', 'unselected');
-        node.image = '../../../assets/image/cabinet.png';
+        if ( LN === 32 ) {
+            node.image = '../../../assets/image/32u-cabinet.png';
+        }else if ( LN === 42) {
+            node.image = '../../../assets/image/cabinet.png';
+        }else if ( LN === 22) {
+            node.image = '../../../assets/image/22u-cabinet.png';
+        }else {
+
+        }
+
         node.setStyle(this.Q.Styles.HEIGHT, 30);
         this.graph.graphModel.add(node);
         for (let i = 0; i <= LN; i++) {

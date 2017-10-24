@@ -89,7 +89,7 @@
         <td>基础设施>机柜>机柜</td>
       </tr>
     </table>-->
-    <div>
+    <div class="info-detail">
       <form nz-form  >
       <div nz-form-item nz-row>
         <div nz-form-label nz-col >
@@ -142,6 +142,15 @@
         </div>
         <div nz-form-control nz-col  >
           <nz-input    [nzSize]="'large'" [(ngModel)]='height' name= 'three'>
+          </nz-input>
+        </div>
+      </div>
+      <div nz-form-item nz-row *ngIf="isCustomCabinet">
+        <div nz-form-label nz-col>
+          <label>机柜U数</label>
+        </div>
+        <div nz-form-control nz-col  >
+          <nz-input    [nzSize]="'large'" [(ngModel)]='height' name= 'four'>
           </nz-input>
         </div>
       </div>

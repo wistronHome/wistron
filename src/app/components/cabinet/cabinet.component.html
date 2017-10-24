@@ -72,10 +72,13 @@
             </tbody>
         </nz-table>
         <button nz-button [nzType]="'primary'">
-            <i class="anticon anticon-search"></i><span>绑定</span>
+            <i class="anticon anticon-lock"></i><span>绑定</span>
+        </button>
+        <button nz-button [nzType]="'primary'" (click)="delServer()">
+            <i class="anticon anticon-delete"></i><span>删除</span>
         </button>
         <button nz-button [nzType]="'primary'">
-            <i class="anticon anticon-search"></i><span>Search</span>
+            <i class="anticon anticon-search"></i><span>搜索</span>
         </button>
     </div>
 </div>
