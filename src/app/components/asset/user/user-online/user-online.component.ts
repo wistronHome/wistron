@@ -14,7 +14,7 @@ export class UserOnlineComponent implements OnInit {
         code: '',
         name: ''
     };
-    pageSize: number = 10;
+    pageSize: number = 20;
     pageIndex: number = 1;
     total: number = 1;
     constructor(

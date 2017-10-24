@@ -103,7 +103,7 @@
         <nz-table #nzTable [nzDataSource]="assets"
                   [nzSize]="'small'"
                   [nzIsPagination]="false"
-                  [nzScroll]="{ y: 440 }"
+                  [nzScroll]="{ y: 500 }"
                   [nzBordered]="true"
                   [nzPageSize]="10">
             <ng-template #nzFixedHeader>
@@ -116,11 +116,11 @@
                                (ngModelChange)="checkAll($event)">
                         </label>
                     </th>
-                    <th nz-th [nzWidth]="'100px'">
+                    <th nz-th [nzWidth]="'110px'">
                         <span>名称</span>
-                        <nz-table-sort ></nz-table-sort>
+                        <nz-table-sort [(nzValue)]="sortMap.name" (nzValueChange)="sort('name',$event)"></nz-table-sort>
                     </th>
-                    <th nz-th [nzWidth]="'150px'"><span>编号</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>编号</span></th>
                     <th nz-th [nzWidth]="'150px'"><span>型号</span></th>
                     <th nz-th [nzWidth]="'100px'"><span>机房</span></th>
                     <th nz-th [nzWidth]="'100px'"><span>所属项目</span></th>
@@ -142,7 +142,7 @@
                         <span>{{asset.name}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{asset.number}}</span>
+                        <a (click)="$router.navigate(['/asset/maintenance/' + asset.number])">{{asset.number}}</a>
                     </td>
                     <td nz-td>
                         <span>{{asset.model}}</span>
@@ -160,10 +160,10 @@
                         <span>{{asset.position}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{asset.state}}</span>
+                        <span>{{asset.state === 1 ? '下架' : '上架'}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{asset.alarm}}</span>
+                        <span>{{asset.alarm | alarm}}</span>
                     </td>
                     <td nz-td>
                         <a (click)="modifyUser(user)">修改</a>

@@ -21,7 +21,7 @@ export class UserManagerComponent implements OnInit {
     password: Password;
     isModifyPasswordShow: boolean = false;
     currentUser: User;
-    pageSize: number = 10;
+    pageSize: number = 20;
     pageIndex: number = 1;
     total: number = 1;
     roles = [

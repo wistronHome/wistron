@@ -10,6 +10,7 @@ import { UserRolesComponent } from './components/asset/user/user-roles/user-role
 import { RoleDetailComponent } from './components/asset/user/role-detail/role-detail.component'
 import { AssetComponent } from './components/asset/asset.component'
 import { MaintenanceComponent } from './components/asset/maintenance/maintenance.component'
+import { MaintenanceDetailComponent } from './components/asset/maintenance/maintenance-detail/maintenance-detail.component'
 
 const routes: Routes = [
     {
@@ -59,6 +60,10 @@ const routes: Routes = [
             {
                 path: 'maintenance',
                 component: MaintenanceComponent
+            },
+            {
+                path: 'maintenance/:id',
+                component: MaintenanceDetailComponent
             }
         ]
     }

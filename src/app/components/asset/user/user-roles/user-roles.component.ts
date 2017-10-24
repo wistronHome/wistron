@@ -16,7 +16,7 @@ export class UserRolesComponent implements OnInit {
     search = {
         name: ''
     };
-    pageSize: number = 10;
+    pageSize: number = 20;
     pageIndex: number = 1;
     total: number = 1;
     constructor(

@@ -196,7 +196,7 @@ export class MaintenanceService {
         asset.name = 'name' + _random;
         asset.number = _random;
         asset.room = 'room' + _random;
-        asset.state = Utils.getState(3);
+        asset.state = Utils.getState(2);
         asset.belong = '机房1';
         asset.position = Utils.getState(42) + '_U';
         asset.duty = '张三';

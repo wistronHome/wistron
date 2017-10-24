@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'
 import { MissionService } from '../../../mission-store/mission.service'
 import { MaintenanceService } from './maintenance.service'
 import { Asset } from '../../../models';
@@ -77,7 +78,8 @@ export class MaintenanceComponent implements OnInit {
 
     constructor(
         private $mission: MissionService,
-        private $service: MaintenanceService
+        private $service: MaintenanceService,
+        private $router: Router
     ) {
         $mission.pageChangeHook.subscribe(page => {
             this.pageIndex = page.pageIndex;
@@ -116,11 +118,12 @@ export class MaintenanceComponent implements OnInit {
         number: null,
         model: null,
         room: null
-    }
+    };
     sortName = null;
     sortValue = null;
 
     sort(sortName, value) {
+        console.log(sortName, value);
         this.sortName = sortName;
         this.sortValue = value;
         Object.keys(this.sortMap).forEach(key => {

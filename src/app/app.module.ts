@@ -22,7 +22,9 @@ import { UserOnlineComponent } from './components/asset/user/user-online/user-on
 import { UserRolesComponent } from './components/asset/user/user-roles/user-roles.component';
 import { RoleDetailComponent } from './components/asset/user/role-detail/role-detail.component';
 import { AssetComponent } from './components/asset/asset.component';
-import { MaintenanceComponent } from './components/asset/maintenance/maintenance.component'
+import { MaintenanceComponent } from './components/asset/maintenance/maintenance.component';
+import { AlarmPipe } from './pipes/alarm.pipe';
+import { MaintenanceDetailComponent } from './components/asset/maintenance/maintenance-detail/maintenance-detail.component'
 // import { CreateRoomComponentComponent } from './components/machine/create-room-component/create-room-component.component'
 
 @NgModule({
@@ -43,7 +45,9 @@ import { MaintenanceComponent } from './components/asset/maintenance/maintenance
         UserRolesComponent,
         RoleDetailComponent,
         AssetComponent,
-        MaintenanceComponent
+        MaintenanceComponent,
+        AlarmPipe,
+        MaintenanceDetailComponent
 
     ],
     imports: [

@@ -1,0 +1,97 @@
+<div class="detail-wrap" style="background: #ffffff">
+    <nz-tabset>
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-calculator"></i>
+                资产信息
+            </ng-template>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'一般属性'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">资产名称:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">资产编号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">序列号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">BMCIP:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">带内 IP:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="16">
+                            <div nz-col [nzSpan]="4" class="row-title">品牌/系列/型号:</div>
+                            <div nz-col [nzSpan]="20">
+                                <nz-cascader
+                                    [nzOptions]="_options"
+                                    [(ngModel)]="_value"
+                                    (ngModelChange)="_console($event)"
+                                    (nzChange)="_console($event)">
+                                </nz-cascader>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="16">
+                            <div nz-col [nzSpan]="4" class="row-title">所属项目/责任人:</div>
+                            <div nz-col [nzSpan]="20">
+                                <nz-cascader
+                                    [nzOptions]="_options"
+                                    [(ngModel)]="_value"
+                                    (ngModelChange)="_console($event)"
+                                    (nzChange)="_console($event)">
+                                </nz-cascader>
+                            </div>
+                        </div>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'特殊属性'" [nzActive]="false" [ngStyle]="style" >
+                    <p>safeasefasef 的内容</p>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'上架位置'" [nzActive]="false" [ngStyle]="style" >
+                    <p>safeasefasef 的内容</p>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'备注信息'" [nzActive]="false" [ngStyle]="style" >
+                    <p>safeasefasef 的内容</p>
+                </nz-collapse>
+            </nz-collapseset>
+        </nz-tab>
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-qrcode"></i>
+                服务器信息
+            </ng-template>
+            <span>服务器</span>
+        </nz-tab>
+    </nz-tabset>
+
+</div>
