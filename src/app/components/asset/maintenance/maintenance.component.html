@@ -86,21 +86,21 @@
                 <i class="anticon anticon-plus"></i>
                 <span>新&nbsp;&nbsp;增</span>
             </button>
-            <button nz-button [nzType]="'default'" (click)="createUser()">
-                <i class="anticon anticon-plus"></i>
+            <button nz-button [disabled]="disabledButton" [nzType]="'primary'" [nzType]="'default'">
+                <i class="anticon anticon-sync"></i>
                 <span>同步服务器</span>
             </button>
             <button nz-button
-                    [disabled]="_disabledButton"
+                    [disabled]="disabledButton"
                     [nzType]="'primary'"
-                    [nzLoading]="_operating"
-                    (click)="_operateData()">
+                    [nzLoading]="operating"
+                    (click)="batchDelete()">
                 <i class="anticon anticon-delete"></i>
                 <span>批量删除</span>
             </button>
             <span style="margin-left: 8px;" *ngIf="_checkedNumber">已选中 {{_checkedNumber}} 条</span>
         </div>
-        <nz-table #nzTable [nzDataSource]="data"
+        <nz-table #nzTable [nzDataSource]="assets"
                   [nzSize]="'small'"
                   [nzIsPagination]="false"
                   [nzScroll]="{ y: 440 }"
@@ -111,82 +111,72 @@
                 <tr>
                     <th nz-th [nzWidth]="'30px'" [nzCheckbox]="true">
                         <label nz-checkbox
-                               [(ngModel)]="_allChecked"
-                               [nzIndeterminate]="_indeterminate"
-                               (ngModelChange)="_checkAll($event)">
+                               [(ngModel)]="allChecked"
+                               [nzIndeterminate]="indeterminate"
+                               (ngModelChange)="checkAll($event)">
                         </label>
                     </th>
-                    <th nz-th [nzWidth]="'100px'"><span>名称</span></th>
-                    <th nz-th [nzWidth]="'150px'"><span>编号</span></th>
                     <th nz-th [nzWidth]="'100px'">
-                        <span>型号</span>
+                        <span>名称</span>
+                        <nz-table-sort ></nz-table-sort>
                     </th>
-                    <th nz-th [nzWidth]="'200px'">
-                        <span>机房</span>
-                    </th>
-                    <th nz-th [nzWidth]="'250px'"><span>所属项目</span></th>
-                    <th nz-th [nzWidth]="'150px'"><span>责任人</span></th>
-                    <th nz-th [nzWidth]="'150px'"><span>位置</span></th>
-                    <th nz-th [nzWidth]="'150px'"><span>状态</span></th>
-                    <th nz-th [nzWidth]="'150px'"><span>告警状态</span></th>
-                    <th nz-th [nzWidth]="'150px'"><span>操作</span></th>
+                    <th nz-th [nzWidth]="'150px'"><span>编号</span></th>
+                    <th nz-th [nzWidth]="'150px'"><span>型号</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>机房</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>所属项目</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>责任人</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>位置</span></th>
+                    <th nz-th><span>状态</span></th>
+                    <th nz-th [nzWidth]="'100px'" ><span>告警状态</span></th>
+                    <th nz-th [nzWidth]="'200px'"><span>操作</span></th>
                 </tr>
                 </thead>
             </ng-template>
             <tbody nz-tbody>
-            <ng-template ngFor let-user [ngForOf]="nzTable.data">
+            <ng-template ngFor let-asset [ngForOf]="nzTable.data">
                 <tr nz-tbody-tr>
                     <td nz-td [nzCheckbox]="true">
-                        <label nz-checkbox [(ngModel)]="user.checked" (ngModelChange)="_refreshStatus($event)"></label>
+                        <label nz-checkbox [(ngModel)]="asset.checked" (ngModelChange)="refreshStatus($event)"></label>
                     </td>
                     <td nz-td>
-                        <span>{{user.code}}</span>
+                        <span>{{asset.name}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{user.name}}</span>
+                        <span>{{asset.number}}</span>
                     </td>
                     <td nz-td>
-                        <nz-switch [nzDisabled]="true" [ngModel]="user.state === 1">
-                            <span checked>{{user.state | userState}}</span>
-                            <span unchecked>{{user.state | userState}}</span>
-                        </nz-switch>
+                        <span>{{asset.model}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{user.phone}}</span>
+                        <span>{{asset.room}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{user.email}}</span>
+                        <span>{{asset.belong}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{user.role | userRole}}</span>
+                        <span>{{asset.duty}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{user.phone}}</span>
+                        <span>{{asset.position}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{user.email}}</span>
+                        <span>{{asset.state}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{user.role | userRole}}</span>
+                        <span>{{asset.alarm}}</span>
                     </td>
                     <td nz-td>
                         <a (click)="modifyUser(user)">修改</a>
                         <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
-                                       (nzOnConfirm)="confirmDelete(user)"
+                                       (nzOnConfirm)="confirmDelete(asset)"
                                        (nzOnCancel)="cancel()">
                             <a nz-popconfirm>删除</a>
                         </nz-popconfirm>
-                        <a (click)="modifyPassword(user)">重置密码</a>
-                        <nz-popconfirm [nzTitle]="'确认' + (user.state | userState: 'reverse') + '吗？'"
-                                       (nzOnConfirm)="confirmState(user)"
+                        <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
+                                       (nzOnConfirm)="confirmDelete(asset)"
                                        (nzOnCancel)="cancel()">
-                            <a nz-popconfirm>{{user.state | userState: 'reverse'}}</a>
+                            <a nz-popconfirm>上架/下架</a>
                         </nz-popconfirm>
-                    </td>
-                </tr>
-                <tr nz-tbody-tr *ngIf="user.expand">
-                    <td nz-td colspan="9">
-                        {{user.name}}
                     </td>
                 </tr>
             </ng-template>

@@ -59,27 +59,29 @@ export class UserManagerComponent implements OnInit {
         });
     }
 
-    _allChecked = false;
-    _disabledButton = true;
-    _checkedNumber = 0;
-    _displayData: Array<any> = [];
-    _operating = false;
-    _indeterminate = false;
+    allChecked = false; // 是否全选
+    disabledButton = true;
+    checkedNumber = 0;  // 选中数量
+    operating = false; // 批量删除延迟
+    indeterminate = false;
 
-    _displayDataChange($event) {
-        this._displayData = $event;
+    /**
+     * 变更选中状态
+     */
+    refreshStatus() {
+        const _allChecked = this.data.every(user => user.checked === true);
+        const _allUnChecked = this.data.every(user => !user.checked);
+        this.allChecked = _allChecked;
+        this.indeterminate = (!_allChecked) && (!_allUnChecked);
+        this.disabledButton = !this.data.some(value => value.checked);
+        this.checkedNumber = this.data.filter(value => value.checked).length;
     };
 
-    _refreshStatus() {
-        const allChecked = this.data.every(user => user.checked === true);
-        const allUnChecked = this.data.every(user => !user.checked);
-        this._allChecked = allChecked;
-        this._indeterminate = (!allChecked) && (!allUnChecked);
-        this._disabledButton = !this.data.some(value => value.checked);
-        this._checkedNumber = this.data.filter(value => value.checked).length;
-    };
-
-    _checkAll(value) {
+    /**
+     * 全选按钮
+     * @param value
+     */
+    checkAll(value) {
         if (value) {
             this.data.forEach(user => {
                 user.checked = true;
@@ -89,15 +91,18 @@ export class UserManagerComponent implements OnInit {
                 user.checked = false;
             });
         }
-        this._refreshStatus();
+        this.refreshStatus();
     };
 
-    _operateData() {
-        this._operating = true;
+    /**
+     * 批量删除
+     */
+    batchDelete() {
+        this.operating = true;
         setTimeout(() => {
             this.data.forEach(user => user.checked = false);
-            this._refreshStatus();
-            this._operating = false;
+            this.refreshStatus();
+            this.operating = false;
         }, 1000);
     };
 

@@ -6,6 +6,7 @@ import { Password } from './Password';
 import { User } from './User'
 import { Role } from './role'
 import { Asset } from './asset'
+import { Utils } from './utils'
 
 // export default this;
-export { Room, Cabinet, Servicer, ServerType, Facility, Password, User, Role, Asset };
+export { Room, Cabinet, Servicer, ServerType, Facility, Password, User, Role, Asset, Utils };

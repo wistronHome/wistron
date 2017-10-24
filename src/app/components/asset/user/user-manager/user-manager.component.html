@@ -32,10 +32,10 @@
     <div>
         <div style="margin: 10px 25px;">
             <button nz-button
-                    [disabled]="_disabledButton"
+                    [disabled]="disabledButton"
                     [nzType]="'primary'"
-                    [nzLoading]="_operating"
-                    (click)="_operateData()">
+                    [nzLoading]="operating"
+                    (click)="batchDelete()">
                 <i class="anticon anticon-delete"></i>
                 <span>批量删除</span>
             </button>
@@ -43,9 +43,10 @@
                 <i class="anticon anticon-plus"></i>
                 <span>新&nbsp;&nbsp;增</span>
             </button>
-            <span style="margin-left: 8px;" *ngIf="_checkedNumber">已选中 {{_checkedNumber}} 条</span>
+            <span style="margin-left: 8px;" *ngIf="_checkedNumber">已选中 {{checkedNumber}} 条</span>
         </div>
-        <nz-table #nzTable [nzDataSource]="data"
+        <nz-table #nzTable
+                  [nzDataSource]="data"
                   [nzSize]="'small'"
                   [nzIsPagination]="false"
                   [nzScroll]="{ y: 440 }"
@@ -57,9 +58,9 @@
                         <th nz-th [nzWidth]="'30px'" [nzExpand]="true"></th>
                         <th nz-th [nzWidth]="'30px'" [nzCheckbox]="true">
                             <label nz-checkbox
-                                   [(ngModel)]="_allChecked"
-                                   [nzIndeterminate]="_indeterminate"
-                                   (ngModelChange)="_checkAll($event)">
+                                   [(ngModel)]="allChecked"
+                                   [nzIndeterminate]="indeterminate"
+                                   (ngModelChange)="checkAll($event)">
                             </label>
                         </th>
                         <th nz-th [nzWidth]="'100px'"><span>用户代码</span></th>
@@ -83,7 +84,9 @@
                             <nz-row-expand-icon [(nzExpand)]="user.expand"></nz-row-expand-icon>
                         </td>
                         <td nz-td [nzCheckbox]="true">
-                            <label nz-checkbox [(ngModel)]="user.checked" (ngModelChange)="_refreshStatus($event)"></label>
+                            <label nz-checkbox
+                                   [(ngModel)]="user.checked"
+                                   (ngModelChange)="refreshStatus($event)"></label>
                         </td>
                         <td nz-td>
                             <span>{{user.code}}</span>
@@ -251,7 +254,7 @@
                     旧密码：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [(ngModel)]="password.oldPwd" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [(ngModel)]="password.oldPwd" [nzPlaceHolder]="'请输入'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -259,7 +262,7 @@
                     新密码：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [(ngModel)]="password.newPwd" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [(ngModel)]="password.newPwd" [nzPlaceHolder]="'请输入'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -267,7 +270,7 @@
                     确认新密码：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [(ngModel)]="password.rePwd" [nzPlaceHolder]="'default size'"></nz-input>
+                    <nz-input [(ngModel)]="password.rePwd" [nzPlaceHolder]="'请输入'"></nz-input>
                 </div>
             </div>
         </ng-template>
