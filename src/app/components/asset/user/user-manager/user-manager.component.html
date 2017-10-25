@@ -89,25 +89,25 @@
                                    (ngModelChange)="refreshStatus($event)"></label>
                         </td>
                         <td nz-td>
-                            <span>{{user.code}}</span>
+                            <span>{{user.userCode}}</span>
                         </td>
                         <td nz-td>
-                            <span>{{user.name}}</span>
+                            <span>{{user.userName}}</span>
                         </td>
                         <td nz-td>
-                            <nz-switch [nzDisabled]="true" [ngModel]="user.state === 1">
-                                <span checked>{{user.state | userState}}</span>
-                                <span unchecked>{{user.state | userState}}</span>
+                            <nz-switch [nzDisabled]="true" [ngModel]="user.userStatus === 1">
+                                <span checked>{{user.userStatus | userState}}</span>
+                                <span unchecked>{{user.userStatus | userState}}</span>
                             </nz-switch>
                         </td>
                         <td nz-td>
-                            <span>{{user.phone}}</span>
+                            <span>{{user.phonenumber}}</span>
                         </td>
                         <td nz-td>
                             <span>{{user.email}}</span>
                         </td>
                         <td nz-td>
-                            <span>{{user.role | userRole}}</span>
+                            <span>{{user.role.roleDescribe}}</span>
                         </td>
                         <td nz-td>
                             <a (click)="modifyUser(user)">修改</a>
@@ -157,7 +157,7 @@
                     用户代码：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [(ngModel)]="currentUser.code" [nzPlaceHolder]="'请填写'"></nz-input>
+                    <nz-input [nzDisabled]="currentUser.userId" [(ngModel)]="currentUser.userCode" [nzPlaceHolder]="'请填写'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -165,7 +165,7 @@
                     用户名称：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [(ngModel)]="currentUser.name" [nzPlaceHolder]="'请填写'"></nz-input>
+                    <nz-input [(ngModel)]="currentUser.userName" [nzPlaceHolder]="'请填写'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -173,12 +173,12 @@
                     用户状态：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-radio-group [(ngModel)]="currentUser.state">
-                        <label nz-radio-button [nzValue]="1">
-                            <span>{{1 | userState}}</span>
+                    <nz-radio-group [(ngModel)]="currentUser.userStatus">
+                        <label nz-radio-button [nzValue]="'0'">
+                            <span>{{'0' | userState}}</span>
                         </label>
-                        <label nz-radio-button [nzValue]="2">
-                            <span>{{2 | userState}}</span>
+                        <label nz-radio-button [nzValue]="'1'">
+                            <span>{{'1' | userState}}</span>
                         </label>
                     </nz-radio-group>
                 </div>
@@ -188,11 +188,11 @@
                     角色：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-select style="width: 120px;" [(ngModel)]="currentUser.role">
+                    <nz-select style="width: 120px;" [(ngModel)]="currentUser.role.roleId">
                         <nz-option
                             *ngFor="let role of roles"
-                            [nzLabel]="role.label"
-                            [nzValue]="role.value">
+                            [nzLabel]="role.roleDescribe"
+                            [nzValue]="role.roleId">
                         </nz-option>
                     </nz-select>
                 </div>
@@ -202,7 +202,7 @@
                     手机号：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [(ngModel)]="currentUser.phone" [nzPlaceHolder]="'请填写'"></nz-input>
+                    <nz-input [(ngModel)]="currentUser.phonenumber" [nzPlaceHolder]="'请填写'"></nz-input>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -226,7 +226,7 @@
                     密码有效期：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [ngModel]="currentUser.password" [nzPlaceHolder]="'请填写'"></nz-input>
+                    <nz-input [ngModel]="currentUser.passwordValidity" [nzPlaceHolder]="'请填写'"></nz-input>
                 </div>
             </div>
         </ng-template>

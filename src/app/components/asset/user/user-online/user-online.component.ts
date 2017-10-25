@@ -33,9 +33,10 @@ export class UserOnlineComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.$service.getUserPagination( this.pageIndex, this.pageSize ).then(result => {
-            this.data = result.users;
-            this.total = result.total;
+        this.$service.getOnlineUserPagination(this.pageSize, this.pageIndex, result => {
+            console.log(result);
+            // this.data = result.users;
+            // this.total = result.total;
         });
     }
     searchByField() {

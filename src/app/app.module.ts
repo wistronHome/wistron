@@ -3,7 +3,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NoopInterceptor } from './noop-interceptor'
 import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { AppComponent } from './app.component';
 import { CabinetComponent } from './components/cabinet/cabinet.component';
@@ -59,6 +60,13 @@ import { MaintenanceDetailComponent } from './components/asset/maintenance/maint
         NgZorroAntdModule.forRoot(),
         // 路由模块最后导入。
         AppRoutingModule
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: NoopInterceptor,
+            multi: true
+        }
     ],
     bootstrap: [AppComponent]
 })

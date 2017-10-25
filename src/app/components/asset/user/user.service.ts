@@ -1,34 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { User, Role } from '../../../models/index'
+import { User, Role, Result } from '../../../models/index'
 
 @Injectable()
 export class UserService {
-    users: User[] = this.getAllUser();
-    roles: Role[] = this.getAllRole();
     constructor(
         private $http: HttpClient
     ) { }
-
-    /**
-     * 获取所有用户
-     * @returns {Promise<User[]>}
-     */
-    public getAllUser(): User[] {
-        let tmp: User[] = [];
-        for (let i = 0; i < 22; i++) {
-            tmp.push(this._createUser());
-        }
-        return tmp;
-    }
-
-    public getAllRole(): Role[] {
-        let tmp: Role[] = [];
-        for (let i = 0; i < 9; i++) {
-            tmp.push(this.createRole());
-        }
-        return tmp;
-    }
 
     /**
      * 分页获取用户信息
@@ -36,140 +14,142 @@ export class UserService {
      * @param {number} pageSize
      * @returns {{users: User[]; total: number}}
      */
-    public getUserPagination(pageIndex: number, pageSize: number, search = { code: '', name: '', state: 0 }): Promise<{ users: User[], total: number }> {
-        let body = {
-            pageNum: pageIndex,
-            pageSize: pageSize
-        };
-        this.$http.get(`/itm/users/${ body.pageSize }/${ body.pageNum }`).subscribe(result => {
-            console.log(result);
-        });
+    public getUserPagination(pageIndex: number, pageSize: number, search = { code: '', name: '', state: 0 }): any {
         let _users: User[] = [];
-        for (let i = pageSize * (pageIndex - 1); i < pageSize * pageIndex && i < this.users.length; i++) {
-            _users.push(this.users[i]);
-        }
-        return Promise.resolve({ users: _users, total: this.users.length});
+        this.$http.get(`/itm/users/${ pageSize }/${ pageIndex }`).subscribe((result: Result) => {
+            if (result.code === 0) {
+                result.data.data.forEach((item: User) => {
+                    _users.push(item);
+                });
+            }
+        });
+        return Promise.resolve({ users: _users, total: 1});
+    }
+
+    /**
+     * 获取所有角色
+     * @returns {any}
+     */
+    public getAllRoles(): any {
+        let _roles: Role[] = [];
+        this.$http.get(`/itm/roles/10/1`).subscribe((result: Result) => {
+            if (result.code === 0) {
+                result.data.data.forEach((item: Role) => {
+                    _roles.push(item);
+                });
+            }
+        });
+        return Promise.resolve(_roles);
     }
 
     /**
      * 新增用户
      * @param {User} user
      */
-    public createUser(user: User): void {
+    public insertUser(user: User): void {
         this.$http.post('/itm/users', user).subscribe(result => {
             console.log(result);
         });
     }
 
     /**
+     * 用户名校验
+     * @param {string} userName
+     */
+    public userNameValidate(userName: string, userId: number, callback) {
+        let _result = null;
+        this.$http.get(`/itm/users/userName/${userName}/${userId}`).subscribe((result: Result) => {
+            if (result.code === 0) {
+                _result = { ok: true };
+            } else {
+                _result = { ok: false, msg: result.msg };
+            }
+            callback(_result);
+        });
+    }
+
+    /**
      * 修改用户信息
      * @param {User} user
-     * @returns {{result: boolean}}
+     * @param callback
      */
-    public modifyUser(user: User): Promise<{ result: boolean }> {
-        // this.$http.put('/itm/users', user).subscribe(result => {
-        //     console.log(result);
-        // });
-        this.users.forEach(item => {
-            if (item.id === user.id) {
-                item.name = user.name;
-                item.state = user.state;
-                item.role = user.role;
-                item.email = user.email;
-                item.code = user.code;
-                item.phone = user.phone;
+    public modifyUser(user: User, callback) {
+        this.$http.put('/itm/users', user).subscribe((result: Result) => {
+            if (result.code === 0) {
+                callback({ok: true});
+            } else {
+                callback({ok: false, msg: result.msg});
             }
         });
-        return Promise.resolve({result: true});
     }
 
     /**
      * 删除多条用户
      * @param {string[]} ids
+     * @param callback
      */
-    public deleteUser(ids: string[]) {
-        // this.$http.delete('/itm/users/' + ids + '').subscribe(result => {
-        //     console.log(result);
-        // });
-    }
-
-    /**
-     * 删除n条用户
-     * @param {string[]} ids
-     * @returns {User[]}
-     */
-    public deleteUsers(ids: string[], pageSize: number, pageIndex: number): Promise<{ users: User[], total: number }> {
-        let users: User[] = [];
-        this.users.forEach(item => {
-            if (!ids.includes(item.id)) {
-                users.push(item);
+    public deleteUsers(ids: number[], callback) {
+        this.$http.post(`/itm/deleteUsers`, ids).subscribe((result: Result) => {
+            if (result.code === 0) {
+                callback(result);
             }
         });
-        this.users = users;
-        let _users: User[] = [];
-        for (let i = pageSize * (pageIndex - 1); i < pageSize * pageIndex && i < this.users.length; i++) {
-            _users.push(this.users[i]);
-        }
-        return Promise.resolve({ users: _users, total: this.users.length });
     }
 
     /**
-     * 分页获取角色裂变
-     * @param {number} pageIndex
-     * @param {number} pageSize
-     * @returns {Promise<{roles: Role[]; total: number}>}
+     * 停用/启用状态
+     * @param {string} status
+     * @param {number} id
+     * @param callback
      */
-    public getRolePagination(pageIndex: number, pageSize: number): Promise<{ roles: Role[], total: number }> {
-        let _roles: Role[] = [];
-        for (let i = pageSize * (pageIndex - 1); i < pageSize * pageIndex && i < this.roles.length; i++) {
-            _roles.push(this.roles[i]);
-        }
-        return Promise.resolve({ roles: _roles, total: this.roles.length});
+    public changeStatus(status: string, id: number, callback) {
+        this.$http.put(`/itm/users/${status}/${id}`, {}).subscribe((result: Result) => {
+            if (result.code === 0) {
+                callback(result);
+            }
+        })
     }
 
-
-
-
-
-
-    private _createUser(): User {
-        let user = new User();
-        let _random = this.getRandomColor();
-        let _phone = this.getPhone();
-        user.id = 'id' + _random;
-        user.name = 'name' + _random;
-        user.code = _random;
-        user.state = this.getState(2);
-        user.email =  _phone + '@163.com';
-        user.phone = _phone;
-        user.role = this.getState(4);
-        user.password = '123456';
-        user.checked = false;
-        user.lastLogin = new Date()
-        return user;
+    /**
+     * 修改密码
+     * @param {number} userId
+     * @param {string} password
+     * @param callback
+     */
+    public modifyPassword(userId: number, password: string, callback) {
+        let body = { userId: userId, password: password };
+        this.$http.put(`/itm/users/reset`, body).subscribe((result: Result) => {
+            if (result.code === 0) {
+                callback(result);
+            }
+        });
     }
 
-    private createRole(): Role {
-        let role = new Role();
-        let _random = this.getRandomColor();
-        role.id = 'id' + _random;
-        role.name = 'name' + _random;
-        role.desc = 'desc' + _random;
-        role.checked = false;
-        return role;
+    /**
+     * 查询在线用户
+     * @param {number} pageSize
+     * @param {number} pageIndex
+     * @param callback
+     */
+    public getOnlineUserPagination(pageSize: number, pageIndex: number, callback) {
+        this.$http.get(`/itm/users/queryOnline/${pageSize}/${pageIndex}`).subscribe((result: Result) => {
+            if (result.code === 0) {
+                callback(result);
+            }
+        });
     }
 
-    private getRandomColor(): string {
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += '0123456789ABCDEF'[Math.floor(Math.random() * 16)];
-        }
-        return color;
+    /**
+     * 强制下线
+     * @param {number} userId
+     * @param callback
+     */
+    public offLine(userId: number, callback) {
+        this.$http.delete(`/itm/users/offline/${userId}`).subscribe((result: Result) => {
+            if (result.code === 0) {
+                callback(result)
+            }
+        });
     }
-    private getPhone() {
-        return parseInt('139' +  (Math.floor(Math.random() * 89999999) + 10000000));
-    }
-    private getState(limit) {
-        return Math.ceil(Math.random() * limit);
-    }
+
 }

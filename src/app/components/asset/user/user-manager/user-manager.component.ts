@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../user.service'
-import { User, Password } from '../../../../models';
+import { User, Password, Role } from '../../../../models';
 import { NzMessageService } from 'ng-zorro-antd';
 import { MissionService } from '../../../../mission-store/mission.service';
 
@@ -24,24 +24,7 @@ export class UserManagerComponent implements OnInit {
     pageSize: number = 20;
     pageIndex: number = 1;
     total: number = 1;
-    roles = [
-        {
-            value: 1,
-            label: '基本角色'
-        },
-        {
-            value: 2,
-            label: '管理员'
-        },
-        {
-            value: 3,
-            label: '监控员'
-        },
-        {
-            value: 4,
-            label: '资产管理'
-        }
-    ];
+    roles: Role[] = [];
 
     constructor(
         private $service: UserService,
@@ -122,7 +105,6 @@ export class UserManagerComponent implements OnInit {
     createUser() {
         this.isModalShow = true;
         this.currentUser = new User();
-        this.$service.createUser(new User());
     }
 
     /**
@@ -130,6 +112,7 @@ export class UserManagerComponent implements OnInit {
      * @param {User} user
      */
     modifyUser(user: User) {
+        console.log(user);
         this.isModalShow = true;
         this.currentUser = this.cloneUser(user);
     }
@@ -146,15 +129,23 @@ export class UserManagerComponent implements OnInit {
      * 新增/修改 的保存按钮
      */
     saveUser() {
-        if (this.currentUser.id) {
-            if (this.$service.modifyUser(this.currentUser)) {
-                this.isModalShow = false;
-                this.$message.success('修改成功~');
-            } else {
-                this.$message.error('修改失败~');
-            }
+        if (this.currentUser.userId) {
+            this.$service.modifyUser(this.currentUser, result => {
+                if (result.ok) {
+                    this.isModalShow = false;
+                    this.$message.success('修改成功~');
+                } else {
+                    this.$message.success(result.msg);
+                }
+            });
         } else {
-
+            this.$service.userNameValidate(this.currentUser.userName, this.currentUser.userId || -1, result => {
+                if (result.ok) {
+                    this.$service.insertUser(this.currentUser);
+                } else {
+                    alert(result.msg)
+                }
+            });
         }
     }
 
@@ -172,7 +163,9 @@ export class UserManagerComponent implements OnInit {
      * 保存密码
      */
     savePassword() {
-        console.log(this.password);
+        this.$service.modifyPassword(this.currentUser.userId, this.password.newPwd, result => {
+            console.log(result);
+        });
     }
     cancel(): void {
         // this.$message.info('取消~')
@@ -183,10 +176,8 @@ export class UserManagerComponent implements OnInit {
      * @param {User} user
      */
     confirmDelete(user: User) {
-        this.$service.deleteUsers([user.id], this.pageSize, this.pageIndex).then(result => {
-            this.data = result.users;
-            this.total = result.total;
-            this.$message.info('删除成功~')
+        this.$service.deleteUsers([user.userId], result => {
+            console.log(result);
         });
     };
 
@@ -195,14 +186,21 @@ export class UserManagerComponent implements OnInit {
      * @param {User} user
      */
     confirmState(user: User) {
-        user.state = user.state === 1 ? 2 : 1;
-        this.$message.info('success~')
+        this.$service.changeStatus(user.userStatus, user.userId, result => {
+            user.userStatus = user.userStatus === '0' ? '1' : '0';
+            this.$message.info('success~')
+        });
     }
     ngOnInit() {
         this.$service.getUserPagination( this.pageIndex, this.pageSize ).then(result => {
+            console.log(result);
             this.data = result.users;
             this.total = result.total;
         });
+        this.$service.getAllRoles().then(result => {
+            console.log('roles:', result);
+            this.roles = result;
+        })
     }
 
     private cloneUser(user: User): User {

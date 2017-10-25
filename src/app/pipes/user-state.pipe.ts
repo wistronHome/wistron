@@ -10,11 +10,11 @@ const STATE = {
 })
 export class UserStatePipe implements PipeTransform {
 
-    transform(value: number, reverse: string): string {
+    transform(value: string, reverse: string): string {
         if (reverse === 'reverse') {
-            return value === 1 ? STATE.B : STATE.A;
+            return value === '0' ? STATE.B : STATE.A;
         }
-        return value === 1 ? STATE.A : STATE.B;
+        return value === '0' ? STATE.A : STATE.B;
     }
 
 }

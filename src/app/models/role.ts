@@ -1,30 +1,38 @@
 export class Role {
-    private _id: string;
-    private _name: string;
-    private _desc: string;
+    private _roleId: number;
+    private _roleName: string;
+    private _roleDescribe: string;
+    private _roleUsers: string;
     private _checked: boolean = false;
 
     constructor() {}
 
-    set id(id: string) {
-        this._id = id;
+    set roleId(param: number) {
+        this._roleId = param;
     }
-    get id(): string {
-        return this._id;
-    }
-
-    set name(name: string) {
-        this._name = name;
-    }
-    get name(): string {
-        return this._name;
+    get roleId(): number {
+        return this._roleId;
     }
 
-    set desc(desc: string) {
-        this._desc = desc;
+    set roleName(param: string) {
+        this._roleName = param;
     }
-    get desc(): string {
-        return this._desc;
+    get roleName(): string {
+        return this._roleName;
+    }
+
+    set roleDescribe(param: string) {
+        this._roleDescribe = param;
+    }
+    get roleDescribe(): string {
+        return this._roleDescribe;
+    }
+
+    set roleUsers(param: string) {
+        this._roleUsers = param;
+    }
+    get roleUsers(): string {
+        return this._roleUsers;
     }
 
     set checked(flag: boolean) {

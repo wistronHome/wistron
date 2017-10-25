@@ -28,18 +28,18 @@ export class UserRolesComponent implements OnInit {
         $mission.pageChangeHook.subscribe(page => {
             this.pageSize = page.pageSize;
             this.pageIndex = page.pageIndex;
-            this.$service.getRolePagination( this.pageIndex, this.pageSize ).then(result => {
-                this.data = result.roles;
-                this.total = result.total;
-            });
+            // this.$service.getRolePagination( this.pageIndex, this.pageSize ).then(result => {
+            //     this.data = result.roles;
+            //     this.total = result.total;
+            // });
         });
     }
 
     ngOnInit() {
-        this.$service.getRolePagination( this.pageIndex, this.pageSize ).then(result => {
-            this.data = result.roles;
-            this.total = result.total;
-        });
+        // this.$service.getRolePagination( this.pageIndex, this.pageSize ).then(result => {
+        //     this.data = result.roles;
+        //     this.total = result.total;
+        // });
     }
     searchByField() {
         console.log(this.search);
