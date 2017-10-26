@@ -50,10 +50,10 @@
                         <label nz-checkbox [(ngModel)]="role.checked" ></label>
                     </td>
                     <td nz-td>
-                        <a (click)="$router.navigate(['/asset/user/role/' + role.id])">{{role.name}}</a>
+                        <a (click)="$router.navigate(['/asset/user/role/' + role.roleId])">{{role.roleName}}</a>
                     </td>
                     <td nz-td>
-                        <span>{{role.desc}}</span>
+                        <span>{{role.roleDescribe}}</span>
                     </td>
                     <td nz-td>
                         <a (click)="modifyRole(role)">修改</a>

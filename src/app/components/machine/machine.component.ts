@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { Router, ActivatedRoute } from '@angular/router';
-import { MachineService } from './machine.service'
-import { Room, Cabinet, Servicer } from '../../models/index';
-import { fadeLeftIn } from "../../animations/fade-left-in";
-import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-import { HttpClient } from '@angular/common/http';
+import {Router, ActivatedRoute} from '@angular/router';
+import {MachineService} from './machine.service'
+import {Room, Cabinet, Servicer} from '../../models/index';
+import {fadeLeftIn} from "../../animations/fade-left-in";
+import {NzMessageService, NzModalService} from 'ng-zorro-antd';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
     selector: 'app-machine',
     templateUrl: './machine.component.html',
     styleUrls: ['./machine.component.scss'],
-    providers: [ MachineService ],
+    providers: [MachineService],
     animations: [
         fadeLeftIn
     ]
@@ -26,21 +26,22 @@ export class MachineComponent implements OnInit {
         cabinets: [],
         servicers: []
     };
-    datas: any ;
-    cabinetDatas :any;
-    constructor(
-        private router: Router,
-        private $message: NzMessageService,
-        private $modal: NzModalService,
-        private $service: MachineService,
-        private http: HttpClient
-    ) { }
+    datas: any;
+    cabinetDatas: any;
+
+    constructor(private router: Router,
+                private $message: NzMessageService,
+                private $modal: NzModalService,
+                private $service: MachineService,
+                private http: HttpClient) {
+    }
 
     ngOnInit() {
         this.data.push(this.$service.getMachines());
         this.data.push(this.$service.getMachines());
         this.getRoomDatas();
     }
+
     $watchSearch(currentValue) {
         this.searchValue = currentValue.trim();
         if (this.searchValue) {
@@ -52,8 +53,8 @@ export class MachineComponent implements OnInit {
             this.data.forEach(room => {
                 if (room.name.toUpperCase().includes(this.searchValue.toUpperCase())) {
                     if (this.ass.rooms.length < 5) {
-                        let { id, name } = room;
-                        this.ass.rooms.push({ id, name });
+                        let {id, name} = room;
+                        this.ass.rooms.push({id, name});
                     }
                 }
                 room.cabinets.forEach(cabinet => {
@@ -83,11 +84,13 @@ export class MachineComponent implements OnInit {
 
         }
     }
+
     toggleMenu(item, roomId, ev) {
         item.isOpen = !item.isOpen;
-        this.getCabinetDatas(roomId,item);
+        this.getCabinetDatas(roomId, item);
         ev.stopPropagation();
     }
+
     createRoom() {
         this.isVisible = true;
     }
@@ -103,16 +106,19 @@ export class MachineComponent implements OnInit {
     saveRoom(): void {
 
     }
+
     toggleCollapse(): void {
         this.isCollapse = !this.isCollapse;
     }
+
     getRoomDatas() {
         this.http.get('/itm/rooms').subscribe(data => {
             console.log(data);
             this.datas = data['data'];
         });
     }
-    getCabinetDatas(roomId,item) {
+
+    getCabinetDatas(roomId, item) {
         this.http.get(`/itm/rooms/queryRoom/${roomId}`).subscribe(data => {
             console.log(data);
             // this.datas = data['data'];

@@ -35,10 +35,7 @@ export class UserManagerComponent implements OnInit {
         $mission.pageChangeHook.subscribe(page => {
             this.pageSize = page.pageSize;
             this.pageIndex = page.pageIndex;
-            this.$service.getUserPagination( this.pageIndex, this.pageSize ).then(result => {
-                this.data = result.users;
-                this.total = result.total;
-            });
+            this.refreshUser();
         });
     }
 
@@ -91,11 +88,7 @@ export class UserManagerComponent implements OnInit {
         this.$service.deleteUsers(userIds, result => {
             if (result.ok) {
                 this.operating = false;
-                this.$service.getUserPagination(this.pageIndex, this.pageSize).then(result => {
-                    this.data = result.users;
-                    this.total = result.total;
-                    this.refreshStatus();
-                });
+                this.refreshUser();
             }
         });
     };
@@ -155,10 +148,7 @@ export class UserManagerComponent implements OnInit {
             this.$service.modifyUser(this.currentUser, result => {
                 if (result.ok) {
                     this.isModalShow = false;
-                    this.$service.getUserPagination(this.pageIndex, this.pageSize).then(result => {
-                        this.data = result.users;
-                        this.total = result.total;
-                    });
+                    this.refreshUser();
                     this.$message.success('修改成功~');
                 } else {
                     this.$message.success(result.msg);
@@ -170,10 +160,7 @@ export class UserManagerComponent implements OnInit {
                     this.isModalShow = false;
                     this.$service.insertUser(this.currentUser, result => {
                         if (result.ok) {
-                            this.$service.getUserPagination(this.pageIndex, this.pageSize).then(result => {
-                                this.data = result.users;
-                                this.total = result.total;
-                            });
+                            this.refreshUser();
                         }
                     });
                 } else {
@@ -215,10 +202,7 @@ export class UserManagerComponent implements OnInit {
     confirmDelete(user: User) {
         this.$service.deleteUsers([user.userId], result => {
             if (result.ok) {
-                this.$service.getUserPagination(this.pageIndex, this.pageSize).then(result => {
-                    this.data = result.users;
-                    this.total = result.total;
-                });
+                this.refreshUser();
             }
         });
     };
@@ -230,24 +214,27 @@ export class UserManagerComponent implements OnInit {
     confirmState(user: User) {
         this.$service.changeStatus(user.userId, result => {
             if (result.ok) {
-                this.$service.getUserPagination( this.pageIndex, this.pageSize ).then(result => {
-                    this.data = result.users;
-                    this.total = result.total;
-                });
+                this.refreshUser();
             }
         });
     }
     ngOnInit() {
-        this.$service.getUserPagination( this.pageIndex, this.pageSize ).then(result => {
-            this.data = result.users;
-            this.total = result.total;
-        });
+        this.refreshUser();
         this.$service.getAllRoles().then(result => {
             console.log('roles:', result);
             this.roles = result;
         })
     }
 
+    /**
+     * fsefsef
+     */
+    public refreshUser() {
+        this.$service.getUserPagination( this.pageIndex, this.pageSize, result => {
+            this.data = result.users;
+            this.total = result.total;
+        });
+    }
     private cloneUser(user: User): User {
         let _clone = new User();
         for (let key in user) {

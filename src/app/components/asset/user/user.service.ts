@@ -14,16 +14,13 @@ export class UserService {
      * @param {number} pageSize
      * @returns {{users: User[]; total: number}}
      */
-    public getUserPagination(pageIndex: number, pageSize: number, search = { code: '', name: '', state: 0 }): any {
+    public getUserPagination(pageIndex: number, pageSize: number, callback) {
         let _users: User[] = [];
         this.$http.get(`/itm/users/${ pageSize }/${ pageIndex }`).subscribe((result: Result) => {
             if (result.code === 0) {
-                result.data.data.forEach((item: User) => {
-                    _users.push(item);
-                });
+                callback({users: result.data.data, total: result.data.totalCount});
             }
         });
-        return Promise.resolve({ users: _users, total: 1});
     }
 
     /**
@@ -64,6 +61,21 @@ export class UserService {
             }
         });
         return Promise.resolve(_roles);
+    }
+
+    /**
+     * 分页查询角色列表
+     * @param {number} pageIndex
+     * @param {number} pageSize
+     * @param callback
+     */
+    public getRolesPagination(pageIndex: number, pageSize: number, callback) {
+        this.$http.get(`/itm/roles/${pageSize}/${pageIndex}`).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback({ roles: result.data.data, total: result.data.totalCount });
+            }
+        });
     }
 
     /**
@@ -157,9 +169,8 @@ export class UserService {
      */
     public getOnlineUserPagination(pageSize: number, pageIndex: number, callback) {
         this.$http.get(`/itm/queryOnline/${pageSize}/${pageIndex}`).subscribe((result: Result) => {
-            console.log(result);
             if (result.code === 0) {
-                callback(result);
+                callback({ users: result.data.data, total: result.data.totalCount });
             }
         });
     }
@@ -177,4 +188,18 @@ export class UserService {
         });
     }
 
+    /**
+     * 模糊查询角色
+     * @param {string} pageIndex
+     * @param {string} pageSize
+     * @param {string} roleName
+     * @param callback
+     */
+    public getRolesByField(pageIndex: number, pageSize: number, roleName: string, callback) {
+        this.$http.post(`/itm/roles/termQuery`, {pageSize, pageNum: pageIndex, roleName}).subscribe((result: Result) => {
+            if (result.code === 0) {
+                callback({roles: result.data.data, total: result.data.totalCount});
+            }
+        });
+    }
 }

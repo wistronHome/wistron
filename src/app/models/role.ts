@@ -3,7 +3,9 @@ export class Role {
     private roleName: string;
     private roleDescribe: string;
     private roleUsers: string;
-    private checked: boolean = false;
+    private checked: boolean;
 
-    constructor() {}
+    constructor() {
+        this.checked = false;
+    }
 }

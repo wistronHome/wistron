@@ -28,10 +28,10 @@ export class UserRolesComponent implements OnInit {
         $mission.pageChangeHook.subscribe(page => {
             this.pageSize = page.pageSize;
             this.pageIndex = page.pageIndex;
-            // this.$service.getRolePagination( this.pageIndex, this.pageSize ).then(result => {
-            //     this.data = result.roles;
-            //     this.total = result.total;
-            // });
+            this.$service.getRolesPagination(this.pageIndex, this.pageSize, result => {
+                this.data = result.roles;
+                this.total = result.total;
+            });
         });
     }
 
@@ -43,6 +43,10 @@ export class UserRolesComponent implements OnInit {
     }
     searchByField() {
         console.log(this.search);
+        this.$service.getRolesByField(this.pageIndex, this.pageSize, this.search.name, result => {
+            this.data = result.roles;
+            this.total = result.total;
+        });
     }
 
     modifyRole(role: Role) {
