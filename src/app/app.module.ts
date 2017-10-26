@@ -63,13 +63,13 @@ import { LoginComponent } from './components/login/login.component'
         // 路由模块最后导入。
         AppRoutingModule
     ],
-    // providers: [
-    //     {
-    //         provide: HTTP_INTERCEPTORS,
-    //         useClass: NoopInterceptor,
-    //         multi: true
-    //     }
-    // ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: NoopInterceptor,
+            multi: true
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
