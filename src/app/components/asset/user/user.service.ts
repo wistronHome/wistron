@@ -27,6 +27,30 @@ export class UserService {
     }
 
     /**
+     * 模糊查询用户列表
+     * @param {{userCode: string; userName: string; userStatus: string; pageSize: number; pageNum: number}} query
+     * @param callback
+     */
+    public getUserByField(query: {
+            userCode: string,
+            userName: string,
+            userStatus: string,
+            pageSize: number,
+            pageNum: number}, callback
+        ) {
+        console.log(query);
+        this.$http.post(`/itm/users/termQuery`, query).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback({
+                    users: result.data.data,
+                    total: result.data.total
+                });
+            }
+        });
+    }
+
+    /**
      * 获取所有角色
      * @returns {any}
      */
@@ -46,9 +70,9 @@ export class UserService {
      * 新增用户
      * @param {User} user
      */
-    public insertUser(user: User): void {
+    public insertUser(user: User, callback): void {
         this.$http.post('/itm/users', user).subscribe(result => {
-            console.log(result);
+            callback({ok: true});
         });
     }
 
@@ -88,24 +112,24 @@ export class UserService {
      * @param {string[]} ids
      * @param callback
      */
-    public deleteUsers(ids: number[], callback) {
-        this.$http.post(`/itm/deleteUsers`, ids).subscribe((result: Result) => {
+    public deleteUsers(userIds: number[], callback) {
+        this.$http.post(`/itm/users/deleteUsers`, userIds).subscribe((result: Result) => {
             if (result.code === 0) {
-                callback(result);
+                callback({ok: true});
             }
         });
     }
 
     /**
      * 停用/启用状态
-     * @param {string} status
+     * @param {string} status 0:停用  1:启用
      * @param {number} id
      * @param callback
      */
-    public changeStatus(status: string, id: number, callback) {
-        this.$http.put(`/itm/users/${status}/${id}`, {}).subscribe((result: Result) => {
+    public changeStatus(userId: number, callback) {
+        this.$http.put(`/itm/users/status/${userId}`, {}).subscribe((result: Result) => {
             if (result.code === 0) {
-                callback(result);
+                callback({ok: true});
             }
         })
     }
@@ -120,7 +144,7 @@ export class UserService {
         let body = { userId: userId, password: password };
         this.$http.put(`/itm/users/reset`, body).subscribe((result: Result) => {
             if (result.code === 0) {
-                callback(result);
+                callback({ok: true});
             }
         });
     }
@@ -132,7 +156,8 @@ export class UserService {
      * @param callback
      */
     public getOnlineUserPagination(pageSize: number, pageIndex: number, callback) {
-        this.$http.get(`/itm/users/queryOnline/${pageSize}/${pageIndex}`).subscribe((result: Result) => {
+        this.$http.get(`/itm/queryOnline/${pageSize}/${pageIndex}`).subscribe((result: Result) => {
+            console.log(result);
             if (result.code === 0) {
                 callback(result);
             }
@@ -144,10 +169,10 @@ export class UserService {
      * @param {number} userId
      * @param callback
      */
-    public offLine(userId: number, callback) {
-        this.$http.delete(`/itm/users/offline/${userId}`).subscribe((result: Result) => {
+    public offline(userName: string, callback) {
+        this.$http.delete(`/itm/offline/${userName}`).subscribe((result: Result) => {
             if (result.code === 0) {
-                callback(result)
+                callback({ok: true})
             }
         });
     }

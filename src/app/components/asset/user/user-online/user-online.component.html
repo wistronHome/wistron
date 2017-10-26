@@ -54,8 +54,8 @@
                         <span>{{user.lastLogin | date: 'yyyy-MM-dd hh:mm:ss'}}</span>
                     </td>
                     <td nz-td>
-                        <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
-                                       (nzOnConfirm)="confirmDelete(user)"
+                        <nz-popconfirm [nzTitle]="'确定要下线这个用户吗？'"
+                                       (nzOnConfirm)="confirmOffline(user)"
                                        (nzOnCancel)="cancel()">
                             <a nz-popconfirm>强制下线</a>
                         </nz-popconfirm>

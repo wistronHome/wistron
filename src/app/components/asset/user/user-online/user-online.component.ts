@@ -25,28 +25,30 @@ export class UserOnlineComponent implements OnInit {
         $mission.pageChangeHook.subscribe(page => {
             this.pageSize = page.pageSize;
             this.pageIndex = page.pageIndex;
-            this.$service.getUserPagination( this.pageIndex, this.pageSize ).then(result => {
-                this.data = result.users;
-                this.total = result.total;
+            this.$service.getOnlineUserPagination( this.pageSize, this.pageIndex ,result => {
+                console.log(result);
             });
         });
     }
 
     ngOnInit() {
-        this.$service.getOnlineUserPagination(this.pageSize, this.pageIndex, result => {
-            console.log(result);
-            // this.data = result.users;
-            // this.total = result.total;
-        });
+        // this.$service.getOnlineUserPagination(this.pageSize, this.pageIndex, result => {
+        //     console.log(result);
+        //     // this.data = result.users;
+        //     // this.total = result.total;
+        // });
     }
     searchByField() {
         console.log(this.search);
     }
 
-    confirmDelete(user: User) {
-        console.log(user);
+    confirmOffline(user: User) {
+        this.$service.offline(user.userName, result => {
+            if (result.ok) {
+                alert('下线成功~');
+            }
+        })
     }
-
     cancel() {
 
     }

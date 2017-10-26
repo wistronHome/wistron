@@ -1,0 +1,42 @@
+.login-wrap {
+    position: relative;
+    height: 100%;
+    .login-panel {
+        width: 500px;
+        height: 350px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -250px;
+        margin-top: -175px;
+        border-radius: 3px;
+        box-shadow: 0 0 8px 0 #272626;
+        background: #424242;
+        .panel {
+            margin: 80px 0px;
+            .panel-row {
+                margin: 20px 50px;
+                text-align: left;
+                .row-title {
+                    text-align: right;
+                    display: block;
+                    line-height: 28px;
+                    padding-right: 15px;
+                    color: #fff;
+                    font-size: 14px;
+                }
+                input {
+                    outline: none;
+                    border: 0;
+                    line-height: 28px;
+                    width: 100%;
+                    border-radius: 3px;
+                    padding-left: 6px;
+                    &:focus {
+                        box-shadow: 0 0 4px 0 #ffffff;
+                    }
+                }
+            }
+        }
+    }
+}

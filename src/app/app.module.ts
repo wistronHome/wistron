@@ -25,7 +25,8 @@ import { RoleDetailComponent } from './components/asset/user/role-detail/role-de
 import { AssetComponent } from './components/asset/asset.component';
 import { MaintenanceComponent } from './components/asset/maintenance/maintenance.component';
 import { AlarmPipe } from './pipes/alarm.pipe';
-import { MaintenanceDetailComponent } from './components/asset/maintenance/maintenance-detail/maintenance-detail.component'
+import { MaintenanceDetailComponent } from './components/asset/maintenance/maintenance-detail/maintenance-detail.component';
+import { LoginComponent } from './components/login/login.component'
 // import { CreateRoomComponentComponent } from './components/machine/create-room-component/create-room-component.component'
 
 @NgModule({
@@ -48,7 +49,8 @@ import { MaintenanceDetailComponent } from './components/asset/maintenance/maint
         AssetComponent,
         MaintenanceComponent,
         AlarmPipe,
-        MaintenanceDetailComponent
+        MaintenanceDetailComponent,
+        LoginComponent
 
     ],
     imports: [
