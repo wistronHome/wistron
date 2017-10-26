@@ -127,7 +127,7 @@ export class CabinetComponent implements OnInit, OnChanges {
             }
             if (evt.getData() && !evt.getData().get('selected')) {
                 let type = evt.getData().get('type');
-                let currentY = AmendUtil.amendCoordinate(evt.getData().y, evt.getData().size.height);
+                let currentY = AmendUtil.amendCoordinate(evt.getData().y, evt.getData().size.height, LH,LN);
                 let offsetY = evt.getData().y - currentY;
                 if (type !== TYPES.SERVER) {
                     evt.getData().x = 0;
@@ -215,6 +215,14 @@ export class CabinetComponent implements OnInit, OnChanges {
     /*点击删除当前图元*/
      delServer(): void {
         this.graph.graphModel['removeById'](this.currentId);
+    }
+    /**
+     * 点击保存机柜信息
+     *
+     * */
+    saveCabinet(){
+        console.log("保存机柜信息");
+        console.log(this.legendUtil.saveCabinetInfo());
     }
     /**
      * 开始拖拽

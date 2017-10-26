@@ -1,14 +1,12 @@
-import { AmendUtil } from "./amend-util";
-import { NzMessageService } from 'ng-zorro-antd';
+import {AmendUtil} from "./amend-util";
+import {NzMessageService} from 'ng-zorro-antd';
 import * as TYPES from './types';
 
 export class LegendUtil {
 
-    constructor(
-        readonly Q: any,
-        readonly graph: any,
-        private $message: NzMessageService
-    ) {
+    constructor(readonly Q: any,
+                readonly graph: any,
+                private $message: NzMessageService) {
         this.Q = Q;
         this.graph = graph;
     }
@@ -24,13 +22,13 @@ export class LegendUtil {
         let node = this.graph.createNode('', 0, 0);
         node.set('type', TYPES.CABINET_BG);
         node.set('selected', 'unselected');
-        if ( LN === 32 ) {
+        if (LN === 32) {
             node.image = '../../../assets/image/32u-cabinet.png';
-        }else if ( LN === 42) {
+        } else if (LN === 42) {
             node.image = '../../../assets/image/cabinet.png';
-        }else if ( LN === 22) {
+        } else if (LN === 22) {
             node.image = '../../../assets/image/22u-cabinet.png';
-        }else {
+        } else {
 
         }
 
@@ -142,7 +140,7 @@ export class LegendUtil {
      * @param ev
      * @param {number} LH
      */
-    public drawServer(image: string, ev, LH:number = 17) {
+    public drawServer(image: string, ev, LH: number = 17) {
         let server = new this.Q.Node();
         let p = this.graph.globalToLocal(ev);
         let l = this.graph.toLogical(p.x, p.y);
@@ -165,6 +163,7 @@ export class LegendUtil {
             this.$message.error('刀片服务器必须放置在刀箱中~');
         }
     }
+
     /**
      * 绘制刀箱内卡槽位置
      * @param target
@@ -189,5 +188,27 @@ export class LegendUtil {
             line.host = target;
             line.parent = target;
         });
+    }
+
+    /**
+     * 保存已绘制机柜的所有信息
+     * @returns []
+     * */
+    public saveCabinetInfo() {
+        let arr = [];
+        let item = {};
+        this.graph.graphModel.forEach(e => {
+            if (e.get('type') === 'CABINET' || e.get('type') === 'GRIFF' || e.get('type') === 'SERVER') {
+                item['width'] = e.size.width;
+                item['height'] = e.size.height;
+                item['x'] = e.x;
+                item['y'] = e.y;
+                item['img'] = e.image;
+                item['warn'] = '';
+                item['id'] = e.id;
+                arr.push(item);
+            }
+        });
+        return arr;
     }
 }
