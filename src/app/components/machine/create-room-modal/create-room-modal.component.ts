@@ -1,5 +1,6 @@
 import { Component, OnInit, NgModule, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {NzMessageService, NzModalService} from 'ng-zorro-antd';
 
 @NgModule({
     imports:      [],
@@ -19,7 +20,9 @@ export class CreateRoomModalComponent implements OnInit {
     roomName = '';
     roomWith = '';
     roomLength = '';
-    constructor( private http: HttpClient) { }
+    roomImage = '';
+    constructor( private http: HttpClient,
+                 private $message: NzMessageService) { }
 
     ngOnInit() {
     }
@@ -49,9 +52,10 @@ export class CreateRoomModalComponent implements OnInit {
         this.http.post('/itm/rooms/addRoom', body).subscribe(data => {
             console.log(data);
             if (data['code'] === 0) {
-                alert('新增成功');
+                this.$message.create('error', data['msg']);
                 this.onVoted.emit(false);
             }else {
+                this.$message.create('error', data['msg']);
                 alert('网络异常，请重试');
             }
         });

@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { NgModel } from '@angular/forms';
+import {Router, ActivatedRoute} from '@angular/router';
+import {NgModel} from '@angular/forms';
 import {NgForm} from '@angular/forms';
 import {
     trigger,
@@ -45,9 +45,10 @@ import {RoomSerService} from "./room-ser.service";
             ])
         ])
     ],
-    providers: [ RoomSerService ]
+    providers: [RoomSerService]
 })
 export class RoomComponent implements OnInit {
+    room: any = '';
     state: string = 'active';
     state1: string = 'inactive';
     Q = window['Q'];
@@ -58,20 +59,19 @@ export class RoomComponent implements OnInit {
     ChildId = '';
     restX = null;
     restY = null;
-    roomId= null;
+    roomId = null;
     _roomWidth: number = 0;
     _roomHeight: number = 0;
     info = null;
     isCustomCabinet = false; // 自定义机柜显示修改宽高选项
     width = ''; // 自定义机柜的宽
     height = ''; // 自定义机柜的高
-    Unumber =''; // 自定义机柜的u数
-    constructor(
-        private router: Router,
-        private routerInfo: ActivatedRoute,
-        private RoomSerService: RoomSerService,
-        private http: HttpClient
-    ) { }
+    Unumber = ''; // 自定义机柜的u数
+    constructor(private router: Router,
+                private routerInfo: ActivatedRoute,
+                private RoomSerService: RoomSerService,
+                private http: HttpClient) {
+    }
 
     ngOnInit() {
 
@@ -80,12 +80,14 @@ export class RoomComponent implements OnInit {
             console.log(this.roomId);
         });
         this.roomId = this.routerInfo.snapshot.params['id'];
+        // 获取room数据详情
+        this.room = this.RoomSerService.getRoomInfo(this.roomId);
         this.graph = new this.Q.Graph('mcRoom');
         // 设置坐标原点
         this.graph.originAtCenter = false;
         // 机房宽12米 高12米 比例1米=100px 方格为10px*10px 20cm*20cm 的正方形 1px= 2cm;
         const roomWidth = 600, // px
-              roomHeight = 600; // px
+            roomHeight = 600; // px
         tools.drawRoom(this.Q, this.graph, roomWidth, roomHeight);
         // 设置是否能被选择
         this.graph.isSelectable = (item) => {
@@ -96,7 +98,7 @@ export class RoomComponent implements OnInit {
             return !e.get('isLock');
         }
         // 鼠标按下之后记录按下的信息
-        var src, startX, startY , _width, _height, _type;
+        var src, startX, startY, _width, _height, _type;
         document.getElementById('tools').ondragstart = (e) => {
             console.log(e.target['getAttribute']('_width'));
             _width = e.target['getAttribute']('_width');
@@ -109,12 +111,12 @@ export class RoomComponent implements OnInit {
         document.getElementById('mcRoom').ondrop = (e) => {
             // 位置的矫正 还没有做警示图标的矫正
             console.log(e);
-            if ( tools.checkOverLap(this.model, e, {'_width': _width, '_height': _height})) {
+            if (tools.checkOverLap(this.model, e, {'_width': _width, '_height': _height})) {
                 alert('目标重合请重试');
                 return;
             }
-            const x = tools.correctLocation( e.offsetX, _width );
-            let y = tools.correctLocation( e.offsetY, _height);
+            const x = tools.correctLocation(e.offsetX, _width);
+            let y = tools.correctLocation(e.offsetY, _height);
             var p = this.graph.toLogical(x, y);
             // var computer = this.graph.createNode('', p.x, p.y);
             // // var computer = this.graph.createText('', p.x, p.y);
@@ -137,10 +139,11 @@ export class RoomComponent implements OnInit {
             // alarmUI.zIndex = 999;
             // alarmUI.host = computer;
             // alarmUI.parent = computer;
-            if ( _type === 'roomWall') {
+            if (_type === 'roomWall') {
                 tools.drawRoomWall(this.Q, this.graph, p.x, p.y);
                 return;
-            };
+            }
+            ;
             if (_type === 'customCabinet') {
                 tools.drawCustomCabinet(this.Q, this.graph, p.x, p.y);
                 return;
@@ -164,7 +167,7 @@ export class RoomComponent implements OnInit {
         // ]
         let info = this.RoomSerService.getCabinetInfo();
         console.log(info);
-        for ( var i = 0; i < info.length; i++) {
+        for (var i = 0; i < info.length; i++) {
             // var demo = this.graph.createNode(info[i].name, info[i].x, info[i].y);
             // demo.image = info[i].img
             // demo.size = {width: info[i].w,height: info[i].h};
@@ -182,8 +185,8 @@ export class RoomComponent implements OnInit {
                 demo.set('type', info[i]['type']);
                 demo.image = info[i].img;
                 demo.size = {width: info[i].w, height: info[i].h};
-            }else {
-            tools.drawCabinet(this.Q, this.graph, info[i].name, info[i].x, info[i].y, info[i].w, info[i].h, info[i].img);
+            } else {
+                tools.drawCabinet(this.Q, this.graph, info[i].name, info[i].x, info[i].y, info[i].w, info[i].h, info[i].img);
             }
         }
         //点击机房
@@ -203,13 +206,13 @@ export class RoomComponent implements OnInit {
                     this.isCustomCabinet = true;
                     this.width = e.getData().size.width;
                     this.height = e.getData().size.height;
-                }else {
+                } else {
                     this.isCustomCabinet = false;
                 }
-            }else if ( e.getData() && e.getData().get('type') === 'roomWall') {
+            } else if (e.getData() && e.getData().get('type') === 'roomWall') {
                 this.id = e.getData().id;
                 this.graph.editable = true;
-            }else {
+            } else {
                 this.graph.editable = false;
             }
         };
@@ -218,14 +221,14 @@ export class RoomComponent implements OnInit {
          * 双击进入机柜页面
          */
         this.graph.ondblclick = e => {
-            if (e.getData() && e.getData().type === 'Q.Node' && e.getData().get('type') === 'cabinet'){
+            if (e.getData() && e.getData().type === 'Q.Node' && e.getData().get('type') === 'cabinet') {
                 this.router.navigate(['machine/cabinet/' + e.getData().id]);
             }
         }
         // 图元的拖拽位置吸附
         this.graph.startdrag = e => {
             // 记录下位置让目标退回到原来的位置
-            if ( e.getData() && e.getData().type !== 'Q.ShapeNode') {
+            if (e.getData() && e.getData().type !== 'Q.ShapeNode') {
                 this.restX = e.getData().x;
                 this.restY = e.getData().y;
             }
@@ -233,22 +236,22 @@ export class RoomComponent implements OnInit {
         }
         this.graph.enddrag = e => {
             if (e.getData() && e.getData().type !== 'Q.ShapeNode' && !e.getData().get('isLock')) {
-                if ( tools.checkOverLap(this.model, e, null)) {
+                if (tools.checkOverLap(this.model, e, null)) {
                     e.getData().x = this.restX;
                     e.getData().y = this.restY;
                     // 如果有告警图标
                     if (e.getData().childrenCount !== 0) {
-                    e.getData().children.datas[0].x = e.getData().x + 30;
-                    e.getData().children.datas[0].y = e.getData().y - 30;
+                        e.getData().children.datas[0].x = e.getData().x + 30;
+                        e.getData().children.datas[0].y = e.getData().y - 30;
                     }
                     alert('目标重合了 请重试');
-                }else {
-                    e.getData().x = tools.correctLocation(e.getData().x,e.getData().size.width);
-                    e.getData().y = tools.correctLocation(e.getData().y,e.getData().size.height);
+                } else {
+                    e.getData().x = tools.correctLocation(e.getData().x, e.getData().size.width);
+                    e.getData().y = tools.correctLocation(e.getData().y, e.getData().size.height);
                     // 设置告警图标的位置
                     if (e.getData().childrenCount !== 0) {
-                    e.getData().children.datas[0].x = e.getData().x + 30;
-                    e.getData().children.datas[0].y = e.getData().y - 30;
+                        e.getData().children.datas[0].x = e.getData().x + 30;
+                        e.getData().children.datas[0].y = e.getData().y - 30;
                     }
                 }
 
@@ -260,30 +263,34 @@ export class RoomComponent implements OnInit {
         this.model['removeById'](this.id);
         this.model['removeById'](this.ChildId);
     }
+
     lockCabinet(): void {
         this.model['forEach'](e => {
-            if (e.id==this.id) {
-                e.set('isLock',true);
+            if (e.id == this.id) {
+                e.set('isLock', true);
             }
         });
     }
+
     unLockCabinet(): void {
         this.model['forEach'](e => {
             if (e.id === this.id) {
-                e.set('isLock',false);
+                e.set('isLock', false);
             }
         });
     }
+
     editCabinet(): void {
         this.model['forEach'](e => {
-            if (e.id === this.id ) {
+            if (e.id === this.id) {
                 e.name = this.name;
                 if (e.get('type') === 'customCabinet') {
-                    e.size = { width : this.width, height : this.height};
+                    e.size = {width: this.width, height: this.height};
                 }
             }
         });
     }
+
     toggle(): void {
         if (this.state === 'active') {
             this.state = 'inactive';
@@ -299,21 +306,25 @@ export class RoomComponent implements OnInit {
     }
 
     // 弹框修改机房大小
-    iisVisible= false;
+    iisVisible = false;
     isVisible = false;
     isConfirmLoading = false;
     roomWidth = null;
     roomHeight = null;
+
     // 点击弹出修改机柜的模态框（备用）
     showCabinetModal() {
         this.iisVisible = true;
     }
+
     handleOkcabinet() {
         this.iisVisible = false;
     }
+
     hiddenCabinet() {
         this.iisVisible = false;
     }
+
     showModal = () => {
         this.isVisible = true;
     }
@@ -325,10 +336,10 @@ export class RoomComponent implements OnInit {
         setTimeout(() => {
             this.isVisible = false;
             this.isConfirmLoading = false;
-            tools.drawRoom(this.Q, this.graph, this._roomWidth*50,this._roomHeight*50);
+            tools.drawRoom(this.Q, this.graph, this._roomWidth * 50, this._roomHeight * 50);
             for (var i = 0; i < this.info.length; i++) {
-            tools.drawCabinet(this.Q,this.graph,this.info[i].name,this.info[i].x,this.info[i].y,this.info[i].w,this.info[i].h,this.info[i].img)
-        }
+                tools.drawCabinet(this.Q, this.graph, this.info[i].name, this.info[i].x, this.info[i].y, this.info[i].w, this.info[i].h, this.info[i].img)
+            }
         }, 2000);
 
     }
@@ -342,28 +353,48 @@ export class RoomComponent implements OnInit {
     roomSave = () => {
         let arr = [];
         this.model['forEach']((item) => {
-            if (item.get('type') === 'cabinet' || item.get( 'type') === 'roomWall') {
+            if (item.get('type') === 'cabinet' || item.get('type') === 'roomWall') {
                 console.log(item);
-                var element = {name: '', id: '', x: '', y: '', w: '', h: '', img: '', alarm: null };
-                element.name = item.name;
-                element.id = item.id;
-                element.x = item.x;
-                element.y = item.y;
-                element.w = item.size.width;
-                element.h = item.size.height;
-                element.img = item.image;
-                if (item.childrenCount === 1) {
-                    element.alarm = item.children.datas[0];
-                }else {
-                    element.alarm = null;
+                var element = {
+                    cabinetId: 1,
+                    cabinetName: "",
+                    cabinetMaxU: 32,
+                    usedU: "",
+                    cabinetHeight: "",
+                    cabinetWidth: "",
+                    cabinetImage: "",
+                    cabinetType: "",
+                    cabinetX: 200,
+                    cabinetY: 290,
+                    cabinetRemark: "",
+                    roomId: 2
                 }
+                element.cabinetId = item.id;
+                element.cabinetName = item.name;
+                element.cabinetHeight = item.size.height;
+                element.cabinetWidth = item.size.width;
+                element.cabinetImage = item.image;
+                element.cabinetX = item.x;
+                element.cabinetY = item.y;
+                element.roomId = this.roomId;
+                // if (item.childrenCount === 1) {
+                //     element.cabinetType = item.children.datas[0];
+                // }else {
+                //     element.cabinetType = null;
+                // }
                 arr.push(element);
             }
         });
-        this.info = arr;
+        // this.info = arr;
         console.log(arr);
+        let obj = {};
+        obj['roomId'] = this.roomId;
+        obj['cabinetSet'] = arr;
+        console.log(obj);
+        this.RoomSerService.saveRoomInfo(obj);
 
     };
+
     /*获取机房详情*/
     getRoomsDetail() {
         this.http.get('/itm/rooms').subscribe(data => {
@@ -371,6 +402,7 @@ export class RoomComponent implements OnInit {
         });
     }
 }
+
 class tools {
     /**
      * 判断机柜之间是否都重叠
@@ -379,59 +411,62 @@ class tools {
      * @param obj
      * @returns {boolean}
      */
-    public static checkOverLap (model, e, obj): boolean {
-        if(e.getData){
-            var _minx = e.getData().x - e.getData().size.width/2,
-                _maxx = e.getData().x + e.getData().size.width/2,
-                _miny = e.getData().y - e.getData().size.height/2,
-                _maxy = e.getData().y + e.getData().size.height/2,
-                isOverLap=false;
-        }else{
+    public static checkOverLap(model, e, obj): boolean {
+        if (e.getData) {
+            var _minx = e.getData().x - e.getData().size.width / 2,
+                _maxx = e.getData().x + e.getData().size.width / 2,
+                _miny = e.getData().y - e.getData().size.height / 2,
+                _maxy = e.getData().y + e.getData().size.height / 2,
+                isOverLap = false;
+        } else {
             // 拖拽过来之后的大小
-            let width = obj._width , height = obj._height;
+            let width = obj._width, height = obj._height;
             _minx = e.offsetX - width / 2,
-            _maxx = e.offsetX + width / 2,
-            _miny = e.offsetY - height / 2,
-            _maxy = e.offsetY + height / 2,
-            isOverLap = false;
-            }
+                _maxx = e.offsetX + width / 2,
+                _miny = e.offsetY - height / 2,
+                _maxy = e.offsetY + height / 2,
+                isOverLap = false;
+        }
         model['forEach'](item => {
-            if ( !item.size || item.type === 'Q.ShapeNode' || item.host || item.get('type') === 'alarm') {
+            if (!item.size || item.type === 'Q.ShapeNode' || item.host || item.get('type') === 'alarm') {
                 return;
-            }else if (item.get('type') === 'cabinet' || item.get('type') === 'customCabinet') {
-            let minx = item.x-item.size.width/2,
-                maxx = item.x+item.size.width/2,
-                miny = item.y -item.size.height/2,
-                maxy = item.y + item.size.height/2;
-                if(
-                    ((_minx>minx&&_minx<maxx&&_maxx>maxx)&&(_miny>miny&&_miny<maxy&&_maxy>maxy||_miny==miny))
-                || ((_minx>minx&&_minx<maxx&&_maxx>maxx||_minx == minx)&&(_maxy>miny&&_maxy<maxy)&&_miny<miny)
-                || ((_maxx>minx&&_maxx<maxx&&_minx<minx)&&((_maxy>miny&&_maxy<maxy)&&_miny<miny))
-                || ((_maxx>minx&&_maxx<maxx&&_minx<minx)&&(_miny>miny&&_miny<maxy&&_maxy>maxy))
+            } else if (item.get('type') === 'cabinet' || item.get('type') === 'customCabinet') {
+                let minx = item.x - item.size.width / 2,
+                    maxx = item.x + item.size.width / 2,
+                    miny = item.y - item.size.height / 2,
+                    maxy = item.y + item.size.height / 2;
+                if (
+                    ((_minx > minx && _minx < maxx && _maxx > maxx) && (_miny > miny && _miny < maxy && _maxy > maxy || _miny == miny))
+                    || ((_minx > minx && _minx < maxx && _maxx > maxx || _minx == minx) && (_maxy > miny && _maxy < maxy) && _miny < miny)
+                    || ((_maxx > minx && _maxx < maxx && _minx < minx) && ((_maxy > miny && _maxy < maxy) && _miny < miny))
+                    || ((_maxx > minx && _maxx < maxx && _minx < minx) && (_miny > miny && _miny < maxy && _maxy > maxy))
 
-                ){
+                ) {
                     isOverLap = true;
                     return;
-                }}
+                }
+            }
         })
         return isOverLap;
     }
+
     /**
      * 调整位置自动贴边
      * @param number
      * @param size
      * @returns {number}
      */
-    public static correctLocation ( number, size):number{
-        let newNumber = number % 10 >5 ?Math.ceil(number / 10) * 10 : Math.floor(number / 10) * 10;
-        if (+size%4==0){
+    public static correctLocation(number, size): number {
+        let newNumber = number % 10 > 5 ? Math.ceil(number / 10) * 10 : Math.floor(number / 10) * 10;
+        if (+size % 4 == 0) {
             return newNumber;
-        }else if(+size%4!=0){
+        } else if (+size % 4 != 0) {
             console.log('单数');
-            return newNumber+5;
+            return newNumber + 5;
         }
 
     }
+
     /**
      * 绘制机房
      * @param Q
@@ -439,7 +474,7 @@ class tools {
      * @param roomWidth
      * @param roomHeight
      */
-    public static drawRoom (Q, graph, roomWidth, roomHeight): void {
+    public static drawRoom(Q, graph, roomWidth, roomHeight): void {
         // 绘制横线 比例1米=100px 方格为10px*10px 20cm*20cm 的正方形 1px= 2cm;
         var roomWidth = roomWidth, roomHeight = roomHeight;
         // 对多的数据进行取整
@@ -479,6 +514,7 @@ class tools {
             }
         }
     }
+
     /**
      * 绘制机柜
      * @param Q
@@ -490,14 +526,14 @@ class tools {
      * @param name
      * @param image
      */
-    public static drawCabinet (Q, graph,name, x, y, w, h, image): void{
+    public static drawCabinet(Q, graph, name, x, y, w, h, image): void {
         let demo = graph.createNode(name, x, y);
-        demo.image = image||'assets/room/mx-cabinet4white.svg';
-        demo.size = {width: w,height: h};
+        demo.image = image || 'assets/room/mx-cabinet4white.svg';
+        demo.size = {width: w, height: h};
         demo.set('type', 'cabinet');
-        demo.setStyle(Q.Styles.LABEL_OFFSET_Y, -h/2);
+        demo.setStyle(Q.Styles.LABEL_OFFSET_Y, -h / 2);
         demo.setStyle(Q.Styles.BORDER, 1);
-        demo.setStyle(Q.Styles.BORDER_RADIUS,0);
+        demo.setStyle(Q.Styles.BORDER_RADIUS, 0);
         let alarmUI = graph.createNode('', x + 30, y - 30);
         alarmUI.image = 'assets/room/alarmred.svg';
         alarmUI.size = {width: 30};
@@ -505,30 +541,32 @@ class tools {
         alarmUI.host = demo;
         alarmUI.parent = demo;
     }
+
     /**
      * 绘制基建
      * @param Q
      * @param graph
      */
-    public static drawRoomWall ( Q, graph, x, y): void {
-        let demo = graph.createNode ('', x, y);
+    public static drawRoomWall(Q, graph, x, y): void {
+        let demo = graph.createNode('', x, y);
         demo.image = 'assets/room/mx-cabinet2.svg';
         demo.size = {width: 10, height: 60};
         demo.set('type', 'roomWall');
     }
+
     /**
      * 绘制自定义机柜
      * @param Q
      * @param graph
      */
     public static drawCustomCabinet(Q, graph, x, y): void {
-        let demo = graph.createNode ('自定义', x, y);
+        let demo = graph.createNode('自定义', x, y);
         demo.image = 'assets/room/mx-cabinet4white.svg';
-        demo.size = {width : 50, height : 50};
+        demo.size = {width: 50, height: 50};
         demo.set('type', 'customCabinet');
-        demo.setStyle(Q.Styles.LABEL_OFFSET_Y, -50/2);
+        demo.setStyle(Q.Styles.LABEL_OFFSET_Y, -50 / 2);
         demo.setStyle(Q.Styles.BORDER, 1);
-        demo.setStyle(Q.Styles.BORDER_RADIUS,0);
+        demo.setStyle(Q.Styles.BORDER_RADIUS, 0);
     }
 
 }

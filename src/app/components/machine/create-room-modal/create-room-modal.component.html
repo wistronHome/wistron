@@ -35,7 +35,7 @@
             </div>
             <div class="c-item">
                 <div *ngIf="!roomUpload" class="img-bg">
-                    <input id="fileUpload" type="file" (change)="beforeUpload()">
+                    <input id="fileUpload" type="file" name="pic" (change)="beforeUpload()">
                     <span style="font-size: 14px;line-height: 70px;">
                             <i class="anticon anticon-cloud-upload-o"></i>
                             选择要上传的文件
