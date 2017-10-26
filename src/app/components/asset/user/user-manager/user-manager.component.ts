@@ -12,10 +12,10 @@ import { MissionService } from '../../../../mission-store/mission.service';
 })
 export class UserManagerComponent implements OnInit {
     data: User[] = [];
-    search: { code: string, name: string, state: number } = {
+    search: { code: string, name: string, state: string } = {
         code: '',
         name: '',
-        state: 0
+        state: null
     };
     isModalShow: boolean = false;
     password: Password;
@@ -82,11 +82,22 @@ export class UserManagerComponent implements OnInit {
      */
     batchDelete() {
         this.operating = true;
-        setTimeout(() => {
-            this.data.forEach(user => user.checked = false);
-            this.refreshStatus();
-            this.operating = false;
-        }, 1000);
+        let userIds: number[] = [];
+        this.data.forEach(user => {
+            if (user.checked) {
+                userIds.push(user.userId);
+            }
+        });
+        this.$service.deleteUsers(userIds, result => {
+            if (result.ok) {
+                this.operating = false;
+                this.$service.getUserPagination(this.pageIndex, this.pageSize).then(result => {
+                    this.data = result.users;
+                    this.total = result.total;
+                    this.refreshStatus();
+                });
+            }
+        });
     };
 
 
@@ -96,7 +107,18 @@ export class UserManagerComponent implements OnInit {
      * 模糊查询
      */
     searchByField() {
-        console.log(this.search);
+        if (this.search.code.trim() || this.search.name.trim() || this.search.state) {
+            this.$service.getUserByField({
+                userCode: this.search.code,
+                userName: this.search.name,
+                userStatus: this.search.state,
+                pageSize: this.pageSize,
+                pageNum: this.pageIndex
+            }, result => {
+                this.data = result.users;
+                this.total = result.total;
+            })
+        }
     }
 
     /**
@@ -145,7 +167,15 @@ export class UserManagerComponent implements OnInit {
         } else {
             this.$service.userNameValidate(this.currentUser.userName, this.currentUser.userId || -1, result => {
                 if (result.ok) {
-                    this.$service.insertUser(this.currentUser);
+                    this.isModalShow = false;
+                    this.$service.insertUser(this.currentUser, result => {
+                        if (result.ok) {
+                            this.$service.getUserPagination(this.pageIndex, this.pageSize).then(result => {
+                                this.data = result.users;
+                                this.total = result.total;
+                            });
+                        }
+                    });
                 } else {
                     alert(result.msg)
                 }
@@ -168,7 +198,10 @@ export class UserManagerComponent implements OnInit {
      */
     savePassword() {
         this.$service.modifyPassword(this.currentUser.userId, this.password.newPwd, result => {
-            console.log(result);
+            if (result.ok) {
+                this.isModifyPasswordShow = false;
+                this.$message.success('修改密码成功~');
+            }
         });
     }
     cancel(): void {
@@ -181,7 +214,12 @@ export class UserManagerComponent implements OnInit {
      */
     confirmDelete(user: User) {
         this.$service.deleteUsers([user.userId], result => {
-            console.log(result);
+            if (result.ok) {
+                this.$service.getUserPagination(this.pageIndex, this.pageSize).then(result => {
+                    this.data = result.users;
+                    this.total = result.total;
+                });
+            }
         });
     };
 
@@ -190,9 +228,13 @@ export class UserManagerComponent implements OnInit {
      * @param {User} user
      */
     confirmState(user: User) {
-        this.$service.changeStatus(user.userStatus, user.userId, result => {
-            user.userStatus = user.userStatus === '0' ? '1' : '0';
-            this.$message.info('success~')
+        this.$service.changeStatus(user.userId, result => {
+            if (result.ok) {
+                this.$service.getUserPagination( this.pageIndex, this.pageSize ).then(result => {
+                    this.data = result.users;
+                    this.total = result.total;
+                });
+            }
         });
     }
     ngOnInit() {

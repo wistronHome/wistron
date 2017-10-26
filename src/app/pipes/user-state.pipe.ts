@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 const STATE = {
-    A: '启用',
-    B: '停用'
+    A: '停用',
+    B: '启用'
 }
 
 @Pipe({

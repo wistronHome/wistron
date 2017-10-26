@@ -15,11 +15,11 @@
                 [nzShowSearch]="true">
                 <nz-option
                     [nzLabel]="'启用'"
-                    [nzValue]="1">
+                    [nzValue]="'1'">
                 </nz-option>
                 <nz-option
                     [nzLabel]="'停用'"
-                    [nzValue]="2">
+                    [nzValue]="'0'">
                 </nz-option>
             </nz-select>
         </div>
@@ -95,9 +95,9 @@
                             <span>{{user.userName}}</span>
                         </td>
                         <td nz-td>
-                            <nz-switch [nzDisabled]="true" [ngModel]="user.userStatus === 1">
-                                <span checked>{{user.userStatus | userState}}</span>
-                                <span unchecked>{{user.userStatus | userState}}</span>
+                            <nz-switch [nzDisabled]="true" [ngModel]="user.userStatus === '1'">
+                                <span checked>{{'1' | userState}}</span>
+                                <span unchecked>{{'0' | userState}}</span>
                             </nz-switch>
                         </td>
                         <td nz-td>
@@ -120,7 +120,7 @@
                             <nz-popconfirm [nzTitle]="'确认' + (user.state | userState: 'reverse') + '吗？'"
                                            (nzOnConfirm)="confirmState(user)"
                                            (nzOnCancel)="cancel()">
-                                <a nz-popconfirm>{{user.state | userState: 'reverse'}}</a>
+                                <a nz-popconfirm>{{user.userStatus | userState: 'reverse'}}</a>
                             </nz-popconfirm>
                         </td>
                     </tr>
@@ -249,14 +249,14 @@
             修改密码
         </ng-template>
         <ng-template #modalPwdContent>
-            <div nz-row class="m-item">
-                <div nz-col [nzSpan]="6" class="m-title">
-                    旧密码：
-                </div>
-                <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [(ngModel)]="password.oldPwd" [nzPlaceHolder]="'请输入'"></nz-input>
-                </div>
-            </div>
+            <!--<div nz-row class="m-item">-->
+                <!--<div nz-col [nzSpan]="6" class="m-title">-->
+                    <!--旧密码：-->
+                <!--</div>-->
+                <!--<div nz-col [nzSpan]="18" class="m-content">-->
+                    <!--<nz-input [(ngModel)]="password.oldPwd" [nzPlaceHolder]="'请输入'"></nz-input>-->
+                <!--</div>-->
+            <!--</div>-->
             <div nz-row class="m-item">
                 <div nz-col [nzSpan]="6" class="m-title">
                     新密码：
