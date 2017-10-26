@@ -49,7 +49,7 @@ export class MenuTopService {
             },
             {
                 name: '告警',
-                router: '/asset',
+                router: '/machine',
                 items: []
             },
             {

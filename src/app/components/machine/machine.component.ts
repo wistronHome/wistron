@@ -148,7 +148,6 @@ export class MachineComponent implements OnInit {
         this.delCabinetRes(cabinetId).then(e => {
             this.getCabinetDatas(roomId, item);
         });
-
     }
 
     delCabinetRes(cabinetId): Promise<object> {

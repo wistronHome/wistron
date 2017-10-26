@@ -48,6 +48,8 @@ export class RoomSerService {
             if (data['code'] === 0) {
                 console.log('数据保存成功');
                 console.log(data);
+            }else {
+                console.log("网络异常");
             }
         });
     }

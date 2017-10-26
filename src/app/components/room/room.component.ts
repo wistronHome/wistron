@@ -76,12 +76,17 @@ export class RoomComponent implements OnInit {
     ngOnInit() {
 
         this.roomId = this.routerInfo.params.subscribe((params) => {
+            if (this.graph) {
+                this.graph.clear();
+                tools.drawRoom(this.Q, this.graph, 600, 600)
+            }
             this.roomId = params['id'];
-            console.log(this.roomId);
+            this.getRoomInfo(this.roomId);
         });
         this.roomId = this.routerInfo.snapshot.params['id'];
         // 获取room数据详情
-        this.room = this.RoomSerService.getRoomInfo(this.roomId);
+        this.getRoomInfo(this.roomId);
+        // this.room = this.RoomSerService.getRoomInfo(this.roomId);
         this.graph = new this.Q.Graph('mcRoom');
         // 设置坐标原点
         this.graph.originAtCenter = false;
@@ -165,8 +170,10 @@ export class RoomComponent implements OnInit {
         // {name: "", id: 711, x: 5, y: 302.5, w: 10, h:594,img:"assets/room/mx-cabinet2.svg",type:'roomWall'},
         // {name: "", id: 1038, x: 307, y:595, w: 627, h:13,img:"assets/room/mx-cabinet2.svg",type:'roomWall'}
         // ]
-        let info = this.RoomSerService.getCabinetInfo();
-        console.log(info);
+        // 假数据
+        // let info = this.RoomSerService.getCabinetInfo();
+        // console.log(info);
+        let info = []
         for (var i = 0; i < info.length; i++) {
             // var demo = this.graph.createNode(info[i].name, info[i].x, info[i].y);
             // demo.image = info[i].img
@@ -180,14 +187,16 @@ export class RoomComponent implements OnInit {
             // alarmUI.zIndex = 999;
             // alarmUI.host = demo;
             // alarmUI.parent = demo;
-            if (info[i]['type']) {
-                let demo = this.graph.createNode(info[i].name, info[i].x, info[i].y);
-                demo.set('type', info[i]['type']);
-                demo.image = info[i].img;
-                demo.size = {width: info[i].w, height: info[i].h};
-            } else {
-                tools.drawCabinet(this.Q, this.graph, info[i].name, info[i].x, info[i].y, info[i].w, info[i].h, info[i].img);
-            }
+            // if (info[i]['type']) {
+            //     let demo = this.graph.createNode(info[i].name, info[i].x, info[i].y);
+            //     demo.set('type', info[i]['type']);
+            //     demo.image = info[i].img;
+            //     demo.size = {width: info[i].w, height: info[i].h};
+            // } else {
+            //     // tools.drawCabinet(this.Q, this.graph, info[i].name, info[i].x, info[i].y, info[i].w, info[i].h, info[i].img);
+            tools.drawCabinet(this.Q, this.graph, info[i].cabinetName, info[i].cabinetX, info[i].cabinetY, info[i].cabinetWidth, info[i].cabinetHeight, info[i].cabinetImage)
+
+            // }
         }
         //点击机房
         this.graph.onclick = e => {
@@ -356,7 +365,7 @@ export class RoomComponent implements OnInit {
             if (item.get('type') === 'cabinet' || item.get('type') === 'roomWall') {
                 console.log(item);
                 var element = {
-                    cabinetId: 1,
+                    cabinetId: '',
                     cabinetName: "",
                     cabinetMaxU: 32,
                     usedU: "",
@@ -369,7 +378,7 @@ export class RoomComponent implements OnInit {
                     cabinetRemark: "",
                     roomId: 2
                 }
-                element.cabinetId = item.id;
+                element.cabinetId = '';
                 element.cabinetName = item.name;
                 element.cabinetHeight = item.size.height;
                 element.cabinetWidth = item.size.width;
@@ -385,13 +394,11 @@ export class RoomComponent implements OnInit {
                 arr.push(element);
             }
         });
-        // this.info = arr;
         console.log(arr);
-        let obj = {};
-        obj['roomId'] = this.roomId;
-        obj['cabinetSet'] = arr;
-        console.log(obj);
-        this.RoomSerService.saveRoomInfo(obj);
+        let obj1 = {};
+        obj1['roomId'] = this.roomId;
+        obj1['cabinetSet'] = arr;
+        this.RoomSerService.saveRoomInfo(obj1);
 
     };
 
@@ -399,6 +406,23 @@ export class RoomComponent implements OnInit {
     getRoomsDetail() {
         this.http.get('/itm/rooms').subscribe(data => {
             this.info = data;
+        });
+    }
+
+    /**
+     * 获取机房信息
+     */
+    getRoomInfo(roomId: number): any {
+        this.http.get(`/itm/rooms/queryRoom/${roomId}`).subscribe(data => {
+            if (data['code'] === 0) {
+                let info = data['data']['cabinetSet'];
+                for (let i = 0; i < info['length']; i++) {
+                    tools.drawCabinet(this.Q, this.graph, info[i].cabinetName, info[i].cabinetX, info[i].cabinetY, info[i].cabinetWidth, info[i].cabinetHeight, info[i].cabinetImage)
+                }
+            } else {
+                alert(data['msg']);
+                return;
+            }
         });
     }
 }

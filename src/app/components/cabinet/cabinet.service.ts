@@ -45,4 +45,7 @@ export class CabinetService {
     public getNodeInfoById(id: string) {
 
     }
+    public saveCabinet(){
+
+    }
 }
