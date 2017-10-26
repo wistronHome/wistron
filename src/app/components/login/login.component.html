@@ -1,0 +1,38 @@
+<div class="login-wrap">
+    <div class="login-panel">
+        <div class="panel">
+            <div nz-row class="panel-row">
+                <div nz-col [nzSpan]="6">
+                    <span class="row-title">用户名</span>
+                </div>
+                <div nz-col [nzSpan]="18">
+                    <input type="text" [(ngModel)]="username">
+                </div>
+            </div>
+            <div nz-row class="panel-row">
+                <div nz-col [nzSpan]="6">
+                    <span class="row-title">密码</span>
+                </div>
+                <div nz-col [nzSpan]="18">
+                    <input type="password" [(ngModel)]="password">
+                </div>
+            </div>
+            <div nz-row class="panel-row">
+                <div nz-col [nzSpan]="6">
+                    <span class="row-title">验证码</span>
+                </div>
+                <div nz-col [nzSpan]="18">
+                    <input type="text">
+                </div>
+            </div>
+            <div nz-row class="panel-row">
+                <div nz-col [nzSpan]="6"></div>
+                <div nz-col [nzSpan]="18">
+                    <button nz-button style="width: 100%" (click)="login()" [nzType]="'primary'">
+                        <span>登 录</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

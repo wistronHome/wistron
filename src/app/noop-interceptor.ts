@@ -4,7 +4,7 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/c
 @Injectable()
 export class NoopInterceptor implements HttpInterceptor {
     intercept(req, next: HttpHandler) {
-        req['body'] = {aaa: 'saasefa'};
+        // req['body'] = {aaa: 'saasefa'};
         console.log('设置头', req);
         return next.handle(req);
     }

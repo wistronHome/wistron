@@ -11,12 +11,17 @@ import { RoleDetailComponent } from './components/asset/user/role-detail/role-de
 import { AssetComponent } from './components/asset/asset.component'
 import { MaintenanceComponent } from './components/asset/maintenance/maintenance.component'
 import { MaintenanceDetailComponent } from './components/asset/maintenance/maintenance-detail/maintenance-detail.component'
+import { LoginComponent } from './components/login/login.component'
 
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'capital',
+        redirectTo: 'login',
         pathMatch: 'full'
+    },
+    {
+        path: 'login',
+        component: LoginComponent
     },
     {
         path: 'machine',
