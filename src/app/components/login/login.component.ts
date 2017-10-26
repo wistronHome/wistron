@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'
 import { MissionService } from '../../mission-store/mission.service'
 import { User } from '../../models'
 import { LoginService } from './login.service'
@@ -9,11 +10,12 @@ import { LoginService } from './login.service'
     providers: [ LoginService ]
 })
 export class LoginComponent implements OnInit {
-    username: string = '';
+    usercode: string = '';
     password: string = '';
     constructor(
         private $mission: MissionService,
-        private $service: LoginService
+        private $service: LoginService,
+        private $router: Router
     ) { }
 
     ngOnInit() {
@@ -24,10 +26,11 @@ export class LoginComponent implements OnInit {
      * 登录方法
      */
     login() {
-        this.validate(this.username, this.password).then((result: ValidateResult) => {
+        this.validate(this.usercode, this.password).then((result: ValidateResult) => {
             if (result.isOk) {
-                this.$service.login(this.username, this.password, result => {
-                    console.log(result);
+                this.$service.login(this.usercode, this.password, result => {
+                    this.$mission.commitLoginStatusChange(result['user']);
+                    this.$router.navigate(['/asset'])
                 });
             } else {
                 console.log('failed');

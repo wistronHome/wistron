@@ -89,7 +89,7 @@ export class UserService {
      * @param callback
      */
     public deleteUsers(ids: number[], callback) {
-        this.$http.post(`/itm/deleteUsers`, ids).subscribe((result: Result) => {
+        this.$http.post(`/itm/deleteUsers`, { ids }).subscribe((result: Result) => {
             if (result.code === 0) {
                 callback(result);
             }

@@ -140,6 +140,8 @@
     "invoke-injectable": true,
       "prefer-const": false,
       "radix": false,
-      "no-shadowed-variable": false
+      "no-shadowed-variable": false,
+      "semicolon": false,
+      "no-inferrable-types": false
   }
 }

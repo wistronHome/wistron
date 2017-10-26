@@ -133,6 +133,10 @@ export class UserManagerComponent implements OnInit {
             this.$service.modifyUser(this.currentUser, result => {
                 if (result.ok) {
                     this.isModalShow = false;
+                    this.$service.getUserPagination(this.pageIndex, this.pageSize).then(result => {
+                        this.data = result.users;
+                        this.total = result.total;
+                    });
                     this.$message.success('修改成功~');
                 } else {
                     this.$message.success(result.msg);
@@ -193,7 +197,6 @@ export class UserManagerComponent implements OnInit {
     }
     ngOnInit() {
         this.$service.getUserPagination( this.pageIndex, this.pageSize ).then(result => {
-            console.log(result);
             this.data = result.users;
             this.total = result.total;
         });
