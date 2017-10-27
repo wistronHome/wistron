@@ -14,7 +14,7 @@
     </div>
     <div>
         <div style="margin: 10px 25px;">
-            <button nz-button [nzType]="'default'" (click)="showBrand('insert')">
+            <button nz-button [nzType]="'default'" (click)="showSeries('insert')">
                 <i class="anticon anticon-plus"></i>
                 <span>新&nbsp;&nbsp;增</span>
             </button>
@@ -67,13 +67,13 @@
             </app-pagination>
         </div>
     </div>
-    <nz-modal *ngIf="currentBrand"
+    <nz-modal *ngIf="currentSeries"
               [nzTitle]="modalBrandTitle"
               [nzContent]="modalBrandContent"
               [nzFooter]="modalBrandFooter"
               [nzMaskClosable]="false"
-              [nzVisible]="isBrandDetailShow"
-              (nzOnCancel)="isBrandDetailShow = false">
+              [nzVisible]="isSeriesDetailShow"
+              (nzOnCancel)="isSeriesDetailShow = false">
         <ng-template #modalBrandTitle>
             {{brandModalType === 'detail' ? '详 细' : brandModalType === 'insert' ? '新 增' : '修 改'}}
         </ng-template>
@@ -83,8 +83,8 @@
                     品牌名称：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [nzDisabled]="brandModalType === 'detail'"
-                              [(ngModel)]="currentBrand.name"
+                    <nz-input [nzDisabled]="seriesModalType === 'detail'"
+                              [(ngModel)]="currentSeries.name"
                               [nzPlaceHolder]="'请输入'">
 
                     </nz-input>
@@ -92,11 +92,11 @@
             </div>
             <div nz-row class="m-item">
                 <div nz-col [nzSpan]="6" class="m-title">
-                    品牌英文名称：
+                    品牌：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [nzDisabled]="brandModalType === 'detail'"
-                              [(ngModel)]="currentBrand.code"
+                    <nz-input [nzDisabled]="seriesModalType === 'detail'"
+                              [(ngModel)]="currentSeries.parentId"
                               [nzPlaceHolder]="'请输入'">
 
                     </nz-input>
@@ -107,8 +107,8 @@
                     描述：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [nzDisabled]="brandModalType === 'detail'"
-                              [(ngModel)]="currentBrand.description" [nzType]="'textarea'"
+                    <nz-input [nzDisabled]="seriesModalType === 'detail'"
+                              [(ngModel)]="currentSeries.description" [nzType]="'textarea'"
                               [nzPlaceHolder]="'请输入'">
 
                     </nz-input>
@@ -117,8 +117,8 @@
         </ng-template>
         <ng-template #modalBrandFooter>
             <div class="modal-footer">
-                <button (click)="isBrandDetailShow = false" class="m-btn" type="button">取&nbsp;&nbsp;消</button>
-                <button *ngIf="brandModalType !== 'detail'" (click)="saveBrand()" class="m-btn" type="button">保&nbsp;&nbsp;存</button>
+                <button (click)="isSeriesDetailShow = false" class="m-btn" type="button">取&nbsp;&nbsp;消</button>
+                <button *ngIf="seriesModalType !== 'detail'" (click)="saveSeries()" class="m-btn" type="button">保&nbsp;&nbsp;存</button>
             </div>
         </ng-template>
     </nz-modal>

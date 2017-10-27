@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
-import { Result, Brand } from "../../../models";
+import { Result, Brand, Series, Version } from "../../../models";
 
 @Injectable()
 export class ManagerService {
@@ -105,17 +105,160 @@ export class ManagerService {
     public validateRepeat(brand: string, code: string, callback) {
         this.$http.post(`/itm/bsm`, { name, code }).subscribe((result: Result) => {
             console.log(result);
+            callback(result.code === 0);
+        });
+    }
+
+    /** =============================================================================================== */
+    /**
+     * 分页查询所有系列
+     * @param {number} pageIndex
+     * @param {number} pageSize
+     * @param callback
+     */
+    public getSeriesPagination(pageIndex: number, pageSize: number, callback) {
+        this.$http.get(`/itm/series/${pageIndex}/${pageSize}/-1`).subscribe((result: Result) => {
+            console.log(result);
             if (result.code === 0) {
                 callback(result.data);
             }
         });
     }
 
-    /** =============================================================================================== */
+    /**
+     * 模糊分页查询所有系列
+     * @param {number} pageIndex
+     * @param {number} pageSize
+     * @param {string} name
+     * @param {number} parentId
+     * @param callback
+     */
+    public getSeriesByField(pageIndex: number, pageSize: number, name: string, parentId: number, callback) {
+        let body = {pageNum: pageIndex, size: pageSize, name, parentId};
+        this.$http.post(`/itm/series/like`, body).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
 
-    // public getSeriesPagination(pageIndex: number, pageSize: number, callback) {
-    //     this.$http.get(``)
-    // }
+    /**
+     * 根据id查询系列信息
+     * @param {number} seriesId
+     */
+    public getSeriesById(seriesId: number, callback) {
+        this.$http.get(`/itm/bsm/${seriesId}`).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
 
+    /**
+     * 修改系列信息
+     * @param {Series} series
+     * @param callback
+     */
+    public modifySeries(series: Series, callback) {
+        this.$http.put(`/itm/bsm`, series).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+    /** ========================================================================================= */
+
+    /**
+     * 新增型号
+     * @param {Version} version
+     * @param callback
+     */
+    public insertVersion(version: Version, callback) {
+        this.$http.post(`/itm/model`, version).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+    /**
+     * 分页查询所有型号
+     * @param {number} pageIndex
+     * @param {number} pageSize
+     * @param callback
+     */
+    public getVersionPagination(pageIndex: number, pageSize: number, callback) {
+        this.$http.get(`/itm/model/${pageIndex}/${pageSize}/-1`).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+    /**
+     * 根据id查询型号
+     * @param {number} versionId
+     * @param callback
+     */
+    public getVersionById(versionId: number, callback) {
+        this.$http.get(`/itm.bsm/${versionId}`).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+    /**
+     * 模糊分页查询型号
+     * @param {number} pageIndex
+     * @param {number} pageSize
+     * @param {string} name
+     * @param {number} parentId
+     * @param callback
+     */
+    public getVersionByField(pageIndex: number, pageSize: number, name: string, parentId: number, callback) {
+        let body = {pageNum: pageIndex, size: pageSize, name, parentId};
+        this.$http.post(`/itm/model`, body).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+    /**
+     * 修改型号
+     * @param {Series} series
+     * @param callback
+     */
+    public modifyVersion(series: Series, callback) {
+        this.$http.put(`/itm/bsm`, series).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+    /**
+     * 删除version
+     * @param {number} versionId
+     * @param callback
+     */
+    public deleteVersion(versionId: number, callback) {
+        this.$http.delete(`/itm/bsm/${versionId}`).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
 }
 

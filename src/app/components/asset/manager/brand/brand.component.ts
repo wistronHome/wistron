@@ -46,6 +46,9 @@ export class BrandComponent implements OnInit {
         this.currentBrand = Utils.cloneModel(brand);
     }
 
+    /**
+     * 新增/修改 品牌
+     */
     saveBrand() {
         if (this.currentBrand.id) {
             this.$service.validateRepeat(this.currentBrand.name, this.currentBrand.code, result => {
