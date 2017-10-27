@@ -5,7 +5,7 @@ import { User } from './models';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css'],
+    styleUrls: ['./app.component.scss'],
     providers: [ MissionService ]
 })
 export class AppComponent implements OnInit {
@@ -23,7 +23,10 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
-
+        if (sessionStorage.getItem('authorization')) {
+            this.loginUser = new User();
+            this.loginUser.userId = 123;
+        }
     }
 
     toggleCollapsed() {

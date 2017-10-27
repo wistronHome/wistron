@@ -28,6 +28,9 @@ import { RockComponent } from "./components/asset/servicer/rock/rock.component";
 import { RockDetailComponent } from "./components/asset/servicer/rock/rock-detail/rock-detail.component";
 import { LoginComponent } from './components/login/login.component'
 
+import { BrandComponent } from "./components/asset/manager/brand/brand.component";
+import { SeriesComponent } from "./components/asset/manager/series/series.component";
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -49,7 +52,8 @@ import { LoginComponent } from './components/login/login.component'
         AssetComponent,
         RockComponent,
         AlarmPipe,
-        // MaintenanceDetailComponent,
+        BrandComponent,
+        SeriesComponent,
         LoginComponent
 
     ],

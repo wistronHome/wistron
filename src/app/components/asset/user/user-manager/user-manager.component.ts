@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../user.service'
-import { User, Password, Role } from '../../../../models';
+import { User, Password, Role, Utils } from '../../../../models';
 import { NzMessageService } from 'ng-zorro-antd';
 import { MissionService } from '../../../../mission-store/mission.service';
 
@@ -129,7 +129,7 @@ export class UserManagerComponent implements OnInit {
     modifyUser(user: User) {
         console.log(user);
         this.isModalShow = true;
-        this.currentUser = this.cloneUser(user);
+        this.currentUser = Utils.cloneModel(user);
     }
 
     /**
@@ -177,7 +177,7 @@ export class UserManagerComponent implements OnInit {
     modifyPassword(user: User) {
         this.isModifyPasswordShow = true;
         this.password = new Password();
-        this.currentUser = this.cloneUser(user);
+        this.currentUser = Utils.cloneModel(user);
     }
 
     /**
@@ -235,11 +235,5 @@ export class UserManagerComponent implements OnInit {
             this.total = result.total;
         });
     }
-    private cloneUser(user: User): User {
-        let _clone = new User();
-        for (let key in user) {
-            _clone[key] = user[key];
-        }
-        return _clone;
-    }
+
 }

@@ -13,7 +13,10 @@ import { AssetComponent } from './components/asset/asset.component'
 import { RockComponent } from './components/asset/servicer/rock/rock.component'
 import { LoginComponent } from './components/login/login.component'
 
+import { BrandComponent } from "./components/asset/manager/brand/brand.component";
+
 import { AuthGuardService } from './guard/auth-guard.service'
+import { SeriesComponent } from "./components/asset/manager/series/series.component";
 
 const routes: Routes = [
     {
@@ -69,6 +72,13 @@ const routes: Routes = [
                 children: [
                     { path: 'rock', component: RockComponent },
                     { path: 'rock/:id', component: RockDetailComponent }
+                ]
+            },
+            {
+                path: 'manager',
+                children: [
+                    { path: 'brand', component: BrandComponent },
+                    { path: 'series', component: SeriesComponent }
                 ]
             }
         ]

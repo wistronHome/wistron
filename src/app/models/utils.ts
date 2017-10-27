@@ -13,4 +13,12 @@ export class Utils {
     public static getState(limit) {
         return Math.ceil(Math.random() * limit);
     }
+
+    public static cloneModel(model): any {
+        let _clone = {};
+        for (let key in model) {
+            _clone[key] = model[key];
+        }
+        return _clone;
+    }
 }

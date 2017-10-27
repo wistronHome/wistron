@@ -10,6 +10,14 @@
                     <li nz-menu-item (click)="$router.navigate(['/asset/servicer/rock'])">机架服务器</li>
                     <li nz-menu-item (click)="$router.navigate(['/asset/maintenance'])">刀片服务器</li>
                     <li nz-menu-item (click)="$router.navigate(['/asset/maintenance'])">网络设备</li>
+                    <li nz-submenu>
+                        <span title>资产维护</span>
+                        <ul>
+                            <li nz-menu-item (click)="$router.navigate(['/asset/manager/brand'])">品牌维护</li>
+                            <li nz-menu-item (click)="$router.navigate(['/asset/manager/series'])">系列维护</li>
+                            <li nz-menu-item (click)="$router.navigate(['/asset/manager/rock'])">型号维护</li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
             <li nz-submenu>
