@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {NzMessageService} from "ng-zorro-antd";
 
 
 @Injectable()
 export class RoomSerService {
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient,
+                private $message: NzMessageService) {
     }
 
     getCabinetInfo() {
@@ -43,16 +45,26 @@ export class RoomSerService {
      * 保存页面中的机柜信息
      * @param {}
      * */
-    saveRoomInfo(obj,callback) {
+    saveRoomInfo(obj, callback) {
         this.http.put(`/itm/rooms/updateCabinetSet/`, obj).subscribe(data => {
             if (data['code'] === 0) {
                 console.log('数据保存成功');
                 console.log(data);
                 callback();
-            }else {
+            } else {
                 console.log("网络异常");
             }
         });
+    }
+
+    getCabinetType(callback) {
+        this.http.get(`/itm/cabinetType/list`).subscribe(data => {
+            if (data['code'] === 0) {
+                callback(data);
+            } else {
+                this.$message.create('error', ' 网络错误,请稍后重试')
+            }
+        })
     }
 }
 

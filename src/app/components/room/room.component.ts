@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {NgModel} from '@angular/forms';
 import {NgForm} from '@angular/forms';
+
 import {
     trigger,
     state,
@@ -11,6 +12,7 @@ import {
     transition
 } from '@angular/animations';
 import {RoomSerService} from "./room-ser.service";
+import {NzMessageService} from "ng-zorro-antd";
 
 @Component({
     selector: 'app-room',
@@ -67,10 +69,12 @@ export class RoomComponent implements OnInit {
     width = ''; // 自定义机柜的宽
     height = ''; // 自定义机柜的高
     Unumber = ''; // 自定义机柜的u数
+    cabinetTypeList = '';
     constructor(private router: Router,
                 private routerInfo: ActivatedRoute,
                 private RoomSerService: RoomSerService,
-                private http: HttpClient) {
+                private http: HttpClient,
+                private $message: NzMessageService) {
     }
 
     ngOnInit() {
@@ -85,6 +89,11 @@ export class RoomComponent implements OnInit {
         });
         // 通过参数查询来获取路由参数
         this.roomId = this.routerInfo.snapshot.params['id'];
+        // 页面刚进来获取机柜类型列表
+        this.RoomSerService.getCabinetType(e => {
+            this.cabinetTypeList = e.data;
+            console.log(this.cabinetTypeList);
+        });
         this.graph = new this.Q.Graph('mcRoom');
         // 设置坐标原点
         this.graph.originAtCenter = false;
@@ -115,7 +124,8 @@ export class RoomComponent implements OnInit {
             // 位置的矫正 还没有做警示图标的矫正
             console.log(e);
             if (tools.checkOverLap(this.model, e, {'_width': _width, '_height': _height})) {
-                alert('目标重合请重试');
+                // alert('目标重合请重试');
+                this.$message.create('error', '目标重叠请重试');
                 return;
             }
             const x = tools.correctLocation(e.offsetX, _width);
@@ -251,7 +261,8 @@ export class RoomComponent implements OnInit {
                         e.getData().children.datas[0].x = e.getData().x + 30;
                         e.getData().children.datas[0].y = e.getData().y - 30;
                     }
-                    alert('目标重合了 请重试');
+                    // alert('目标重合了 请重试');
+                    this.$message.create('error', '目标重合了请重试')
                 } else {
                     e.getData().x = tools.correctLocation(e.getData().x, e.getData().size.width);
                     e.getData().y = tools.correctLocation(e.getData().y, e.getData().size.height);

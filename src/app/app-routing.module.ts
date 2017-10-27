@@ -17,6 +17,7 @@ import { BrandComponent } from "./components/asset/manager/brand/brand.component
 
 import { AuthGuardService } from './guard/auth-guard.service'
 import { SeriesComponent } from "./components/asset/manager/series/series.component";
+import {VersionComponent} from "./components/asset/manager/version/version.component";
 
 const routes: Routes = [
     {
@@ -78,7 +79,8 @@ const routes: Routes = [
                 path: 'manager',
                 children: [
                     { path: 'brand', component: BrandComponent },
-                    { path: 'series', component: SeriesComponent }
+                    { path: 'series', component: SeriesComponent },
+                    { path: 'version', component: VersionComponent }
                 ]
             }
         ]

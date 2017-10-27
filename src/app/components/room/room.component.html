@@ -27,7 +27,7 @@
   <div class="machine-room" id="mcRoom" style="width: 70%; height: 100%;"></div>
   <div class="tools" id="tools">
     <nz-collapseset [nzAccordion]="true">
-      <nz-collapse  nzTitle="机柜" nzActive="true">
+      <nz-collapse  nzTitle="机柜" nzActive="false">
         <div>
           <img class="img" draggable="true" src="assets/room/mx-60120s.svg" alt="" width="40px;"height="80px" _width="30"_height="60">
           <p>42U机柜600*1200(竖)</p>
@@ -37,8 +37,10 @@
         <div><img class="img" src="assets/room/mx-cabinet4.svg" alt="" width="80px;" _width="60"_height="40"><p>42U机柜800*1200(横)</p></div>
         <div><img class="img" src="assets/room/mx-cabinet4.svg" alt="" width="80px;" _width="60"_height="40" _type='customCabinet'><p>自定义机柜</p></div>
       </nz-collapse>
-      <nz-collapse  nzTitle="安全防范" nzActive="false">
-          <!--<div><img class="img" draggable="true" src="assets/room/mx-cabinet2.svg" alt="" width="80px;"></div>-->
+      <nz-collapse  nzTitle="后台机柜列表" nzActive="false">
+
+          <div *ngFor="let list of cabinetTypeList"><div class="cabinetType" draggable="true" [ngStyle]="{'width': list.cabinetTypeWidth/15+'px',
+          'height': list.cabinetTypeHeight/15+'px','background': 'green'}" [attr._width]="list.cabinetTypeWidth/20" [attr._height]='list.cabinetTypeHeight/20'></div><p>{{list.cabinetTypeName}}</p></div>
       </nz-collapse>
       <nz-collapse  nzTitle="自定义" nzActive="false">
           <div><img class="img" draggable="true" src="assets/room/mx-cabinet2.svg" alt="" width="40px;" _width= '15' _height= '80' _type='roomWall'><p>基建</p></div>

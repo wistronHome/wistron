@@ -1,0 +1,144 @@
+<div class="series-wrap">
+    <div class="search-area" nz-row >
+        <div nz-col class="gutter-row" [nzSpan]="24">
+            <nz-input [(ngModel)]="search.name" [nzPlaceHolder]="'型号名称'"></nz-input>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="10">
+            <nz-input [(ngModel)]="search.code" [nzPlaceHolder]="'品牌'"></nz-input>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="10">
+            <nz-input [(ngModel)]="search.code" [nzPlaceHolder]="'系列'"></nz-input>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="4">
+            <button nz-button  [nzType]="'default'" (click)="getBrandByField()">
+                <i class="anticon anticon-search"></i><span>查&nbsp;&nbsp;询</span>
+            </button>
+        </div>
+    </div>
+    <div>
+        <div style="margin: 10px 25px;">
+            <button nz-button [nzType]="'default'" (click)="showBrand('insert')">
+                <i class="anticon anticon-plus"></i>
+                <span>新&nbsp;&nbsp;增</span>
+            </button>
+        </div>
+        <nz-table #nzTable
+                  [nzDataSource]="data"
+                  [nzSize]="'small'"
+                  [nzIsPagination]="false"
+                  [nzScroll]="{ y: 500 }"
+                  [nzBordered]="true"
+                  [nzPageSize]="10">
+            <ng-template #nzFixedHeader>
+                <thead nz-thead>
+                <tr>
+                    <th nz-th [nzWidth]="'100px'"><span>序号</span></th>
+                    <th nz-th [nzWidth]="'150px'"><span>型号名称</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>系列</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>品牌</span></th>
+                    <th nz-th [nzWidth]="'150px'"><span>操作</span></th>
+                </tr>
+                </thead>
+            </ng-template>
+            <tbody nz-tbody>
+            <tr nz-tbody-tr *ngFor="let brand of data;let _index = index;">
+                <td nz-td>
+                    <span>{{_index + 1}}</span>
+                </td>
+                <td nz-td>
+                    <span>{{brand.name}}</span>
+                </td>
+                <td nz-td>
+                    <span>{{brand.code}}</span>
+                </td>
+                <td nz-td>
+                    <span>{{brand.code}}</span>
+                </td>
+                <td nz-td>
+                    <a (click)="showBrand('modify', brand)">修改</a>
+                    <a (click)="showBrand('detail', brand)">查看</a>
+                    <nz-popconfirm [nzTitle]="'确定要删除这个品牌吗？'"
+                                   (nzOnConfirm)="confirmDelete(brand)"
+                                   (nzOnCancel)="cancel()">
+                        <a nz-popconfirm>删除</a>
+                    </nz-popconfirm>
+                </td>
+            </tr>
+            </tbody>
+        </nz-table>
+        <div style="margin: 20px 30px;text-align: right;">
+            <app-pagination [pageIndex]="pageIndex"
+                            [pageSize]="pageSize"
+                            [total]="total">
+
+            </app-pagination>
+        </div>
+    </div>
+    <nz-modal *ngIf="currentVersion"
+              [nzTitle]="modalBrandTitle"
+              [nzContent]="modalBrandContent"
+              [nzFooter]="modalBrandFooter"
+              [nzMaskClosable]="false"
+              [nzVisible]="VersionDetailShow"
+              (nzOnCancel)="VersionDetailShow = false">
+        <ng-template #modalBrandTitle>
+            {{VersionModalType === 'detail' ? '详 细' : VersionModalType === 'insert' ? '新 增' : '修 改'}}
+        </ng-template>
+        <ng-template #modalBrandContent>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    型号名称：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [nzDisabled]="brandModalType === 'detail'"
+                              [(ngModel)]="currentVersion.name"
+                              [nzPlaceHolder]="'请输入'">
+
+                    </nz-input>
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    型号：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [nzDisabled]="brandModalType === 'detail'"
+                              [(ngModel)]="currentVersion.code"
+                              [nzPlaceHolder]="'请输入'">
+
+                    </nz-input>
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    系列：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [nzDisabled]="brandModalType === 'detail'"
+                              [(ngModel)]="currentVersion.code"
+                              [nzPlaceHolder]="'请输入'">
+
+                    </nz-input>
+                </div>
+            </div>
+            <div nz-row class="m-item">
+                <div nz-col [nzSpan]="6" class="m-title">
+                    描述：
+                </div>
+                <div nz-col [nzSpan]="18" class="m-content">
+                    <nz-input [nzDisabled]="brandModalType === 'detail'"
+                              [(ngModel)]="currentVersion.description" [nzType]="'textarea'"
+                              [nzPlaceHolder]="'请输入'">
+
+                    </nz-input>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #modalBrandFooter>
+            <div class="modal-footer">
+                <button (click)="VersionDetailShow = false" class="m-btn" type="button">取&nbsp;&nbsp;消</button>
+                <button *ngIf="brandModalType !== 'detail'" (click)="saveBrand()" class="m-btn" type="button">保&nbsp;&nbsp;存</button>
+            </div>
+        </ng-template>
+    </nz-modal>
+</div>

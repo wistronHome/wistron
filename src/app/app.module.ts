@@ -30,6 +30,8 @@ import { LoginComponent } from './components/login/login.component'
 
 import { BrandComponent } from "./components/asset/manager/brand/brand.component";
 import { SeriesComponent } from "./components/asset/manager/series/series.component";
+import { VersionComponent } from "./components/asset/manager/version/version.component";
+
 
 @NgModule({
     declarations: [
@@ -54,7 +56,8 @@ import { SeriesComponent } from "./components/asset/manager/series/series.compon
         AlarmPipe,
         BrandComponent,
         SeriesComponent,
-        LoginComponent
+        LoginComponent,
+        VersionComponent
 
     ],
     imports: [
