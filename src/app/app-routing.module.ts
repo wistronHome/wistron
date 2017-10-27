@@ -13,6 +13,8 @@ import { MaintenanceComponent } from './components/asset/maintenance/maintenance
 import { MaintenanceDetailComponent } from './components/asset/maintenance/maintenance-detail/maintenance-detail.component'
 import { LoginComponent } from './components/login/login.component'
 
+import { AuthGuardService } from './guard/auth-guard.service'
+
 const routes: Routes = [
     {
         path: '',
@@ -80,7 +82,8 @@ const routes: Routes = [
     ],
     exports: [
         RouterModule
-    ]
+    ],
+    providers: [ AuthGuardService ]
 })
 
 export class AppRoutingModule {}

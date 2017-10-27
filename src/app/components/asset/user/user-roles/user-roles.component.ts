@@ -29,12 +29,11 @@ export class UserRolesComponent implements OnInit {
             this.pageSize = page.pageSize;
             this.pageIndex = page.pageIndex;
             this.$service.getRolesPagination(this.pageIndex, this.pageSize, result => {
-                this.data = result.roles;
-                this.total = result.total;
+            //     // this.data = result.roles;
+            //     // this.total = result.total;
             });
         });
     }
-
     ngOnInit() {
         // this.$service.getRolePagination( this.pageIndex, this.pageSize ).then(result => {
         //     this.data = result.roles;
@@ -55,9 +54,7 @@ export class UserRolesComponent implements OnInit {
             content: '12/8版本不做要求'
         })
     }
-
     cancel() { }
-
     confirmDelete(role: Role) {
         console.log(role);
     }
