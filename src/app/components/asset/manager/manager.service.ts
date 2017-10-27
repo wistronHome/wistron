@@ -9,6 +9,19 @@ export class ManagerService {
     ) {}
 
     /**
+     * 查询所有品牌
+     */
+    public getAllBrand(callback) {
+        this.$http.post(`/itm/bsm/0`, {}).subscribe((result: Result) => {
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+
+
+    /**
      * 分页获取品牌
      * @param {number} pageIndex
      * @param {number} pageSize
@@ -118,7 +131,7 @@ export class ManagerService {
      */
     public getSeriesPagination(pageIndex: number, pageSize: number, callback) {
         this.$http.get(`/itm/series/${pageIndex}/${pageSize}/-1`).subscribe((result: Result) => {
-            console.log(result);
+            console.log('series', result);
             if (result.code === 0) {
                 callback(result.data);
             }
@@ -163,6 +176,20 @@ export class ManagerService {
      */
     public modifySeries(series: Series, callback) {
         this.$http.put(`/itm/bsm`, series).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+    /**
+     * 新增系列
+     * @param {Series} series
+     * @param callback
+     */
+    public insertSeries(series: Series, callback) {
+        this.$http.post(`/itm/series`, series).subscribe((result: Result) => {
             console.log(result);
             if (result.code === 0) {
                 callback(result.data);

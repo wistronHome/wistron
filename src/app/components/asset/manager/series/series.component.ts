@@ -21,6 +21,7 @@ export class SeriesComponent implements OnInit {
         name: '',
         code: ''
     };
+    brands: Brand[] = [];
     isSeriesDetailShow: boolean = false;
     seriesModalType: string = 'detail';
     constructor(
@@ -34,7 +35,12 @@ export class SeriesComponent implements OnInit {
             this.refreshSeries();
         });
     }
-    ngOnInit() {}
+    ngOnInit() {
+        this.$service.getAllBrand(result => {
+            this.brands = result;
+            console.log(this.brands);
+        });
+    }
 
     /**
      * 打开系列弹框
@@ -60,7 +66,13 @@ export class SeriesComponent implements OnInit {
                 }
             });
         } else {
-
+            this.$service.validateRepeat(this.currentSeries.name, '', result => {
+                if (result) {
+                    this.$service.insertSeries(this.currentSeries, result => {
+                        this.refreshSeries();
+                    });
+                }
+            });
         }
     }
 

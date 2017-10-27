@@ -51,25 +51,15 @@ export class BrandComponent implements OnInit {
      */
     saveBrand() {
         if (this.currentBrand.id) {
-            this.$service.validateRepeat(this.currentBrand.name, this.currentBrand.code, result => {
-                if (result) {
-                    this.$service.modifyBrand(this.currentBrand, result => {
-                        this.isBrandDetailShow = false;
-                        this.refreBrand();
-                    });
-                }
+            this.$service.modifyBrand(this.currentBrand, result => {
+                this.isBrandDetailShow = false;
+                this.refreBrand();
             });
         } else {
-            this.$service.validateRepeat(this.currentBrand.name, this.currentBrand.code, result => {
-                if (result) {
-                    this.$service.insertBrand(this.currentBrand, result => {
-                        this.isBrandDetailShow = false;
-                        this.refreBrand();
-                    });
-                } else {
-                    this.$message.success('已经存在~');
-                }
-            })
+            this.$service.insertBrand(this.currentBrand, result => {
+                this.isBrandDetailShow = false;
+                this.refreBrand();
+            });
         }
     }
 
