@@ -101,6 +101,8 @@ export class MachineComponent implements OnInit {
      */
     onVoted(flag: boolean) {
         this.isVisible = flag;
+        /*接收了子组件传过来的消息刷新一下房间数据*/
+        this.getRoomDatas();
     }
 
     saveRoom(): void {
@@ -124,5 +126,40 @@ export class MachineComponent implements OnInit {
             // this.datas = data['data'];
             item.cabinetDatas = data['data'].cabinetSet;
         });
+    }
+    /*删除机房*/
+    delroom(roomId) {
+        this.http.delete(`/itm/rooms/deleteRoom/${roomId}`).subscribe(data => {
+            console.log(data);
+            if (data['code'] === 0) {
+                /*重新获取机房数据*/
+                this.getRoomDatas();
+            } else if (data['code'] === 10101) {
+                this.$message.create('error', data['msg']);
+            }
+        });
+    }
+
+    /*删除机柜*/
+    delCabinet(cabinetId, roomId, item) {
+        this.delCabinetRes(cabinetId).then(e => {
+            this.getCabinetDatas(roomId, item);
+        });
+
+    }
+
+    delCabinetRes(cabinetId): Promise<object> {
+        var promise = new Promise((resolve, reject) => {
+            this.http.delete(`/itm/cabinet/deleteCabinet/${cabinetId}`).subscribe(data => {
+                if (data['code'] === 0) {
+                    /*删除成功*/
+                    resolve();
+                } else {
+                    /*删除失败*/
+                    reject();
+                }
+            });
+        });
+        return promise;
     }
 }
