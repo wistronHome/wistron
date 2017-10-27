@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { MaintenanceService } from './maintenance.service';
+import { RockService } from './rock.service';
 
 describe('MaintenanceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MaintenanceService]
+      providers: [RockService]
     });
   });
 
-  it('should be created', inject([MaintenanceService], (service: MaintenanceService) => {
+  it('should be created', inject([RockService], (service: RockService) => {
     expect(service).toBeTruthy();
   }));
 });

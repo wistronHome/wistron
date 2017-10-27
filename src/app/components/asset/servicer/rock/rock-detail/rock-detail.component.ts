@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 const options = [{
     value: 'zhejiang',
     label: 'Zhejiang',
@@ -28,12 +28,13 @@ const options = [{
         }],
     }],
 }];
+
 @Component({
-    selector: 'app-maintenance-detail',
-    templateUrl: './maintenance-detail.component.html',
-    styleUrls: ['./maintenance-detail.component.scss']
+    selector: 'app-rock-detail',
+    templateUrl: './rock-detail.component.html',
+    styleUrls: [ './rock-detail.component.scss' ],
 })
-export class MaintenanceDetailComponent implements OnInit {
+export class RockDetailComponent implements OnInit {
     style = {
         'background': '#f7f7f7',
         'border-radius': '4px',

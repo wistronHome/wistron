@@ -142,6 +142,7 @@
       "radix": false,
       "no-shadowed-variable": false,
       "semicolon": false,
-      "no-inferrable-types": false
+      "no-inferrable-types": false,
+      "quotemark": false
   }
 }

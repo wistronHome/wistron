@@ -8,9 +8,9 @@ import { UserManagerComponent } from './components/asset/user/user-manager/user-
 import { UserOnlineComponent } from './components/asset/user/user-online/user-online.component'
 import { UserRolesComponent } from './components/asset/user/user-roles/user-roles.component'
 import { RoleDetailComponent } from './components/asset/user/role-detail/role-detail.component'
+import { RockDetailComponent } from "./components/asset/servicer/rock/rock-detail/rock-detail.component";
 import { AssetComponent } from './components/asset/asset.component'
-import { MaintenanceComponent } from './components/asset/maintenance/maintenance.component'
-import { MaintenanceDetailComponent } from './components/asset/maintenance/maintenance-detail/maintenance-detail.component'
+import { RockComponent } from './components/asset/servicer/rock/rock.component'
 import { LoginComponent } from './components/login/login.component'
 
 import { AuthGuardService } from './guard/auth-guard.service'
@@ -65,12 +65,11 @@ const routes: Routes = [
                 ]
             },
             {
-                path: 'maintenance',
-                component: MaintenanceComponent
-            },
-            {
-                path: 'maintenance/:id',
-                component: MaintenanceDetailComponent
+                path: 'servicer',
+                children: [
+                    { path: 'rock', component: RockComponent },
+                    { path: 'rock/:id', component: RockDetailComponent }
+                ]
             }
         ]
     }

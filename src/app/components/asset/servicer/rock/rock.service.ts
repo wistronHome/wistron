@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Asset, Utils } from '../../../models'
+import { Asset, Utils } from "../../../../models";
+
 @Injectable()
-export class MaintenanceService {
+export class RockService {
     brand = [
         {
             value: '0',

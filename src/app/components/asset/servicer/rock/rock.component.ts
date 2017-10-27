@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
-import { MissionService } from '../../../mission-store/mission.service'
-import { MaintenanceService } from './maintenance.service'
-import { Asset } from '../../../models';
+import { MissionService } from "../../../../mission-store/mission.service";
+import { RockService } from './rock.service'
+import { Asset } from "../../../../models/asset";
 
 
 @Component({
     selector: 'app-maintenance',
-    templateUrl: './maintenance.component.html',
-    styleUrls: ['./maintenance.component.scss'],
-    providers: [ MissionService, MaintenanceService ]
+    templateUrl: './rock.component.html',
+    styleUrls: ['./rock.component.scss'],
+    providers: [ MissionService, RockService ]
 })
 
-export class MaintenanceComponent implements OnInit {
+export class RockComponent implements OnInit {
     search = {
         code: '',
         name: '',
@@ -78,7 +78,7 @@ export class MaintenanceComponent implements OnInit {
 
     constructor(
         private $mission: MissionService,
-        private $service: MaintenanceService,
+        private $service: RockService,
         private $router: Router
     ) {
         $mission.pageChangeHook.subscribe(page => {
@@ -111,7 +111,9 @@ export class MaintenanceComponent implements OnInit {
     _console(value) {
         console.log(value);
     }
-
+    createUser() {
+        this.$router.navigate(['/asset/servicer/rock/-1']);
+    }
 
     sortMap = {
         name: null,

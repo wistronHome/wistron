@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MaintenanceDetailComponent } from './maintenance-detail.component';
+import { RockComponent } from './rock.component';
 
-describe('MaintenanceDetailComponent', () => {
-  let component: MaintenanceDetailComponent;
-  let fixture: ComponentFixture<MaintenanceDetailComponent>;
+describe('MaintenanceComponent', () => {
+  let component: RockComponent;
+  let fixture: ComponentFixture<RockComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MaintenanceDetailComponent ]
+      declarations: [ RockComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MaintenanceDetailComponent);
+    fixture = TestBed.createComponent(RockComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

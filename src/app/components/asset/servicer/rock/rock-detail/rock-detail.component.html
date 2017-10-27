@@ -71,17 +71,59 @@
             </nz-collapseset>
             <nz-collapseset  [nzBordered]="false">
                 <nz-collapse [nzTitle]="'特殊属性'" [nzActive]="false" [ngStyle]="style" >
-                    <p>safeasefasef 的内容</p>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">所在刀箱:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">起始U位:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                    </div>
                 </nz-collapse>
             </nz-collapseset>
             <nz-collapseset  [nzBordered]="false">
                 <nz-collapse [nzTitle]="'上架位置'" [nzActive]="false" [ngStyle]="style" >
-                    <p>safeasefasef 的内容</p>
+                    <div class="search-row" nz-row >
+                        <div class="search-row" nz-row >
+                            <div nz-col class="gutter-row" [nzSpan]="16">
+                                <div nz-col [nzSpan]="4" class="row-title">机房/机柜/U位:</div>
+                                <div nz-col [nzSpan]="20">
+                                    <nz-cascader
+                                        [nzOptions]="_options"
+                                        [(ngModel)]="_value"
+                                        (ngModelChange)="_console($event)"
+                                        (nzChange)="_console($event)">
+                                    </nz-cascader>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'协议配置'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="4" class="row-title">协议:</div>
+                            <div nz-col [nzSpan]="20">
+                                <nz-radio-group >
+                                    <label nz-radio-button [nzValue]="'0'">SNMP</label>
+                                    <label nz-radio-button [nzValue]="'1'">IPMI</label>
+                                </nz-radio-group>
+                            </div>
+                        </div>
+                    </div>
                 </nz-collapse>
             </nz-collapseset>
             <nz-collapseset  [nzBordered]="false">
                 <nz-collapse [nzTitle]="'备注信息'" [nzActive]="false" [ngStyle]="style" >
-                    <p>safeasefasef 的内容</p>
+                    <p>备注具体的内容</p>
                 </nz-collapse>
             </nz-collapseset>
         </nz-tab>
@@ -93,5 +135,8 @@
             <span>服务器</span>
         </nz-tab>
     </nz-tabset>
-
+    <div style="text-align: center">
+        <button nz-button [nzType]="'primary'"><span>保存</span></button>
+        <button nz-button [nzType]="'default'"><span>保存</span></button>
+    </div>
 </div>
