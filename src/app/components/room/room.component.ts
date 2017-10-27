@@ -83,10 +83,8 @@ export class RoomComponent implements OnInit {
             this.roomId = params['id'];
             this.getRoomInfo(this.roomId);
         });
+        // 通过参数查询来获取路由参数
         this.roomId = this.routerInfo.snapshot.params['id'];
-        // 获取room数据详情
-        this.getRoomInfo(this.roomId);
-        // this.room = this.RoomSerService.getRoomInfo(this.roomId);
         this.graph = new this.Q.Graph('mcRoom');
         // 设置坐标原点
         this.graph.originAtCenter = false;
@@ -153,7 +151,7 @@ export class RoomComponent implements OnInit {
                 tools.drawCustomCabinet(this.Q, this.graph, p.x, p.y);
                 return;
             }
-            tools.drawCabinet(this.Q, this.graph, '007', p.x, p.y, _width, _height, 0);
+            tools.drawCabinet(this.Q, this.graph, '007', p.x, p.y, _width, _height, 0,'');
         };
 
 
@@ -194,7 +192,7 @@ export class RoomComponent implements OnInit {
             //     demo.size = {width: info[i].w, height: info[i].h};
             // } else {
             //     // tools.drawCabinet(this.Q, this.graph, info[i].name, info[i].x, info[i].y, info[i].w, info[i].h, info[i].img);
-            tools.drawCabinet(this.Q, this.graph, info[i].cabinetName, info[i].cabinetX, info[i].cabinetY, info[i].cabinetWidth, info[i].cabinetHeight, info[i].cabinetImage)
+            //tools.drawCabinet(this.Q, this.graph, info[i].cabinetName, info[i].cabinetX, info[i].cabinetY, info[i].cabinetWidth, info[i].cabinetHeight, info[i].cabinetImage)
 
             // }
         }
@@ -269,8 +267,22 @@ export class RoomComponent implements OnInit {
     }
 
     delCabinet(): void {
-        this.model['removeById'](this.id);
-        this.model['removeById'](this.ChildId);
+        if(this.graph.getUI(this.id).data&&this.graph.getUI(this.id).data.get('cabinetId')===''){
+            this.model['removeById'](this.id);
+            this.model['removeById'](this.ChildId);
+        }else {
+
+            let cabinetId = this.graph.getUI(this.id).data.get('cabinetId');
+            this.http.delete(`/itm/cabinet/deleteCabinet/${cabinetId}`).subscribe(data => {
+                if (data['code'] === 0) {
+                    alert('删除成功')
+                } else {
+                }
+            });
+            this.model['removeById'](this.id);
+            this.model['removeById'](this.ChildId);
+        }
+
     }
 
     lockCabinet(): void {
@@ -347,7 +359,7 @@ export class RoomComponent implements OnInit {
             this.isConfirmLoading = false;
             tools.drawRoom(this.Q, this.graph, this._roomWidth * 50, this._roomHeight * 50);
             for (var i = 0; i < this.info.length; i++) {
-                tools.drawCabinet(this.Q, this.graph, this.info[i].name, this.info[i].x, this.info[i].y, this.info[i].w, this.info[i].h, this.info[i].img)
+                //tools.drawCabinet(this.Q, this.graph, this.info[i].name, this.info[i].x, this.info[i].y, this.info[i].w, this.info[i].h, this.info[i].img)
             }
         }, 2000);
 
@@ -378,7 +390,7 @@ export class RoomComponent implements OnInit {
                     cabinetRemark: "",
                     roomId: 2
                 }
-                element.cabinetId = '';
+                element.cabinetId = item.get('cabinetId');
                 element.cabinetName = item.name;
                 element.cabinetHeight = item.size.height;
                 element.cabinetWidth = item.size.width;
@@ -398,8 +410,11 @@ export class RoomComponent implements OnInit {
         let obj1 = {};
         obj1['roomId'] = this.roomId;
         obj1['cabinetSet'] = arr;
-        this.RoomSerService.saveRoomInfo(obj1);
-
+        this.RoomSerService.saveRoomInfo(obj1, e => {
+            this.graph.clear();
+            this.getRoomInfo(this.roomId);
+            tools.drawRoom(this.Q, this.graph, 600, 600);
+        });
     };
 
     /*获取机房详情*/
@@ -415,9 +430,10 @@ export class RoomComponent implements OnInit {
     getRoomInfo(roomId: number): any {
         this.http.get(`/itm/rooms/queryRoom/${roomId}`).subscribe(data => {
             if (data['code'] === 0) {
+                console.log(data);
                 let info = data['data']['cabinetSet'];
                 for (let i = 0; i < info['length']; i++) {
-                    tools.drawCabinet(this.Q, this.graph, info[i].cabinetName, info[i].cabinetX, info[i].cabinetY, info[i].cabinetWidth, info[i].cabinetHeight, info[i].cabinetImage)
+                    tools.drawCabinet(this.Q, this.graph, info[i].cabinetName, info[i].cabinetX, info[i].cabinetY, info[i].cabinetWidth, info[i].cabinetHeight, info[i].cabinetImage,info[i].cabinetId)
                 }
             } else {
                 alert(data['msg']);
@@ -550,11 +566,12 @@ class tools {
      * @param name
      * @param image
      */
-    public static drawCabinet(Q, graph, name, x, y, w, h, image): void {
+    public static drawCabinet(Q, graph, name, x, y, w, h, image, cabinetId): void {
         let demo = graph.createNode(name, x, y);
         demo.image = image || 'assets/room/mx-cabinet4white.svg';
         demo.size = {width: w, height: h};
         demo.set('type', 'cabinet');
+        demo.set('cabinetId', cabinetId);
         demo.setStyle(Q.Styles.LABEL_OFFSET_Y, -h / 2);
         demo.setStyle(Q.Styles.BORDER, 1);
         demo.setStyle(Q.Styles.BORDER_RADIUS, 0);
