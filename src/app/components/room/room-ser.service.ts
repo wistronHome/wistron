@@ -43,11 +43,12 @@ export class RoomSerService {
      * 保存页面中的机柜信息
      * @param {}
      * */
-    saveRoomInfo(obj) {
+    saveRoomInfo(obj,callback) {
         this.http.put(`/itm/rooms/updateCabinetSet/`, obj).subscribe(data => {
             if (data['code'] === 0) {
                 console.log('数据保存成功');
                 console.log(data);
+                callback();
             }else {
                 console.log("网络异常");
             }

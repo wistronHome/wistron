@@ -132,7 +132,7 @@
                             </div>
                             <em class="icon"
                                 [title]="item_i.isOpen ? '收起' : '展开'"
-                                (click)="toggleMenu(item_i, $event)">
+                                (click)="toggleMenu(item_i, item_i.id, $event)">
                                 <i class="anticon anticon-down" [ngClass]="{'rotate': item_i.isOpen}">
 
                                 </i>
