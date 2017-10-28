@@ -1,16 +1,41 @@
 <div class="series-wrap">
     <div class="search-area" nz-row >
         <div nz-col class="gutter-row" [nzSpan]="24">
-            <nz-input [(ngModel)]="search.name" [nzPlaceHolder]="'型号名称'"></nz-input>
+            <nz-input [(ngModel)]="searchName" [nzPlaceHolder]="'型号名称'"></nz-input>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="10">
-            <nz-input [(ngModel)]="search.code" [nzPlaceHolder]="'品牌'"></nz-input>
+            <nz-select
+                style="width: 200px;"
+                nzAllowClear
+                [nzPlaceHolder]="'品牌'"
+                [(ngModel)]="selectedBrand"
+                (nzOpenChange)="brandChange()"
+                [nzShowSearch]="true">
+                <nz-option
+                    *ngFor="let brand of brand let index = index"
+                    [nzLabel]="brand.name"
+                    [nzValue]="brand.id">
+                </nz-option>
+
+            </nz-select>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="10">
-            <nz-input [(ngModel)]="search.code" [nzPlaceHolder]="'系列'"></nz-input>
+            <nz-select
+                style="width: 200px;"
+                nzAllowClear
+                [nzPlaceHolder]="'系列'"
+                [(ngModel)]="selectedSeries"
+                [nzShowSearch]="true">
+                <nz-option
+                    *ngFor="let series of series let index = index"
+                    [nzLabel]="series.name"
+                    [nzValue]="series.id">
+                </nz-option>
+
+            </nz-select>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="4">
-            <button nz-button  [nzType]="'default'" (click)="getBrandByField()">
+            <button nz-button  [nzType]="'default'" (click)="getSeriesByField()">
                 <i class="anticon anticon-search"></i><span>查&nbsp;&nbsp;询</span>
             </button>
         </div>
@@ -41,24 +66,25 @@
                 </thead>
             </ng-template>
             <tbody nz-tbody>
-            <tr nz-tbody-tr *ngFor="let brand of data;let _index = index;">
+            <tr nz-tbody-tr *ngFor="let version of data;let _index = index;">
                 <td nz-td>
                     <span>{{_index + 1}}</span>
                 </td>
                 <td nz-td>
-                    <span>{{brand.name}}</span>
+                    <span>{{version.name}}</span>
                 </td>
                 <td nz-td>
-                    <span>{{brand.code}}</span>
+                    <span>{{version.parentBsm.name}}</span>
                 </td>
                 <td nz-td>
-                    <span>{{brand.code}}</span>
+                    <span>{{version.parentBsm.parentBsm.name}}</span>
                 </td>
+
                 <td nz-td>
-                    <a (click)="showBrand('modify', brand)">修改</a>
-                    <a (click)="showBrand('detail', brand)">查看</a>
-                    <nz-popconfirm [nzTitle]="'确定要删除这个品牌吗？'"
-                                   (nzOnConfirm)="confirmDelete(brand)"
+                    <a (click)="showBrand('modify', version)">修改</a>
+                    <a (click)="showBrand('detail', version)">查看</a>
+                    <nz-popconfirm [nzTitle]="'确定要删除这个型号吗？'"
+                                   (nzOnConfirm)="confirmDelete(version)"
                                    (nzOnCancel)="cancel()">
                         <a nz-popconfirm>删除</a>
                     </nz-popconfirm>
@@ -99,14 +125,23 @@
             </div>
             <div nz-row class="m-item">
                 <div nz-col [nzSpan]="6" class="m-title">
-                    型号：
+                    品牌：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [nzDisabled]="brandModalType === 'detail'"
-                              [(ngModel)]="currentVersion.code"
-                              [nzPlaceHolder]="'请输入'">
+                    <nz-select
+                        style="width: 200px;"
+                        nzAllowClear
+                        [nzPlaceHolder]="'品牌'"
+                        [(ngModel)]="selectedBrand"
+                        (nzOpenChange)="brandChange()"
+                        [nzShowSearch]="true">
+                        <nz-option
+                            *ngFor="let brand of brand let index = index"
+                            [nzLabel]="brand.name"
+                            [nzValue]="brand.id">
+                        </nz-option>
 
-                    </nz-input>
+                    </nz-select>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -114,11 +149,19 @@
                     系列：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [nzDisabled]="brandModalType === 'detail'"
-                              [(ngModel)]="currentVersion.code"
-                              [nzPlaceHolder]="'请输入'">
+                    <nz-select
+                        style="width: 200px;"
+                        nzAllowClear
+                        [nzPlaceHolder]="'系列'"
+                        [(ngModel)]="selectedSeries"
+                        [nzShowSearch]="true">
+                        <nz-option
+                            *ngFor="let series of series let index = index"
+                            [nzLabel]="series.name"
+                            [nzValue]="series.id">
+                        </nz-option>
 
-                    </nz-input>
+                    </nz-select>
                 </div>
             </div>
             <div nz-row class="m-item">
@@ -137,7 +180,7 @@
         <ng-template #modalBrandFooter>
             <div class="modal-footer">
                 <button (click)="VersionDetailShow = false" class="m-btn" type="button">取&nbsp;&nbsp;消</button>
-                <button *ngIf="brandModalType !== 'detail'" (click)="saveBrand()" class="m-btn" type="button">保&nbsp;&nbsp;存</button>
+                <button *ngIf="brandModalType !== 'detail'" (click)="saveVersion()" class="m-btn" type="button">保&nbsp;&nbsp;存</button>
             </div>
         </ng-template>
     </nz-modal>

@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
-import { Result, Brand, Series, Version } from "../../../models";
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http'
+import {Result, Brand, Series, Version} from "../../../models";
 
 @Injectable()
 export class ManagerService {
-    constructor(
-        private $http: HttpClient
-    ) {}
+    constructor(private $http: HttpClient) {
+    }
 
     /**
      * 分页获取品牌
@@ -58,7 +57,7 @@ export class ManagerService {
      * @param {string} search
      * @param callback
      */
-    public getBrandByField(pageIndex: number, pageSize: number, search: {name: string, code: string}, callback) {
+    public getBrandByField(pageIndex: number, pageSize: number, search: { name: string, code: string }, callback) {
         let body = {pageNum: pageIndex, size: pageSize, name: search.name, code: search.code};
         this.$http.post(`/itm/brand/like`, body).subscribe((result: Result) => {
             console.log(result);
@@ -103,7 +102,7 @@ export class ManagerService {
      * @param callback
      */
     public validateRepeat(brand: string, code: string, callback) {
-        this.$http.post(`/itm/bsm`, { name, code }).subscribe((result: Result) => {
+        this.$http.post(`/itm/bsm`, {name, code}).subscribe((result: Result) => {
             console.log(result);
             callback(result.code === 0);
         });
@@ -134,13 +133,28 @@ export class ManagerService {
      * @param callback
      */
     public getSeriesByField(pageIndex: number, pageSize: number, name: string, parentId: number, callback) {
-        let body = {pageNum: pageIndex, size: pageSize, name, parentId};
+        let body = {pageNum: pageIndex, size: pageSize, name: name, parentId: parentId};
         this.$http.post(`/itm/series/like`, body).subscribe((result: Result) => {
             console.log(result);
             if (result.code === 0) {
                 callback(result.data);
             }
         });
+    }
+
+    /**
+     * 根据parentId查询系列
+     * @param {number} parentId
+     * @param {number} size
+     * @param {number} pageNum
+     */
+    public getSeriesByParentId(pageNum: number, size: number, parentId: number, callback) {
+        this.$http.get(`/itm/series/${pageNum}/${size}/${parentId}`).subscribe(data => {
+            if (data['code'] === 0) {
+                callback(data['data'])
+            }
+        })
+
     }
 
     /**
@@ -179,10 +193,7 @@ export class ManagerService {
      */
     public insertVersion(version: Version, callback) {
         this.$http.post(`/itm/model`, version).subscribe((result: Result) => {
-            console.log(result);
-            if (result.code === 0) {
-                callback(result.data);
-            }
+            callback(result);
         });
     }
 
@@ -224,8 +235,8 @@ export class ManagerService {
      * @param callback
      */
     public getVersionByField(pageIndex: number, pageSize: number, name: string, parentId: number, callback) {
-        let body = {pageNum: pageIndex, size: pageSize, name, parentId};
-        this.$http.post(`/itm/model`, body).subscribe((result: Result) => {
+        let body = {pageNum: pageIndex, size: pageSize, name: name, parentId: parentId};
+        this.$http.post(`/itm/model/like`, body).subscribe((result: Result) => {
             console.log(result);
             if (result.code === 0) {
                 callback(result.data);
