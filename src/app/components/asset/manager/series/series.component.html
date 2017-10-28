@@ -75,7 +75,7 @@
               [nzVisible]="isSeriesDetailShow"
               (nzOnCancel)="isSeriesDetailShow = false">
         <ng-template #modalBrandTitle>
-            {{brandModalType === 'detail' ? '详 细' : brandModalType === 'insert' ? '新 增' : '修 改'}}
+            {{seriesModalType === 'detail' ? '详 细' : seriesModalType === 'insert' ? '新 增' : '修 改'}}
         </ng-template>
         <ng-template #modalBrandContent>
             <div nz-row class="m-item">
