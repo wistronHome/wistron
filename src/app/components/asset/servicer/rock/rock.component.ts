@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { MissionService } from "../../../../mission-store/mission.service";
 import { RockService } from './rock.service'
-import { Asset } from "../../../../models/asset";
+import { Rock } from "../../../../models";
 
 
 @Component({
@@ -14,16 +14,29 @@ import { Asset } from "../../../../models/asset";
 
 export class RockComponent implements OnInit {
     search = {
-        code: '',
-        name: '',
-        state: 0
+        computerroom_id: 0,
+        bserver_code: '',
+        bserver_name: '',
+        bserver_project: '',
+        bserver_user: '',
+        bserver_brand: '',
+        bserver_series: '',
+        bserver_model: '',
+        status: '',
+        cabinet_id: '',
+        start_u: ''
     };
     data = [];
     brand = [];
     _brand: any[] = [];
-    room = [];
+    rooms: Room[] = []; // 所有机房
+    users = [];  // 所有责任人
+    brands = []; // 所有品牌
+    serieses = []; // 所有系列
+    versions = []; // 所有型号
+    _bsv: any[] = [];
     _room: any[] = [];
-    assets: Asset[] = [];
+    rocks: Rock[] = [];
     isSearchOpen: boolean = false;
     pageSize: number = 20;
     pageIndex: number = 1;
@@ -34,17 +47,24 @@ export class RockComponent implements OnInit {
     checkedNumber = 0;  // 选中数量
     operating = false; // 批量删除延迟
     indeterminate = false;
-
+    sortMap = {
+        name: null,
+        number: null,
+        model: null,
+        room: null
+    };
+    sortName = null;
+    sortValue = null;
     /**
      * 变更选中状态
      */
     refreshStatus() {
-        const _allChecked = this.assets.every(item => item.checked === true);
-        const _allUnChecked = this.assets.every(item => !item.checked);
+        const _allChecked = this.rocks.every(item => item.checked === true);
+        const _allUnChecked = this.rocks.every(item => !item.checked);
         this.allChecked = _allChecked;
         this.indeterminate = (!_allChecked) && (!_allUnChecked);
-        this.disabledButton = !this.assets.some(item => item.checked);
-        this.checkedNumber = this.assets.filter(item => item.checked).length;
+        this.disabledButton = !this.rocks.some(item => item.checked);
+        this.checkedNumber = this.rocks.filter(item => item.checked).length;
     };
 
     /**
@@ -53,11 +73,11 @@ export class RockComponent implements OnInit {
      */
     checkAll(value) {
         if (value) {
-            this.assets.forEach(user => {
+            this.rocks.forEach(user => {
                 user.checked = true;
             });
         } else {
-            this.assets.forEach(user => {
+            this.rocks.forEach(user => {
                 user.checked = false;
             });
         }
@@ -70,7 +90,7 @@ export class RockComponent implements OnInit {
     batchDelete() {
         this.operating = true;
         setTimeout(() => {
-            this.assets.forEach(asset => asset.checked = false);
+            this.rocks.forEach(asset => asset.checked = false);
             this.refreshStatus();
             this.operating = false;
         }, 1000);
@@ -92,7 +112,17 @@ export class RockComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.refreshRock()
+        this.refreshRock();
+        this.$service.getAllRoom(result => {
+            this.rooms = result;
+        });
+        this.$service.getAllUser(result => {
+            console.log('user-', result);
+            this.users = result.data;
+        });
+        this.$service.getAllBrand(result => {
+            this.brands = result.data;
+        });
     }
     toggleSearch() {
         this.isSearchOpen = !this.isSearchOpen;
@@ -105,14 +135,6 @@ export class RockComponent implements OnInit {
     createUser() {
         this.$router.navigate(['/asset/servicer/rock/-1']);
     }
-    sortMap = {
-        name: null,
-        number: null,
-        model: null,
-        room: null
-    };
-    sortName = null;
-    sortValue = null;
 
     sort(sortName, value) {
         console.log(sortName, value);
@@ -127,11 +149,81 @@ export class RockComponent implements OnInit {
         });
     }
 
+    /**
+     * 模糊查询
+     */
+    public searchByField() {
+        console.log(this.search);
+    }
+    /**
+     * 品牌/系列/型号  级联选择
+     * @param {{option: any; index: number; resolve: Function; reject: Function}} e
+     */
+    public loadData(e: {option: any, index: number, resolve: Function, reject: Function}): void {
+        if (e.index === -1) {
+            this.$service.getAllCabinet(this.search.computerroom_id, result => {
+                let _result = [];
+                result.cabinetSet.forEach(item => {
+                    let {cabinetId: value, cabinetName: label} = item;
+                    _result.push({value, label});
+                });
+                e.resolve(_result);
+            });
+        }
+        if (e.index === 0) {
+            const option = e.option;
+            option.loading = true;
+            this.$service.getAllSeries(option.value, result => {
+                let _result = [];
+                result.data.forEach(item => {
+                    let {id: value, name: label, isLeaf = true} = item;
+                    _result.push({value, label, isLeaf});
+                });
+                option.loading = false;
+                e.resolve(_result);
+            });
+        }
+
+    }
+
+    /**
+     * 监听搜索条件“品牌”
+     * @param ev
+     */
+    public brandChange(id) {
+        this.$service.getAllSeries(id, result => {
+            this.serieses = result.data;
+        });
+    }
+
+    /**
+     * 监听搜索条件“系列”
+     * @param id
+     */
+    public seriesChange(id) {
+        this.$service.getAllVersion(id, result => {
+            this.versions = result.data;
+        })
+    }
 
     private refreshRock() {
         this.$service.getRockByField(this.pageIndex, this.pageSize, {}, result => {
-            this.assets = result.data;
+            this.rocks = result.data;
             this.total = result.totalCount;
         });
+    }
+}
+
+class Room {
+    public roomId: number;
+    public roomImage: string;
+    public roomLength: number;
+    public roomMaxCabinet: string;
+    public roomName: string;
+    public roomRemark: string;
+    public roomWith: string;
+
+    constructor() {
+
     }
 }

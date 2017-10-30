@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core'
+import { Router, ActivatedRoute } from '@angular/router'
+import { RockDetailService } from "./rock-detail.service";
+
 const options = [{
     value: 'zhejiang',
     label: 'Zhejiang',
@@ -33,6 +36,7 @@ const options = [{
     selector: 'app-rock-detail',
     templateUrl: './rock-detail.component.html',
     styleUrls: [ './rock-detail.component.scss' ],
+    providers: [ RockDetailService ]
 })
 export class RockDetailComponent implements OnInit {
     style = {
@@ -42,9 +46,19 @@ export class RockDetailComponent implements OnInit {
         'border': '0px'
     };
     data = [];
-    constructor() { }
+    constructor(
+        private $router: Router,
+        private $active: ActivatedRoute,
+        private $service: RockDetailService
+    ) { }
 
     ngOnInit() {
+        this.$active.params.subscribe(params => {
+            console.log(params.id);
+            this.$service.getRockDetailById(params.id, result => {
+                console.log(result);
+            });
+        });
     }
 
     _options = options;

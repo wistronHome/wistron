@@ -11,6 +11,7 @@ import { Result } from './result'
 import { Brand } from "./brand";
 import { Series } from "./series";
 import { Version } from "./version";
+import { Rock } from "./rock";
 
 // export default this;
-export { Room, Cabinet, Servicer, ServerType, Facility, Password, User, Role, Asset, Utils, Result, Brand, Series, Version };
+export { Room, Cabinet, Servicer, ServerType, Facility, Password, User, Role, Asset, Utils, Result, Brand, Series, Version, Rock };
