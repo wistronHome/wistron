@@ -4,7 +4,15 @@
             <nz-input [(ngModel)]="search.name" [nzPlaceHolder]="'系列名称'"></nz-input>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="6">
-            <nz-input [(ngModel)]="search.code" [nzPlaceHolder]="'品牌'"></nz-input>
+            <nz-select style="width: 100%"
+                       [(ngModel)]="search.parentId"
+                       nzAllowClear
+                       [nzShowSearch]="true"
+                       [nzPlaceHolder]="'品牌'">
+                <nz-option *ngFor="let brand of brands" [nzLabel]="brand.name" [nzValue]="brand.id">
+
+                </nz-option>
+            </nz-select>
         </div>
         <div nz-col class="gutter-row" [nzSpan]="6">
             <button nz-button  [nzType]="'default'" (click)="getBrandByField()">
@@ -30,28 +38,28 @@
                 <thead nz-thead>
                 <tr>
                     <th nz-th [nzWidth]="'100px'"><span>序号</span></th>
-                    <th nz-th [nzWidth]="'150px'"><span>品牌名称</span></th>
-                    <th nz-th [nzWidth]="'100px'"><span>品牌英文名称</span></th>
+                    <th nz-th [nzWidth]="'150px'"><span>系列名称</span></th>
+                    <th nz-th [nzWidth]="'100px'"><span>品牌</span></th>
                     <th nz-th [nzWidth]="'150px'"><span>操作</span></th>
                 </tr>
                 </thead>
             </ng-template>
             <tbody nz-tbody>
-            <tr nz-tbody-tr *ngFor="let brand of data;let _index = index;">
+            <tr nz-tbody-tr *ngFor="let series of data;let _index = index;">
                 <td nz-td>
                     <span>{{_index + 1}}</span>
                 </td>
                 <td nz-td>
-                    <span>{{brand.name}}</span>
+                    <span>{{series.name}}</span>
                 </td>
                 <td nz-td>
-                    <span>{{brand.code}}</span>
+                    <span>{{series.parentBsm.name}}</span>
                 </td>
                 <td nz-td>
-                    <a (click)="showBrand('modify', brand)">修改</a>
-                    <a (click)="showBrand('detail', brand)">查看</a>
+                    <a (click)="showSeries('modify', series)">修改</a>
+                    <a (click)="showSeries('detail', series)">查看</a>
                     <nz-popconfirm [nzTitle]="'确定要删除这个品牌吗？'"
-                                   (nzOnConfirm)="confirmDelete(brand)"
+                                   (nzOnConfirm)="confirmDelete(series)"
                                    (nzOnCancel)="cancel()">
                         <a nz-popconfirm>删除</a>
                     </nz-popconfirm>
@@ -95,11 +103,15 @@
                     品牌：
                 </div>
                 <div nz-col [nzSpan]="18" class="m-content">
-                    <nz-input [nzDisabled]="seriesModalType === 'detail'"
-                              [(ngModel)]="currentSeries.parentId"
-                              [nzPlaceHolder]="'请输入'">
+                    <nz-select [nzDisabled]="seriesModalType === 'detail'"
+                               style="width: 100%"
+                               [(ngModel)]="currentSeries.parentId">
+                        <nz-option *ngFor="let brand of brands"
+                                   [nzLabel]="brand.name"
+                                   [nzValue]="brand.id">
 
-                    </nz-input>
+                        </nz-option>
+                    </nz-select>
                 </div>
             </div>
             <div nz-row class="m-item">

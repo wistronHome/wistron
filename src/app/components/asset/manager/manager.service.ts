@@ -141,12 +141,11 @@ export class ManagerService {
      * 模糊分页查询所有系列
      * @param {number} pageIndex
      * @param {number} pageSize
-     * @param {string} name
-     * @param {number} parentId
+     * @param {{name: string; parentId: number}} search
      * @param callback
      */
-    public getSeriesByField(pageIndex: number, pageSize: number, name: string, parentId: number, callback) {
-        let body = {pageNum: pageIndex, size: pageSize, name: name, parentId: parentId};
+    public getSeriesByField(pageIndex: number, pageSize: number, search: {name: string, parentId: number}, callback) {
+        let body = {pageNum: pageIndex, size: pageSize, name: search.name, parentId: search.parentId};
         this.$http.post(`/itm/series/like`, body).subscribe((result: Result) => {
             console.log(result);
             if (result.code === 0) {
@@ -189,7 +188,8 @@ export class ManagerService {
      * @param callback
      */
     public modifySeries(series: Series, callback) {
-        this.$http.put(`/itm/bsm`, series).subscribe((result: Result) => {
+        let { id, name, description, parentId } = series;
+        this.$http.put(`/itm/bsm`, { id, name, description, parentId }).subscribe((result: Result) => {
             console.log(result);
             if (result.code === 0) {
                 callback(result.data);
@@ -204,6 +204,20 @@ export class ManagerService {
      */
     public insertSeries(series: Series, callback) {
         this.$http.post(`/itm/series`, series).subscribe((result: Result) => {
+            console.log(result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+    /**
+     * 删除系列
+     * @param {Series} series
+     * @param callback
+     */
+    public deleteSeries(series: Series, callback) {
+        this.$http.delete(`/itm/bsm/${series.id}`).subscribe((result: Result) => {
             console.log(result);
             if (result.code === 0) {
                 callback(result.data);

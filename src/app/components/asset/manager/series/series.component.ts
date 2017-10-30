@@ -19,7 +19,7 @@ export class SeriesComponent implements OnInit {
     currentSeries: Series;
     search = {
         name: '',
-        code: ''
+        parentId: -1
     };
     brands: Brand[] = [];
     isSeriesDetailShow: boolean = false;
@@ -38,7 +38,18 @@ export class SeriesComponent implements OnInit {
     ngOnInit() {
         this.$service.getAllBrand(result => {
             this.brands = result;
-            console.log(this.brands);
+            console.log('brands:',  this.brands);
+        });
+    }
+
+    /**
+     * 模糊分页查询
+     */
+    public getBrandByField() {
+        console.log(this.search);
+        this.$service.getSeriesByField(this.pageIndex, this.pageSize, this.search, result => {
+            this.data = result.data;
+            this.total = result.totalCount;
         });
     }
 
@@ -49,7 +60,7 @@ export class SeriesComponent implements OnInit {
      */
     public showSeries(param: string, series: Series = new Series()) {
         this.isSeriesDetailShow = true;
-        this.currentSeries = series;
+        this.currentSeries = Utils.cloneModel(series);
         this.seriesModalType = param;
     }
 
@@ -58,22 +69,27 @@ export class SeriesComponent implements OnInit {
      */
     public saveSeries() {
         if (this.currentSeries.id) {
-            this.$service.validateRepeat(this.currentSeries.name, '', result => {
-                if (result) {
-                    this.$service.modifySeries(this.currentSeries, result => {
-                        this.refreshSeries();
-                    });
-                }
+            console.log(this.currentSeries);
+            this.$service.modifySeries(this.currentSeries, result => {
+                this.isSeriesDetailShow = false;
+                this.refreshSeries();
             });
         } else {
-            this.$service.validateRepeat(this.currentSeries.name, '', result => {
-                if (result) {
-                    this.$service.insertSeries(this.currentSeries, result => {
-                        this.refreshSeries();
-                    });
-                }
+            this.$service.insertSeries(this.currentSeries, result => {
+                this.isSeriesDetailShow = false;
+                this.refreshSeries();
             });
         }
+    }
+
+    /**
+     * 确认删除系列
+     * @param {Series} series
+     */
+    public confirmDelete(series: Series) {
+        this.$service.deleteSeries(series, result => {
+            this.refreshSeries();
+        });
     }
 
     private refreshSeries() {
