@@ -35,6 +35,7 @@ export class VersionComponent implements OnInit {
         $mission.pageChangeHook.subscribe(page => {
             this.pageIndex = page.pageIndex;
             this.pageSize = page.pageSize;
+            this.getVersionList();
         });
     }
 
@@ -47,6 +48,11 @@ export class VersionComponent implements OnInit {
         this.VersionModalType = ModalType;
         this.VersionDetailShow = true;
         this.currentVersion = Utils.cloneModel(version);
+        this.selectedSeries = this.currentVersion.parentBsm['id'];
+        console.log(this.selectedSeries);
+        this.getSeries();
+        this.selectedBrand = this.currentVersion.parentBsm['parentId'];
+
     }
 
     /**
@@ -70,10 +76,13 @@ export class VersionComponent implements OnInit {
      */
     brandChange() {
         console.log(this.selectedBrand);
+        this.series = [];
+
         this.$service.getSeriesByParentId(1, 10, this.selectedBrand, e => {
             this.series = e.data;
             console.log(this.series);
-        })
+        });
+        this.selectedSeries = null;
     }
 
     /**
@@ -89,14 +98,14 @@ export class VersionComponent implements OnInit {
             this.currentVersion['parentBsm']['parentBsm']['id'] = this.selectedBrand;
             this.$service.modifyVersion(this.currentVersion, e => {
 
-                this.$message.create('success', '修改成功')
+                this.$message.create('success', '修改成功');
                 this.getVersionList();
             })
         } else {
             this.$service.insertVersion({
                 id: '',
                 name: this.currentVersion.name,
-                description: "新增型号",
+                description: this.currentVersion.description,
                 parentId: this.selectedSeries
             }, e => {
                 if (e.code === 0) {
@@ -136,10 +145,8 @@ export class VersionComponent implements OnInit {
      * 查询功能
      */
     getSeriesByField() {
-
         this.$service.getVersionByField(this.pageIndex, this.pageSize, this.searchName, this.selectedSeries, e => {
-            console.log(e);
-            console.log(this.selectedSeries);
+            this.data = e.data
         })
     }
 
