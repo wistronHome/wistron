@@ -139,10 +139,10 @@
                         <label nz-checkbox [(ngModel)]="asset.checked" (ngModelChange)="refreshStatus($event)"></label>
                     </td>
                     <td nz-td>
-                        <span>{{asset.name}}</span>
+                        <span>{{asset.bserver_name}}</span>
                     </td>
                     <td nz-td>
-                        <a (click)="$router.navigate(['/asset/maintenance/' + asset.number])">{{asset.number}}</a>
+                        <a (click)="$router.navigate(['/asset/maintenance/' + asset.number])">{{asset.bserver_code}}</a>
                     </td>
                     <td nz-td>
                         <span>{{asset.model}}</span>
@@ -151,10 +151,10 @@
                         <span>{{asset.room}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{asset.belong}}</span>
+                        <span>{{asset.bserver_project}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{asset.duty}}</span>
+                        <span>{{asset.bserver_firstuser}}{{asset.bserver_seconduser}}</span>
                     </td>
                     <td nz-td>
                         <span>{{asset.position}}</span>

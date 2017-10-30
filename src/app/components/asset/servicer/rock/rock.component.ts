@@ -87,21 +87,12 @@ export class RockComponent implements OnInit {
             this.allChecked = false; // 是否全选
             this.disabledButton = true;
             this.checkedNumber = 0;  // 选中数量
-            this.$service.getAssetPagination(this.pageIndex, this.pageSize).then(result => {
-                this.assets = result.assets;
-                console.log(this.assets);
-                this.total = result.total;
-            });
+            this.refreshRock()
         });
     }
 
     ngOnInit() {
-        this.brand = this.$service.getBrand();
-        this.room = this.$service.getRoom();
-        this.$service.getAssetPagination(this.pageIndex, this.pageSize).then(result => {
-            this.assets = result.assets;
-            this.total = result.total;
-        });
+        this.refreshRock()
     }
     toggleSearch() {
         this.isSearchOpen = !this.isSearchOpen;
@@ -114,7 +105,6 @@ export class RockComponent implements OnInit {
     createUser() {
         this.$router.navigate(['/asset/servicer/rock/-1']);
     }
-
     sortMap = {
         name: null,
         number: null,
@@ -134,6 +124,14 @@ export class RockComponent implements OnInit {
             } else {
                 this.sortMap[ key ] = value;
             }
+        });
+    }
+
+
+    private refreshRock() {
+        this.$service.getRockByField(this.pageIndex, this.pageSize, {}, result => {
+            this.assets = result.data;
+            this.total = result.totalCount;
         });
     }
 }

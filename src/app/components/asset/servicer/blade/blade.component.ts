@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { Router } from '@angular/router'
 
 @Component({
     selector: 'app-blade',
@@ -18,7 +19,7 @@ export class BladeComponent implements OnInit {
     room = [];
     _room: any[] = [];
     assets = [];
-    isSearchOpen: boolean = false;
+    isSearchOpen: boolean = true;
     pageSize: number = 20;
     pageIndex: number = 1;
     total: number = 1;
@@ -28,7 +29,18 @@ export class BladeComponent implements OnInit {
     checkedNumber = 0;  // 选中数量
     operating = false; // 批量删除延迟
     indeterminate = false;
+    constructor(
+        private $router: Router
+    ) {}
     ngOnInit() {
 
+    }
+
+    toggleSearch() {
+        this.isSearchOpen = !this.isSearchOpen;
+    }
+
+    createBlade() {
+        this.$router.navigate(['/asset/servicer/blade/123']);
     }
 }

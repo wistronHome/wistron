@@ -26,10 +26,63 @@
                 </button>
             </div>
         </div>
+        <div class="search-row" *ngIf="isSearchOpen" nz-row>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-input [(ngModel)]="search.code" [nzPlaceHolder]="'所属项目'"></nz-input>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-select
+                    style="width: 100%;"
+                    nzAllowClear
+                    [nzPlaceHolder]="'责任人'"
+                    [(ngModel)]="search.state"
+                    [nzShowSearch]="true">
+                    <nz-option
+                        [nzLabel]="'张三'"
+                        [nzValue]="1">
+                    </nz-option>
+                    <nz-option
+                        [nzLabel]="'李四'"
+                        [nzValue]="2">
+                    </nz-option>
+                </nz-select>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-input [(ngModel)]="search.name" [nzPlaceHolder]="'资产名称'"></nz-input>
+            </div>
+        </div>
+        <div class="search-row" *ngIf="isSearchOpen" nz-row>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-cascader
+                    [nzOptions]="brand"
+                    [(ngModel)]="_brand"
+                    [nzPlaceHolder]="'型号信息'"
+                    (ngModelChange)="_console($event)">
+                </nz-cascader>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-radio-group  [(ngModel)]="radioValue">
+                    <label nz-radio-button [nzValue]="'A'">
+                        <span>部署/在架</span>
+                    </label>
+                    <label nz-radio-button [nzValue]="'B'">
+                        <span>未上架</span>
+                    </label>
+                </nz-radio-group>
+            </div>
+            <div nz-col class="gutter-row" [nzSpan]="6">
+                <nz-cascader
+                    [nzOptions]="room"
+                    [(ngModel)]="_room"
+                    [nzPlaceHolder]="'位置信息'"
+                    (ngModelChange)="_console($event)">
+                </nz-cascader>
+            </div>
+        </div>
     </div>
     <div class="maintenance-body">
         <div style="margin: 10px 25px;">
-            <button nz-button [nzType]="'default'" (click)="createUser()">
+            <button nz-button [nzType]="'default'" (click)="createBlade()">
                 <i class="anticon anticon-plus"></i>
                 <span>新&nbsp;&nbsp;增</span>
             </button>

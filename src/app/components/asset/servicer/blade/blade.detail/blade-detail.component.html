@@ -1,0 +1,214 @@
+<div class="wrap" style="background: #ffffff">
+    <nz-tabset>
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-calculator"></i>
+                资产信息
+            </ng-template>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'一般属性'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">资产名称:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">资产编号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">序列号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">设备IP:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="16">
+                            <div nz-col [nzSpan]="4" class="row-title">品牌/系列/型号:</div>
+                            <div nz-col [nzSpan]="20">
+                                <nz-cascader
+                                    [nzOptions]="_options"
+                                    [(ngModel)]="_value"
+                                    (ngModelChange)="_console($event)"
+                                    (nzChange)="_console($event)">
+                                </nz-cascader>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="16">
+                            <div nz-col [nzSpan]="4" class="row-title">所属项目/责任人:</div>
+                            <div nz-col [nzSpan]="20">
+                                <nz-cascader
+                                    [nzOptions]="_options"
+                                    [(ngModel)]="_value"
+                                    (ngModelChange)="_console($event)"
+                                    (nzChange)="_console($event)">
+                                </nz-cascader>
+                            </div>
+                        </div>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'特殊属性'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">最大磁盘托架数:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">最大刀片托架数:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'上架位置'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <div class="search-row" nz-row >
+                            <div nz-col class="gutter-row" [nzSpan]="16">
+                                <div nz-col [nzSpan]="4" class="row-title">机房/机柜/U位:</div>
+                                <div nz-col [nzSpan]="20">
+                                    <nz-cascader
+                                        [nzOptions]="_options"
+                                        [(ngModel)]="_value"
+                                        (ngModelChange)="_console($event)"
+                                        (nzChange)="_console($event)">
+                                    </nz-cascader>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'协议配置'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="4" class="row-title">协议:</div>
+                            <div nz-col [nzSpan]="20">
+                                <nz-radio-group >
+                                    <label nz-radio-button [nzValue]="'0'">SNMP</label>
+                                    <label nz-radio-button [nzValue]="'1'">IPMI</label>
+                                </nz-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'备注信息'" [nzActive]="false" [ngStyle]="style" >
+                    <p>备注具体的内容</p>
+                </nz-collapse>
+            </nz-collapseset>
+        </nz-tab>
+        <nz-tab>
+            <ng-template #nzTabHeading>
+                <i class="anticon anticon-qrcode"></i>
+                服务器信息
+            </ng-template>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'刀片信息（6/12）'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <nz-table #nzTable [nzBordered]="true" [nzSize]="'small'" [nzDataSource]="data" [nzPageSize]="10">
+                            <thead nz-thead>
+                            <tr>
+                                <th nz-th><span>名称</span></th>
+                                <th nz-th><span>设备IP</span></th>
+                                <th nz-th><span>状态</span></th>
+                                <th nz-th><span>CPU状态</span></th>
+                                <th nz-th><span>内存状态</span></th>
+                                <th nz-th><span>型号</span></th>
+                            </tr>
+                            </thead>
+                            <tbody nz-tbody>
+                            <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                            </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'散热设备（6/12）'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <nz-table #nzTable [nzBordered]="true" [nzSize]="'small'" [nzDataSource]="data" [nzPageSize]="10">
+                            <thead nz-thead>
+                            <tr>
+                                <th nz-th><span>名称</span></th>
+                                <th nz-th><span>型号</span></th>
+                                <th nz-th><span>直径</span></th>
+                                <th nz-th><span>电压</span></th>
+                                <th nz-th><span>电流</span></th>
+                                <th nz-th><span>转速（%）</span></th>
+                            </tr>
+                            </thead>
+                            <tbody nz-tbody>
+                            <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                            </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'电源（6/12）'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <nz-table #nzTable [nzBordered]="true" [nzSize]="'small'" [nzDataSource]="data" [nzPageSize]="10">
+                            <thead nz-thead>
+                            <tr>
+                                <th nz-th><span>名称</span></th>
+                                <th nz-th><span>型号</span></th>
+                                <th nz-th><span>额定功率</span></th>
+                                <th nz-th><span>类型</span></th>
+                            </tr>
+                            </thead>
+                            <tbody nz-tbody>
+                            <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                            </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+        </nz-tab>
+    </nz-tabset>
+    <div style="text-align: center">
+        <button nz-button [nzType]="'primary'"><span>保存</span></button>
+        <button nz-button [nzType]="'default'"><span>保存</span></button>
+    </div>
+</div>
+

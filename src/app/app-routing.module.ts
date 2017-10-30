@@ -19,6 +19,8 @@ import { AuthGuardService } from './guard/auth-guard.service'
 import { SeriesComponent } from "./components/asset/manager/series/series.component";
 import { VersionComponent } from "./components/asset/manager/version/version.component";
 import { BladeComponent } from './components/asset/servicer/blade/blade.component'
+import { BladeDetailComponent } from "./components/asset/servicer/blade/blade.detail/blade-detail.component";
+import { DeviceComponent } from "./components/asset/servicer/device/device.component";
 
 const routes: Routes = [
     {
@@ -74,7 +76,9 @@ const routes: Routes = [
                 children: [
                     { path: 'rock', component: RockComponent },
                     { path: 'rock/:id', component: RockDetailComponent },
-                    { path: 'blade', component: BladeComponent }
+                    { path: 'blade', component: BladeComponent },
+                    { path: 'blade/:id', component: BladeDetailComponent },
+                    { path: 'device', component: DeviceComponent }
                 ]
             },
             {

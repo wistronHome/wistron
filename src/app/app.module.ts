@@ -32,6 +32,8 @@ import { BrandComponent } from "./components/asset/manager/brand/brand.component
 import { SeriesComponent } from "./components/asset/manager/series/series.component";
 import { VersionComponent } from "./components/asset/manager/version/version.component";
 import { BladeComponent } from './components/asset/servicer/blade/blade.component'
+import { BladeDetailComponent } from "./components/asset/servicer/blade/blade.detail/blade-detail.component";
+import { DeviceComponent } from "./components/asset/servicer/device/device.component";
 
 @NgModule({
     declarations: [
@@ -58,7 +60,9 @@ import { BladeComponent } from './components/asset/servicer/blade/blade.componen
         SeriesComponent,
         LoginComponent,
         VersionComponent,
-        BladeComponent
+        BladeComponent,
+        BladeDetailComponent,
+        DeviceComponent
     ],
     imports: [
         BrowserModule,
