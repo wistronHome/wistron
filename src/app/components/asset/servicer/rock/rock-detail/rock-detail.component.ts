@@ -41,6 +41,7 @@ export class RockDetailComponent implements OnInit {
         'margin-bottom': '24px',
         'border': '0px'
     };
+    data = [];
     constructor() { }
 
     ngOnInit() {

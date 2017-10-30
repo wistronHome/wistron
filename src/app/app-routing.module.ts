@@ -17,7 +17,8 @@ import { BrandComponent } from "./components/asset/manager/brand/brand.component
 
 import { AuthGuardService } from './guard/auth-guard.service'
 import { SeriesComponent } from "./components/asset/manager/series/series.component";
-import {VersionComponent} from "./components/asset/manager/version/version.component";
+import { VersionComponent } from "./components/asset/manager/version/version.component";
+import { BladeComponent } from './components/asset/servicer/blade/blade.component'
 
 const routes: Routes = [
     {
@@ -72,7 +73,8 @@ const routes: Routes = [
                 path: 'servicer',
                 children: [
                     { path: 'rock', component: RockComponent },
-                    { path: 'rock/:id', component: RockDetailComponent }
+                    { path: 'rock/:id', component: RockDetailComponent },
+                    { path: 'blade', component: BladeComponent }
                 ]
             },
             {

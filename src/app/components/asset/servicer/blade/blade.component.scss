@@ -1,4 +1,4 @@
-.detail-wrap {
+.wrap {
     position: relative;
     top: 0px;
     left: 0px;
@@ -6,17 +6,15 @@
     bottom: 0px;
     height: 100%;
     background: #ffffff;
-    .search-row {
-        margin: 12px 10px;
+    .search-area {
+        margin: 0;
+        border-bottom: 1px solid #cccccc;
+        background: #f3f3f3;
         .gutter-row {
             padding: 0 16px;
-            line-height: 28px;
+        }
+        .search-row {
+            margin: 20px 10px;
         }
     }
-}
-
-.row-title {
-    line-height: 28px;
-    padding-right: 15px;
-    text-align: right;
 }

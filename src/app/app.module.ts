@@ -31,7 +31,7 @@ import { LoginComponent } from './components/login/login.component'
 import { BrandComponent } from "./components/asset/manager/brand/brand.component";
 import { SeriesComponent } from "./components/asset/manager/series/series.component";
 import { VersionComponent } from "./components/asset/manager/version/version.component";
-
+import { BladeComponent } from './components/asset/servicer/blade/blade.component'
 
 @NgModule({
     declarations: [
@@ -57,8 +57,8 @@ import { VersionComponent } from "./components/asset/manager/version/version.com
         BrandComponent,
         SeriesComponent,
         LoginComponent,
-        VersionComponent
-
+        VersionComponent,
+        BladeComponent
     ],
     imports: [
         BrowserModule,

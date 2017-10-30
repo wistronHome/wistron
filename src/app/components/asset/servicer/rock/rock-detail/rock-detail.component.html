@@ -132,7 +132,296 @@
                 <i class="anticon anticon-qrcode"></i>
                 服务器信息
             </ng-template>
-            <span>服务器</span>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'FRU信息'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">主板厂商:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>cxxxxxxxxxx</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">主板序列号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>cxxxxxxxxxx</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">主板产品ID:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>cxxxxxxxxxx</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">设备型号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">设备厂家:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">设备序列号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'CPU信息'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">CPU型号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">主频:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">CPU槽位:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">空置槽位:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'内存信息'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">厂商:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>sfefsfsefs</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">型号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>sfefsfsefs</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">容量:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>sfefsfsefs</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">数量:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>sfefsfsefs</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">主频:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>sfefsfsefs</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">实时电压:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>sfefsfsefs</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title"> 槽位总数:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>sfefsfsefs</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">空置槽位:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>sfefsfsefs</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">槽位类型:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>sfefsfsefs</span>
+                            </div>
+                        </div>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'磁盘信息'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="6">
+                            <div nz-col [nzSpan]="8" class="row-title">类型:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="6">
+                            <div nz-col [nzSpan]="8" class="row-title">厂商:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="6">
+                            <div nz-col [nzSpan]="8" class="row-title">型号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="6">
+                            <div nz-col [nzSpan]="8" class="row-title">容量:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">最大转速:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">接口类型:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">Fireware版本:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">Raid卡型号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">芯片型号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">支持接口类型:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="12">
+                            <div nz-col [nzSpan]="8" class="row-title">支持电池保护方案:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="12">
+                            <div nz-col [nzSpan]="8" class="row-title">支持电容保护方案:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-row" nz-row >
+                        <div nz-col class="gutter-row" [nzSpan]="12">
+                            <div nz-col [nzSpan]="8" class="row-title">扩展链接数量:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="12">
+                            <div nz-col [nzSpan]="8" class="row-title">扩展接口速率:</div>
+                            <div nz-col [nzSpan]="16">
+                                <span>oooppppsefef</span>
+                            </div>
+                        </div>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'散热设备（6/12）'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <nz-table #nzTable [nzBordered]="true" [nzSize]="'small'" [nzDataSource]="data" [nzPageSize]="10">
+                            <thead nz-thead>
+                            <tr>
+                                <th nz-th><span>名称</span></th>
+                                <th nz-th><span>型号</span></th>
+                                <th nz-th><span>直径</span></th>
+                                <th nz-th><span>电压</span></th>
+                                <th nz-th><span>电流</span></th>
+                                <th nz-th><span>转速（%）</span></th>
+                            </tr>
+                            </thead>
+                            <tbody nz-tbody>
+                                <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+                                    <td nz-td>111</td>
+                                    <td nz-td>111</td>
+                                    <td nz-td>111</td>
+                                    <td nz-td>111</td>
+                                    <td nz-td>111</td>
+                                    <td nz-td>111</td>
+                                </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
+            <nz-collapseset  [nzBordered]="false">
+                <nz-collapse [nzTitle]="'电源（6/12）'" [nzActive]="false" [ngStyle]="style" >
+                    <div class="search-row" nz-row >
+                        <nz-table #nzTable [nzBordered]="true" [nzSize]="'small'" [nzDataSource]="data" [nzPageSize]="10">
+                            <thead nz-thead>
+                            <tr>
+                                <th nz-th><span>名称</span></th>
+                                <th nz-th><span>型号</span></th>
+                                <th nz-th><span>额定功率</span></th>
+                                <th nz-th><span>类型</span></th>
+                            </tr>
+                            </thead>
+                            <tbody nz-tbody>
+                            <tr nz-tbody-tr *ngFor="let data of nzTable.data">
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                                <td nz-td>111</td>
+                            </tr>
+                            </tbody>
+                        </nz-table>
+                    </div>
+                </nz-collapse>
+            </nz-collapseset>
         </nz-tab>
     </nz-tabset>
     <div style="text-align: center">
