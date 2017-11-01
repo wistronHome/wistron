@@ -167,10 +167,15 @@
         <i class="anticon anticon-edit"></i>
         <span>解锁</span>
       </button>
-      <button nz-button [nzType]="'primary'" [nzGhost]="true" (click) = delCabinet()>
-        <i class="anticon anticon-close-circle"></i>
-        <span >删除</span>
-      </button>
+
+        <nz-popconfirm [nzTitle]="'确定要删除吗？'"
+                       (nzOnConfirm)="delCabinet()"
+                       (nzOnCancel)="cancel()">
+            <button nz-popconfirm nz-button [nzType]="'primary'" [nzGhost]="true" >
+                <i class="anticon anticon-close-circle"></i>
+                <span >删除</span>
+            </button>
+        </nz-popconfirm>
       <!--<nz-popconfirm [nzTitle]="'确定要删除这个任务吗？'" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()" [nzPlacement]="'topLeft'">
         <button nz-popconfirm nz-button class="ant-btn">删除</button>
       </nz-popconfirm>-->

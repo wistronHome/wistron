@@ -34,6 +34,7 @@ import { VersionComponent } from "./components/asset/manager/version/version.com
 import { BladeComponent } from './components/asset/servicer/blade/blade.component'
 import { BladeDetailComponent } from "./components/asset/servicer/blade/blade.detail/blade-detail.component";
 import { DeviceComponent } from "./components/asset/servicer/device/device.component";
+import { AddCabinetsComponent } from './components/machine/add-cabinets/add-cabinets.component';
 
 @NgModule({
     declarations: [
@@ -62,7 +63,8 @@ import { DeviceComponent } from "./components/asset/servicer/device/device.compo
         VersionComponent,
         BladeComponent,
         BladeDetailComponent,
-        DeviceComponent
+        DeviceComponent,
+        AddCabinetsComponent
     ],
     imports: [
         BrowserModule,

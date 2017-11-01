@@ -20,6 +20,7 @@ export class MachineComponent implements OnInit {
     data: Room[] = [];
     isCollapse: boolean = true;
     isVisible: boolean = false;
+    isAddVisible: boolean = false;
     searchValue: string = '';
     ass = {
         rooms: [],
@@ -86,8 +87,13 @@ export class MachineComponent implements OnInit {
     }
 
     toggleMenu(item, roomId, ev) {
+        if (ev.target['getAttribute']('isroom')) {
+            this.getCabinetDatas(roomId, item);
+        } else {
+            this.getServerDatas(roomId, item)
+        }
         item.isOpen = !item.isOpen;
-        this.getCabinetDatas(roomId, item);
+
         ev.stopPropagation();
     }
 
@@ -127,6 +133,25 @@ export class MachineComponent implements OnInit {
             item.cabinetDatas = data['data'].cabinetSet;
         });
     }
+
+    getServerDatas(cabinetId, item) {
+        this.http.get(`/itm/cabinet/queryCabinet/${cabinetId}`).subscribe(data => {
+            console.log(data);
+            item.servicers = data['data']
+
+        })
+    }
+
+    /*批量添加机房*/
+    addCabinetBatch() {
+        this.isAddVisible = true;
+    }
+
+    /*关闭批量添加机房模态框*/
+    closeModal(e) {
+        this.isAddVisible = e;
+    }
+
     /*删除机房*/
     delroom(roomId) {
         this.http.delete(`/itm/rooms/deleteRoom/${roomId}`).subscribe(data => {
@@ -146,6 +171,12 @@ export class MachineComponent implements OnInit {
             this.getCabinetDatas(roomId, item);
         });
 
+    }
+
+    /**
+     * 取消操作
+     */
+    cancel() {
     }
 
     delCabinetRes(cabinetId): Promise<object> {

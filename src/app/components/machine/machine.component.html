@@ -44,8 +44,8 @@
                       (dblclick)="router.navigate(['machine/room/' + item.id])">
                     {{item.name}}
                     <div class="deal-area">
-                        <em title="新增机房">
-                            <i class="anticon anticon-plus-square-o"></i>
+                        <em title="批量添加机柜">
+                            <i class="anticon anticon-plus-square-o" (click)="addCabinetBatch()"></i>
                         </em>
                         <em title="删除机房">
                             <i class="anticon anticon-minus-square-o"></i>
@@ -99,18 +99,23 @@
                       (dblclick)="router.navigate(['machine/room/' + item.roomId])">
                     {{item.roomName}}
                     <div class="deal-area">
-                        <em title="新增机房">
-                            <i class="anticon anticon-plus-square-o"></i>
+                        <em title="批量添加机柜">
+                            <i class="anticon anticon-plus-square-o" (click)="addCabinetBatch()"></i>
                         </em>
                         <em title="删除机房">
-                            <i class="anticon anticon-minus-square-o"(click)="delroom(item.roomId)"></i>
+                            <nz-popconfirm [nzTitle]="'确定要删除吗？'"
+                                           (nzOnConfirm)="delroom(item.roomId)"
+                                           (nzOnCancel)="cancel()">
+                                <i nz-popconfirm class="anticon anticon-minus-square-o"></i>
+                            </nz-popconfirm>
+                            <!--<i class="anticon anticon-minus-square-o"(click)="delroom(item.roomId)"></i>-->
                         </em>
                         <em title="修改机房">
                             <i class="anticon anticon-edit"></i>
                         </em>
                     </div>
-                    <em class="icon" [title]="item.isOpen ? '收起' : '展开'" (click)="toggleMenu(item, item.roomId,$event)">
-                        <i class="anticon anticon-down"
+                    <em class="icon" id ='isRoom' [title]="item.isOpen ? '收起' : '展开'" isRoom = true (click)="toggleMenu(item, item.roomId,$event)">
+                        <i class="anticon anticon-down" isRoom = true
                            [ngClass]="{'rotate': item.isOpen}"></i>
                     </em>
                 </span>
@@ -123,8 +128,12 @@
                                 <em title="新增机柜">
                                     <i class="anticon anticon-plus-square-o"></i>
                                 </em>
-                                <em title="删除机柜" (click)="delCabinet(item_i.cabinetId,item.roomId,item)">
-                                    <i class="anticon anticon-minus-square-o"></i>
+                                <em title="删除机柜" >
+                                    <nz-popconfirm [nzTitle]="'确定要删除吗？'"
+                                                   (nzOnConfirm)="delCabinet(item_i.cabinetId,item.roomId,item)"
+                                                   (nzOnCancel)="cancel()">
+                                <i nz-popconfirm class="anticon anticon-minus-square-o"></i>
+                            </nz-popconfirm>
                                 </em>
                                 <em title="修改机柜">
                                     <i class="anticon anticon-edit"></i>
@@ -132,7 +141,7 @@
                             </div>
                             <em class="icon"
                                 [title]="item_i.isOpen ? '收起' : '展开'"
-                                (click)="toggleMenu(item_i, item_i.id, $event)">
+                                (click)="toggleMenu(item_i, item_i.cabinetId, $event)">
                                 <i class="anticon anticon-down" [ngClass]="{'rotate': item_i.isOpen}">
 
                                 </i>
@@ -141,7 +150,7 @@
                         <ul [@fadeState]="item_i.isOpen ? 'active' : 'inactive'">
                             <li class="l-item" *ngFor="let item_ii of item_i.servicers">
                                 <span class="l-title l3">
-                                    {{item_ii.name}}
+                                    {{item_ii.bserver_code}}
                                 </span>
                             </li>
                         </ul>
@@ -162,6 +171,8 @@
 
     <app-create-room-modal
         [isVisible]="isVisible" (onVoted)="onVoted($event)">
-
     </app-create-room-modal>
+    <app-add-cabinets [isAddVisible] ='isAddVisible' (close)="closeModal($event)">
+
+    </app-add-cabinets>
 </div>

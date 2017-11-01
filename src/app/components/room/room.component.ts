@@ -537,7 +537,7 @@ class tools {
             var height = i * 10;
             row.moveTo(0, height);
             row.lineTo(roomWidth, height);
-            row.setStyle(Q.Styles.SHAPE_STROKE_STYLE, '#959393');
+            row.setStyle(Q.Styles.SHAPE_STROKE_STYLE, '#cccccc');
             row.setStyle(Q.Styles.SHAPE_STROKE, 0.5);
             row.setStyle(Q.Styles.SHAPE_LINE_DASH, [5, 2]);
             row.isSelected = function () {
@@ -557,7 +557,7 @@ class tools {
             var width = i * 10;
             line.moveTo(width, 0);
             line.lineTo(width, roomHeight);
-            line.setStyle(Q.Styles.SHAPE_STROKE_STYLE, '#aaa9a9');
+            line.setStyle(Q.Styles.SHAPE_STROKE_STYLE, '#cccccc');
             line.setStyle(Q.Styles.SHAPE_LINE_DASH, [5, 2]);
             if (i % 3 == 0) {
                 line.setStyle(Q.Styles.SHAPE_LINE_DASH, [5, 0]);

@@ -1,0 +1,62 @@
+<nz-modal [nzVisible]="isAddVisible"
+          [nzClosable]="false"
+          [nzMaskClosable]="false"
+          [nzContent]="modalContent"
+          [nzFooter]="modalFooter"
+          (nzOnCancel)="isVisible = false">
+    <ng-template #modalContent>
+        <div style="padding: 20px 50px;">
+            <div class="c-item">
+                <nz-input
+                    [(ngModel)]="roomName"
+                    [nzSize]="'large'"
+                    [nzPlaceHolder]="'机房名称'">
+
+                </nz-input>
+            </div>
+            <div class="c-item">
+                <nz-input
+                    [(ngModel)]="roomWith"
+                    [nzSize]="'large'"
+                    [nzPlaceHolder]="'添加机柜行数'">
+
+                </nz-input>
+            </div>
+            <div class="c-item">
+                <nz-input
+                    [(ngModel)]="roomLength"
+                    [nzSize]="'large'"
+                    [nzPlaceHolder]="'添加机柜列数'">
+
+                </nz-input>
+            </div>
+            <div class="c-item">
+                <nz-input
+                    [(ngModel)]="roomLength"
+                    [nzSize]="'large'"
+                    [nzPlaceHolder]="'输入机柜名字'">
+                </nz-input>
+            </div>
+            <div class="c-item">
+                <nz-select
+                    style="width: 200px;"
+                    nzAllowClear
+                    [nzPlaceHolder]="'请选择机柜型号'"
+                    [(ngModel)]="selectedSeries"
+                    [nzShowSearch]="true">
+                    <nz-option
+                        *ngFor="let series of series let index = index"
+                        [nzLabel]="series.name"
+                        [nzValue]="series.id">
+                    </nz-option>
+                </nz-select>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #modalFooter>
+        <div class="modal-footer">
+            <button (click)="closeModal()" class="m-btn" type="button">取&nbsp;&nbsp;消</button>
+            <button (click)="saveRoom()" class="m-btn" type="button">保&nbsp;&nbsp;存</button>
+        </div>
+    </ng-template>
+</nz-modal>

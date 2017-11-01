@@ -1,6 +1,6 @@
 {
     "/itm": {
-        "target": "http://10.5.43.20:8080",
+        "target": "http://10.5.31.18:8080",
         "secure": false
     }
 }
