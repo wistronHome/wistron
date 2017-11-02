@@ -17,13 +17,66 @@ export class RockService {
      * @param search
      * @param callback
      */
-    public getRockByField(pageIndex: number, pageSize: number, search: any, callback) {
-        let body = {
+    public getRockByField(pageIndex: number, pageSize: number, search, callback: Function) {
+        let page = {
             pageNum: pageIndex,
             pageSize
         };
+        let body = Object.assign(page, search);
+        console.log(body);
         this.$http.post(`/itm/bsserver`, body).subscribe((result: Result) => {
             console.log(result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+    /**
+     * 批量删除服务器信息
+     * @param {number[]} ids
+     * @param callback
+     */
+    public deleteServers(ids: number[], callback) {
+        let str = '';
+        ids.forEach((item, index) => {
+            str += item;
+            if (index !== ids.length - 1) {
+                str += '-';
+            }
+        });
+        this.$http.delete(`/itm/bsserver/${str}`).subscribe((result: Result) => {
+            console.log('delete', result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+    /**
+     * 下架
+     * @param {number} id
+     * @param {Function} callback
+     */
+    public offShelves(id: number, callback: Function) {
+        this.$http.delete(`/itm/bsserver/bsShelvesDelete?bsshelvesId=${id}`).subscribe((result: Result) => {
+            console.log('shelves', result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+    /**
+     * 上架
+     * @param {number} bserverId
+     * @param {{computerRoomId: number; cabinetId: number; startU: number}} position
+     * @param {Function} callback
+     */
+    public onShelves(bserverId: number, position: { computerRoomId: number, cabinetId: number, startU: number }, callback: Function) {
+        let body = { bserverId, compoterRoomId: position.computerRoomId, cabinetId: position.cabinetId, startU: position.startU };
+        this.$http.post(`/itm/bsserver/bsShelvesInsert`, body).subscribe((result: Result) => {
+            console.log('shelves', result);
             if (result.code === 0) {
                 callback(result.data);
             }

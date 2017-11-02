@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http'
+import { Result } from "../../models/result";
 
 @Injectable()
 export class MenuTopService {
 
-    constructor() { }
+    constructor(
+        private $http: HttpClient
+    ) { }
 
     public mockMenu() {
         return [
@@ -76,6 +80,28 @@ export class MenuTopService {
                 items: []
             }
         ]
+    }
+
+    /**
+     * 修改密码
+     * @param {number} userId
+     * @param {string} oldPassword
+     * @param {string} password
+     * @param {Function} callback
+     */
+    public modifyPwd(userId: number, oldPassword: string, password: string, callback: Function) {
+        let body = { userId, oldPassword, password };
+        console.log(body);
+        this.$http.put(`/itm/users/password`, body).subscribe((result: Result) => {
+            console.log('repwd', result);
+            if (result.code === 0) {
+                callback(result.data);
+            }
+        });
+    }
+
+    public logout() {
+        this.$http.delete(`/itm/logout`)
     }
 }
 

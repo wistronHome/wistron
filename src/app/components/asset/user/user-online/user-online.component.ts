@@ -16,7 +16,7 @@ export class UserOnlineComponent implements OnInit {
     };
     pageSize: number = 20;
     pageIndex: number = 1;
-    total: number = 1;
+    total: number = 0;
     constructor(
         private $mission: MissionService,
         private $service: UserService
@@ -26,8 +26,9 @@ export class UserOnlineComponent implements OnInit {
             this.pageSize = page.pageSize;
             this.pageIndex = page.pageIndex;
             this.$service.getOnlineUserPagination( this.pageSize, this.pageIndex, result => {
-                // this.data = result.users;
-                // this.total = result.total;
+                this.data = result.users;
+                this.total = result.total;
+                console.log(result);
             });
         });
     }

@@ -21,6 +21,7 @@ import { VersionComponent } from "./components/asset/manager/version/version.com
 import { BladeComponent } from './components/asset/servicer/blade/blade.component'
 import { BladeDetailComponent } from "./components/asset/servicer/blade/blade.detail/blade-detail.component";
 import { DeviceComponent } from "./components/asset/servicer/device/device.component";
+import {RepwdComponent} from "./components/user/repwd/repwd.component";
 
 const routes: Routes = [
     {
@@ -89,6 +90,12 @@ const routes: Routes = [
                     { path: 'version', component: VersionComponent }
                 ]
             }
+        ]
+    },
+    {
+        path: 'user',
+        children: [
+            { path: 'repwd', component: RepwdComponent }
         ]
     }
 ];

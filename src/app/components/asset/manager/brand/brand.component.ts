@@ -15,7 +15,7 @@ export class BrandComponent implements OnInit {
     data = [];
     pageIndex: number = 1;
     pageSize: number = 20;
-    total: number = 45;
+    total: number = 0;
     currentBrand: Brand;
     search = {
         name: '',
@@ -88,7 +88,8 @@ export class BrandComponent implements OnInit {
     private refreBrand() {
         this.$service.getBrandPagination(this.pageIndex, this.pageSize, result => {
             this.data = result.data;
-            console.log(this.data);
+            this.total = result.totalCount;
+            console.log(result);
         })
     }
 }

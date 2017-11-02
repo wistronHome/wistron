@@ -219,11 +219,11 @@ export class UserManagerComponent implements OnInit {
         });
     }
     ngOnInit() {
-        this.refreshUser();
         this.$service.getAllRoles().then(result => {
             console.log('roles:', result);
             this.roles = result;
-        })
+        });
+        // this.refreshUser();
     }
 
     /**

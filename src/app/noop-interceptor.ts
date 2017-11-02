@@ -4,12 +4,11 @@ import { HttpEvent, HttpHeaders , HttpInterceptor, HttpHandler, HttpRequest } fr
 @Injectable()
 export class NoopInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler) {
-        let Authorization = sessionStorage.getItem('authorization');
+        let token = sessionStorage.getItem('authorization');
         let authReq = null;
-        if (Authorization) {
-            authReq = req.clone({setHeaders: {'Authorization': Authorization}});
+        if (token) {
+            authReq = req.clone({setHeaders: {Authorization: token}});
         }
-        console.log(req);
         return next.handle(authReq || req);
     }
 }

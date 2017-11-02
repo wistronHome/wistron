@@ -2,15 +2,15 @@
     <div class="search-area" >
         <div class="search-row" nz-row>
             <div nz-col class="gutter-row" [nzSpan]="6">
-                <nz-select style="width: 100%;" [nzPlaceHolder]="'所属机房'" [nzShowSearch]="true" [(ngModel)]="search.computerroom_id" nzAllowClear>
+                <nz-select style="width: 100%;" [nzPlaceHolder]="'所属机房'" [nzShowSearch]="true" [(ngModel)]="search.computerroomId" nzAllowClear>
                     <nz-option *ngFor="let room of rooms" [nzLabel]="room.roomName" [nzValue]="room.roomId"></nz-option>
                 </nz-select>
             </div>
             <div nz-col class="gutter-row" [nzSpan]="6">
-                <nz-input [nzPlaceHolder]="'资产编号'"></nz-input>
+                <nz-input [(ngModel)]="search.bserverCode" [nzPlaceHolder]="'资产编号'"></nz-input>
             </div>
             <div nz-col class="gutter-row" [nzSpan]="6">
-                <nz-input [nzPlaceHolder]="'资产名称'"></nz-input>
+                <nz-input [(ngModel)]="search.bserverName" [nzPlaceHolder]="'资产名称'"></nz-input>
             </div>
             <div nz-col class="gutter-row" [nzSpan]="6">
                 <button nz-button (click)="toggleSearch()" [nzType]="'default'">
@@ -26,20 +26,20 @@
         </div>
         <div class="search-row" *ngIf="isSearchOpen" nz-row>
             <div nz-col class="gutter-row" [nzSpan]="6">
-                <nz-input [(ngModel)]="search.code" [nzPlaceHolder]="'所属项目'"></nz-input>
+                <nz-input [(ngModel)]="search.bserverProject" [nzPlaceHolder]="'所属项目'"></nz-input>
             </div>
             <div nz-col class="gutter-row" [nzSpan]="6">
                 <nz-select
                     style="width: 100%;"
                     nzAllowClear
                     [nzPlaceHolder]="'责任人'"
-                    [(ngModel)]="search.bserver_user"
+                    [(ngModel)]="search.bserverUser"
                     [nzShowSearch]="true">
                     <nz-option *ngFor="let user of users" [nzLabel]="user.userName" [nzValue]="user.userId"></nz-option>
                 </nz-select>
             </div>
             <div nz-col class="gutter-row" [nzSpan]="6">
-                <nz-radio-group  [(ngModel)]="radioValue">
+                <nz-radio-group  [(ngModel)]="search.status">
                     <label nz-radio-button [nzValue]="'A'">
                         <span>部署/在架</span>
                     </label>
@@ -52,7 +52,7 @@
         <div class="search-row" *ngIf="isSearchOpen" nz-row>
             <div nz-col class="gutter-row" [nzSpan]="4">
                 <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'品牌'"
-                           [(ngModel)]="search.bserver_brand"
+                           [(ngModel)]="search.bserverBrand"
                            (ngModelChange)="brandChange($event)"
                            [nzShowSearch]="true">
                     <nz-option *ngFor="let brand of brands" [nzLabel]="brand.name" [nzValue]="brand.id"></nz-option>
@@ -60,7 +60,7 @@
             </div>
             <div nz-col class="gutter-row" [nzSpan]="4">
                 <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'系列'"
-                           [(ngModel)]="search.bserver_series"
+                           [(ngModel)]="search.bserverSeries"
                            (ngModelChange)="seriesChange($event)"
                            [nzShowSearch]="true">
                     <nz-option *ngFor="let series of serieses" [nzLabel]="series.name" [nzValue]="series.id"></nz-option>
@@ -68,7 +68,7 @@
             </div>
             <div nz-col class="gutter-row" [nzSpan]="4">
                 <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'型号'"
-                           [(ngModel)]="search.bserver_model"
+                           [(ngModel)]="search.bserverModel"
                            [nzShowSearch]="true">
                     <nz-option *ngFor="let version of versions" [nzLabel]="version.name" [nzValue]="version.id"></nz-option>
                 </nz-select>
@@ -142,19 +142,19 @@
                         <label nz-checkbox [(ngModel)]="rock.checked" (ngModelChange)="refreshStatus($event)"></label>
                     </td>
                     <td nz-td>
-                        <a (click)="$router.navigate(['/asset/servicer/rock/' + rock.bserver_id])">{{rock.bserver_name || '--'}}</a>
+                        <a (click)="$router.navigate(['/asset/servicer/rock/' + rock.bserverId])">{{rock.bserverName || '--'}}</a>
                     </td>
                     <td nz-td>
                         <span>{{rock.uName}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{rock.computerroomName ? '下架' : '上架'}}</span>
+                        <span>{{rock.computerRoomId ? '上架' : '下架'}}</span>
                     </td>
                     <td nz-td>
                         <span>{{rock.alarm | alarm}}</span>
                     </td>
                     <td nz-td>
-                        <a (click)="$router.navigate(['/asset/maintenance/' + asset.number])">{{rock.bserver_code}}</a>
+                        <a (click)="$router.navigate(['/asset/maintenance/' + asset.number])">{{rock.bserverCode}}</a>
                     </td>
                     <td nz-td>
                         <span>{{rock.model}}</span>
@@ -163,10 +163,10 @@
                         <span>{{rock.computerroomName}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{rock.bserver_project}}</span>
+                        <span>{{rock.bserverProject}}</span>
                     </td>
                     <td nz-td>
-                        <span>{{rock.bserver_firstuser}}{{rock.bserver_seconduser}}</span>
+                        <span>{{rock.bserverFirstuser}}{{rock.bserverSeconduser}}</span>
                     </td>
                     <td nz-td>
                         <a (click)="modifyUser(rock)">修改</a>
@@ -175,11 +175,7 @@
                                        (nzOnCancel)="cancel()">
                             <a nz-popconfirm>删除</a>
                         </nz-popconfirm>
-                        <nz-popconfirm [nzTitle]="'确定要删除这个用户吗？'"
-                                       (nzOnConfirm)="confirmDelete(rock)"
-                                       (nzOnCancel)="cancel()">
-                            <a nz-popconfirm>{{rock.computerroomName ? '上架' : '下架'}}</a>
-                        </nz-popconfirm>
+                        <a (click)="shelf(rock)">{{rock.computerRoomId ? '下架' : '上架'}}</a>
                     </td>
                 </tr>
             </ng-template>

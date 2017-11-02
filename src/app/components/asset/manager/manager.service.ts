@@ -12,13 +12,12 @@ export class ManagerService {
      */
     public getAllBrand(callback) {
         this.$http.post(`/itm/bsm/0`, {}).subscribe((result: Result) => {
+            console.log('bbbbaa', result);
             if (result.code === 0) {
                 callback(result.data);
             }
         });
     }
-
-
 
     /**
      * 分页获取品牌
@@ -86,6 +85,7 @@ export class ManagerService {
      * @param callback
      */
     public modifyBrand(brand: Brand, callback) {
+        console.log('pppppppppp', brand);
         this.$http.put(`/itm/bsm`, brand).subscribe((result: Result) => {
             console.log(result);
             if (result.code === 0) {
@@ -130,7 +130,7 @@ export class ManagerService {
      */
     public getSeriesPagination(pageIndex: number, pageSize: number, callback) {
         this.$http.get(`/itm/series/${pageIndex}/${pageSize}/-1`).subscribe((result: Result) => {
-            console.log('series', result);
+            // console.log('series', result);
             if (result.code === 0) {
                 callback(result.data);
             }
@@ -188,8 +188,7 @@ export class ManagerService {
      * @param callback
      */
     public modifySeries(series: Series, callback) {
-        let { id, name, description, parentId } = series;
-        this.$http.put(`/itm/bsm`, { id, name, description, parentId }).subscribe((result: Result) => {
+        this.$http.put(`/itm/bsm`, series).subscribe((result: Result) => {
             console.log(result);
             if (result.code === 0) {
                 callback(result.data);
@@ -291,12 +290,13 @@ export class ManagerService {
      * @param callback
      */
     public modifyVersion(series: Series, callback) {
-        this.$http.put(`/itm/bsm`, series).subscribe((result: Result) => {
-            console.log(result);
-            if (result.code === 0) {
-                callback(result.data);
-            }
-        });
+        console.log(series);
+        // this.$http.put(`/itm/bsm`, series).subscribe((result: Result) => {
+        //     console.log(result);
+        //     if (result.code === 0) {
+        //         callback(result.data);
+        //     }
+        // });
     }
 
     /**

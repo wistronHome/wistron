@@ -1,25 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { MissionService } from '../../mission-store/mission.service'
-import { User } from '../../models'
+import { NzMessageService } from 'ng-zorro-antd'
+import { User, Utils } from '../../models'
 import { LoginService } from './login.service'
+
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    providers: [ LoginService ]
+    providers: [ LoginService, NzMessageService ]
 })
 export class LoginComponent implements OnInit {
+    imageKey = Utils.getUUID();
     usercode: string = '';
     password: string = '';
+    checkCode: string = '';
+    image: string = `http://10.5.31.24:8080/itm/getImageCode/${ this.imageKey }?time=${ Utils.getUUID() }`;
     constructor(
         private $mission: MissionService,
         private $service: LoginService,
-        private $router: Router
+        private $router: Router,
+        private $message: NzMessageService
     ) { }
 
     ngOnInit() {
+    }
 
+    /**
+     * 切换验证码
+     */
+    public changeImageCode() {
+        this.image = `http://10.5.31.24:8080/itm/getImageCode/${ this.imageKey }?time=${ Utils.getUUID() }`;
     }
 
     /**
@@ -28,12 +40,17 @@ export class LoginComponent implements OnInit {
     login() {
         this.validate(this.usercode, this.password).then((result: ValidateResult) => {
             if (result.isOk) {
-                this.$service.login(this.usercode, this.password, result => {
-                    this.$mission.commitLoginStatusChange(result['user']);
-                    this.$router.navigate(['/asset'])
+                this.$service.login(this.usercode, this.password, this.checkCode, this.imageKey, result => {
+                    if (result.ok) {
+                        this.$mission.commitLoginStatusChange(result['user']);
+                        sessionStorage.setItem('__currentUser', JSON.stringify(result.user));
+                        this.$router.navigate(['/asset']);
+                    } else {
+                        this.$message.error('用户名或者密码错误~')
+                    }
                 });
             } else {
-                console.log('failed');
+                this.$message.error('请填写完整~')
             }
         });
     }

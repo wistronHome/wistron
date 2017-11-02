@@ -14,17 +14,17 @@ import { Rock } from "../../../../models";
 
 export class RockComponent implements OnInit {
     search = {
-        computerroom_id: 0,
-        bserver_code: '',
-        bserver_name: '',
-        bserver_project: '',
-        bserver_user: '',
-        bserver_brand: '',
-        bserver_series: '',
-        bserver_model: '',
+        computerroomId: 0,
+        bserverCode: '',
+        bserverName: '',
+        bserverProject: '',
+        bserverUser: '',
+        bserverBrand: '',
+        bserverSeries: '',
+        bserverModel: '',
         status: '',
-        cabinet_id: '',
-        start_u: ''
+        cabinetId: '',
+        startU: ''
     };
     data = [];
     brand = [];
@@ -89,11 +89,14 @@ export class RockComponent implements OnInit {
      */
     batchDelete() {
         this.operating = true;
-        setTimeout(() => {
-            this.rocks.forEach(asset => asset.checked = false);
-            this.refreshStatus();
+        let ids: number[] = [];
+        this.rocks.forEach(item => {
+            ids.push(item.bserverId);
+        });
+        this.$service.deleteServers(ids, result => {
+            this.refreshRock();
             this.operating = false;
-        }, 1000);
+        });
     };
 
     constructor(
@@ -154,6 +157,10 @@ export class RockComponent implements OnInit {
      */
     public searchByField() {
         console.log(this.search);
+        this.$service.getRockByField(this.pageIndex, this.pageSize, this.search, result => {
+            this.rocks = result.data;
+            this.total = result.totalCount;
+        });
     }
     /**
      * 品牌/系列/型号  级联选择
@@ -161,7 +168,7 @@ export class RockComponent implements OnInit {
      */
     public loadData(e: {option: any, index: number, resolve: Function, reject: Function}): void {
         if (e.index === -1) {
-            this.$service.getAllCabinet(this.search.computerroom_id, result => {
+            this.$service.getAllCabinet(this.search.computerroomId, result => {
                 let _result = [];
                 result.cabinetSet.forEach(item => {
                     let {cabinetId: value, cabinetName: label} = item;
@@ -184,6 +191,21 @@ export class RockComponent implements OnInit {
             });
         }
 
+    }
+
+    /**
+     * 上下架
+     * @param {Rock} rock
+     */
+    public shelf(rock: Rock) {
+        // 下架
+        if (rock.computerRoomId) {
+            this.$service.offShelves(rock.bsshelvesId, result => {
+                console.log('------------', result);
+            });
+        } else {
+            // 下架
+        }
     }
 
     /**

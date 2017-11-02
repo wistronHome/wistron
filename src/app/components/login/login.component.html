@@ -21,8 +21,11 @@
                 <div nz-col [nzSpan]="6">
                     <span class="row-title">验证码</span>
                 </div>
-                <div nz-col [nzSpan]="18">
-                    <input type="text">
+                <div nz-col [nzSpan]="12">
+                    <input type="text" [(ngModel)]="checkCode">
+                </div>
+                <div nz-col [nzSpan]="6">
+                    <img style="cursor: pointer;" (click)="changeImageCode()" [src]="image" alt="">
                 </div>
             </div>
             <div nz-row class="panel-row">

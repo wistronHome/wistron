@@ -36,6 +36,8 @@ import { BladeDetailComponent } from "./components/asset/servicer/blade/blade.de
 import { DeviceComponent } from "./components/asset/servicer/device/device.component";
 import { AddCabinetsComponent } from './components/machine/add-cabinets/add-cabinets.component';
 
+import { RepwdComponent } from "./components/user/repwd/repwd.component";
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -64,7 +66,8 @@ import { AddCabinetsComponent } from './components/machine/add-cabinets/add-cabi
         BladeComponent,
         BladeDetailComponent,
         DeviceComponent,
-        AddCabinetsComponent
+        AddCabinetsComponent,
+        RepwdComponent
     ],
     imports: [
         BrowserModule,

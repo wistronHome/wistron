@@ -36,9 +36,9 @@ export class SeriesComponent implements OnInit {
         });
     }
     ngOnInit() {
+        // this.refreshSeries();
         this.$service.getAllBrand(result => {
             this.brands = result;
-            console.log('brands:',  this.brands);
         });
     }
 

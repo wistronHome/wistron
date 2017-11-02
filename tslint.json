@@ -144,6 +144,7 @@
       "semicolon": false,
       "no-inferrable-types": false,
       "quotemark": false,
-      "no-trailing-whitespace": false
+      "no-trailing-whitespace": false,
+      "no-bitwise": false
   }
 }

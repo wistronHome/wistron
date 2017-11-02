@@ -1,29 +1,29 @@
 <div class="detail-wrap" style="background: #ffffff">
-    <nz-tabset>
+    <nz-tabset *ngIf="serverInfo">
         <nz-tab>
             <ng-template #nzTabHeading>
                 <i class="anticon anticon-calculator"></i>
                 资产信息
             </ng-template>
-            <nz-collapseset  [nzBordered]="false">
+            <nz-collapseset [nzBordered]="false">
                 <nz-collapse [nzTitle]="'一般属性'" [nzActive]="false" [ngStyle]="style" >
                     <div class="search-row" nz-row >
                         <div nz-col class="gutter-row" [nzSpan]="8">
                             <div nz-col [nzSpan]="8" class="row-title">资产名称:</div>
                             <div nz-col [nzSpan]="16">
-                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                                <nz-input [(ngModel)]="serverInfo.bserverName" [nzPlaceHolder]="'请输入'"></nz-input>
                             </div>
                         </div>
                         <div nz-col class="gutter-row" [nzSpan]="8">
                             <div nz-col [nzSpan]="8" class="row-title">资产编号:</div>
                             <div nz-col [nzSpan]="16">
-                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                                <nz-input [(ngModel)]="serverInfo.bserverCode" [nzPlaceHolder]="'请输入'"></nz-input>
                             </div>
                         </div>
                         <div nz-col class="gutter-row" [nzSpan]="8">
                             <div nz-col [nzSpan]="8" class="row-title">序列号:</div>
                             <div nz-col [nzSpan]="16">
-                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                                <nz-input [(ngModel)]="serverInfo.bserverKey" [nzPlaceHolder]="'请输入'"></nz-input>
                             </div>
                         </div>
                     </div>
@@ -31,39 +31,78 @@
                         <div nz-col class="gutter-row" [nzSpan]="8">
                             <div nz-col [nzSpan]="8" class="row-title">BMCIP:</div>
                             <div nz-col [nzSpan]="16">
-                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                                <nz-input [(ngModel)]="serverInfo.bserverBmc" [nzPlaceHolder]="'请输入'"></nz-input>
                             </div>
                         </div>
                         <div nz-col class="gutter-row" [nzSpan]="8">
                             <div nz-col [nzSpan]="8" class="row-title">带内 IP:</div>
                             <div nz-col [nzSpan]="16">
-                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                                <nz-input [(ngModel)]="serverInfo.bserver_ip" [nzPlaceHolder]="'请输入'"></nz-input>
                             </div>
                         </div>
                     </div>
                     <div class="search-row" nz-row >
-                        <div nz-col class="gutter-row" [nzSpan]="16">
-                            <div nz-col [nzSpan]="4" class="row-title">品牌/系列/型号:</div>
-                            <div nz-col [nzSpan]="20">
-                                <nz-cascader
-                                    [nzOptions]="_options"
-                                    [(ngModel)]="_value"
-                                    (ngModelChange)="_console($event)"
-                                    (nzChange)="_console($event)">
-                                </nz-cascader>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">品牌:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'品牌'"
+                                           [(ngModel)]="serverInfo.bserverBrand"
+                                           (ngModelChange)="brandChange($event)"
+                                           [nzShowSearch]="true">
+                                    <nz-option *ngFor="let brand of brands" [nzLabel]="brand.name" [nzValue]="brand.id"></nz-option>
+                                </nz-select>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">系列:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'系列'"
+                                           [(ngModel)]="serverInfo.bserverSeries"
+                                           (ngModelChange)="seriesChange($event)"
+                                           [nzShowSearch]="true">
+                                    <nz-option *ngFor="let series of serieses" [nzLabel]="series.name" [nzValue]="series.id"></nz-option>
+                                </nz-select>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">型号:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'品牌'"
+                                           [(ngModel)]="serverInfo.bserverVersion"
+                                           (ngModelChange)="brandChange($event)"
+                                           [nzShowSearch]="true">
+                                    <nz-option *ngFor="let version of versions" [nzLabel]="version.name" [nzValue]="version.id"></nz-option>
+                                </nz-select>
                             </div>
                         </div>
                     </div>
                     <div class="search-row" nz-row >
-                        <div nz-col class="gutter-row" [nzSpan]="16">
-                            <div nz-col [nzSpan]="4" class="row-title">所属项目/责任人:</div>
-                            <div nz-col [nzSpan]="20">
-                                <nz-cascader
-                                    [nzOptions]="_options"
-                                    [(ngModel)]="_value"
-                                    (ngModelChange)="_console($event)"
-                                    (nzChange)="_console($event)">
-                                </nz-cascader>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">所属项目:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-input [(ngModel)]="serverInfo.bserverProject" [nzPlaceHolder]="'请输入'"></nz-input>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">第一责任人:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'品牌'"
+                                           [(ngModel)]="serverInfo.bserverFirstuser"
+                                           (ngModelChange)="brandChange($event)"
+                                           [nzShowSearch]="true">
+                                    <nz-option *ngFor="let user of users" [nzLabel]="user.userName" [nzValue]="user.userId"></nz-option>
+                                </nz-select>
+                            </div>
+                        </div>
+                        <div nz-col class="gutter-row" [nzSpan]="8">
+                            <div nz-col [nzSpan]="8" class="row-title">第二责任人:</div>
+                            <div nz-col [nzSpan]="16">
+                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'品牌'"
+                                           [(ngModel)]="serverInfo.bserverSeconduser"
+                                           (ngModelChange)="brandChange($event)"
+                                           [nzShowSearch]="true">
+                                    <nz-option *ngFor="let user of users" [nzLabel]="user.userName" [nzValue]="user.userId"></nz-option>
+                                </nz-select>
                             </div>
                         </div>
                     </div>
@@ -73,15 +112,15 @@
                 <nz-collapse [nzTitle]="'特殊属性'" [nzActive]="false" [ngStyle]="style" >
                     <div class="search-row" nz-row >
                         <div nz-col class="gutter-row" [nzSpan]="8">
-                            <div nz-col [nzSpan]="8" class="row-title">所在刀箱:</div>
+                            <div nz-col [nzSpan]="8" class="row-title">最大磁盘托架数:</div>
                             <div nz-col [nzSpan]="16">
-                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                                <nz-input [(ngModel)]="serverInfo.bserverMaxdisknumbe" [nzPlaceHolder]="'请输入'"></nz-input>
                             </div>
                         </div>
                         <div nz-col class="gutter-row" [nzSpan]="8">
                             <div nz-col [nzSpan]="8" class="row-title">起始U位:</div>
                             <div nz-col [nzSpan]="16">
-                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                                <nz-input [(ngModel)]="serverInfo.startU" [nzPlaceHolder]="'请输入'"></nz-input>
                             </div>
                         </div>
                     </div>
@@ -91,15 +130,36 @@
                 <nz-collapse [nzTitle]="'上架位置'" [nzActive]="false" [ngStyle]="style" >
                     <div class="search-row" nz-row >
                         <div class="search-row" nz-row >
-                            <div nz-col class="gutter-row" [nzSpan]="16">
-                                <div nz-col [nzSpan]="4" class="row-title">机房/机柜/U位:</div>
-                                <div nz-col [nzSpan]="20">
-                                    <nz-cascader
-                                        [nzOptions]="_options"
-                                        [(ngModel)]="_value"
-                                        (ngModelChange)="_console($event)"
-                                        (nzChange)="_console($event)">
-                                    </nz-cascader>
+                            <div nz-col class="gutter-row" [nzSpan]="8">
+                                <div nz-col [nzSpan]="8" class="row-title">机房:</div>
+                                <div nz-col [nzSpan]="16">
+                                    <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'所在机房'"
+                                               [(ngModel)]="serverInfo.computerroomId"
+                                               (ngModelChange)="roomChange($event)"
+                                               [nzShowSearch]="true">
+                                        <nz-option *ngFor="let room of rooms" [nzLabel]="room.roomName" [nzValue]="room.roomId"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                            <div nz-col class="gutter-row" [nzSpan]="8">
+                                <div nz-col [nzSpan]="8" class="row-title">机柜:</div>
+                                <div nz-col [nzSpan]="16">
+                                    <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'所在机柜'"
+                                               [(ngModel)]="serverInfo.cabinetId"
+                                               (ngModelChange)="cabinetChange($event)"
+                                               [nzShowSearch]="true">
+                                        <nz-option *ngFor="let cabinet of cabinets" [nzLabel]="cabinet.cabinetName" [nzValue]="cabinet.cabinetId"></nz-option>
+                                    </nz-select>
+                                </div>
+                            </div>
+                            <div nz-col class="gutter-row" [nzSpan]="8">
+                                <div nz-col [nzSpan]="8" class="row-title">U位:</div>
+                                <div nz-col [nzSpan]="16">
+                                    <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'U位'"
+                                               [(ngModel)]="serverInfo.startU"
+                                               [nzShowSearch]="true">
+                                        <nz-option *ngFor="let cabinet of cabinets" [nzLabel]="cabinet.cabinetName" [nzValue]="cabinet.cabinetId"></nz-option>
+                                    </nz-select>
                                 </div>
                             </div>
                         </div>
@@ -109,15 +169,191 @@
             <nz-collapseset  [nzBordered]="false">
                 <nz-collapse [nzTitle]="'协议配置'" [nzActive]="false" [ngStyle]="style" >
                     <div class="search-row" nz-row >
-                        <div nz-col class="gutter-row" [nzSpan]="8">
-                            <div nz-col [nzSpan]="4" class="row-title">协议:</div>
-                            <div nz-col [nzSpan]="20">
-                                <nz-radio-group >
-                                    <label nz-radio-button [nzValue]="'0'">SNMP</label>
-                                    <label nz-radio-button [nzValue]="'1'">IPMI</label>
-                                </nz-radio-group>
-                            </div>
-                        </div>
+                        <nz-tabset>
+                            <nz-tab>
+                                <ng-template #nzTabHeading>IPMN</ng-template>
+                                <div class="search-row" nz-row >
+                                    <div class="search-row" nz-row >
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">用户名:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-input [(ngModel)]="serverInfo.protocolList[0].userName" [nzPlaceHolder]="'请输入'"></nz-input>
+                                            </div>
+                                        </div>
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">密码:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-input [(ngModel)]="serverInfo.protocolList[0].password" [nzPlaceHolder]="'请输入'"></nz-input>
+                                            </div>
+                                        </div>
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">IP地址:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-input [(ngModel)]="serverInfo.protocolList[0].password" [nzPlaceHolder]="'请输入'"></nz-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="search-row" nz-row >
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">端口:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-input [(ngModel)]="serverInfo.protocolList[0].port" [nzPlaceHolder]="'请输入'"></nz-input>
+                                            </div>
+                                        </div>
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">REDFISH协议:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-input [(ngModel)]="serverInfo.protocolList[0].dataEncryptioncipher" [nzPlaceHolder]="'请输入'"></nz-input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </nz-tab>
+                            <nz-tab>
+                                <ng-template #nzTabHeading>SNMP</ng-template>
+                                <div class="search-row" nz-row >
+                                    <div class="search-row" nz-row >
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">类型:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'类型'"
+                                                           [(ngModel)]="serverInfo.computerroomId"
+                                                           (ngModelChange)="roomChange($event)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let room of rooms" [nzLabel]="room.roomName" [nzValue]="room.roomId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">SNMP模板:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'SNMP模板'"
+                                                           [(ngModel)]="serverInfo.cabinetId"
+                                                           (ngModelChange)="cabinetChange($event)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let cabinet of cabinets" [nzLabel]="cabinet.cabinetName" [nzValue]="cabinet.cabinetId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">重试次数（1-20）:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'重试次数（1-20）'"
+                                                           [(ngModel)]="serverInfo.startU"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let cabinet of cabinets" [nzLabel]="cabinet.cabinetName" [nzValue]="cabinet.cabinetId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="search-row" nz-row >
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">超时（1-60秒）:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'超时（1-60秒）'"
+                                                           [(ngModel)]="serverInfo.computerroomId"
+                                                           (ngModelChange)="roomChange($event)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let room of rooms" [nzLabel]="room.roomName" [nzValue]="room.roomId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">端口（1-65535）:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'端口（1-65535）'"
+                                                           [(ngModel)]="serverInfo.cabinetId"
+                                                           (ngModelChange)="cabinetChange($event)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let cabinet of cabinets" [nzLabel]="cabinet.cabinetName" [nzValue]="cabinet.cabinetId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">用户名:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'用户名'"
+                                                           [(ngModel)]="serverInfo.cabinetId"
+                                                           (ngModelChange)="cabinetChange($event)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let cabinet of cabinets" [nzLabel]="cabinet.cabinetName" [nzValue]="cabinet.cabinetId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="search-row" nz-row >
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">认证协议:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'认证协议'"
+                                                           [(ngModel)]="serverInfo.computerroomId"
+                                                           (ngModelChange)="roomChange($event)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let room of rooms" [nzLabel]="room.roomName" [nzValue]="room.roomId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">认证密码:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'认证密码'"
+                                                           [(ngModel)]="serverInfo.cabinetId"
+                                                           (ngModelChange)="cabinetChange($event)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let cabinet of cabinets" [nzLabel]="cabinet.cabinetName" [nzValue]="cabinet.cabinetId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">数据加密协议:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'数据加密协议'"
+                                                           [(ngModel)]="serverInfo.cabinetId"
+                                                           (ngModelChange)="cabinetChange($event)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let cabinet of cabinets" [nzLabel]="cabinet.cabinetName" [nzValue]="cabinet.cabinetId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="search-row" nz-row >
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">数据加密密码:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'数据加密密码'"
+                                                           [(ngModel)]="serverInfo.computerroomId"
+                                                           (ngModelChange)="roomChange($event)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let room of rooms" [nzLabel]="room.roomName" [nzValue]="room.roomId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">Trap团体字:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'Trap团体字'"
+                                                           [(ngModel)]="serverInfo.cabinetId"
+                                                           (ngModelChange)="cabinetChange($event)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let cabinet of cabinets" [nzLabel]="cabinet.cabinetName" [nzValue]="cabinet.cabinetId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                        <div nz-col class="gutter-row" [nzSpan]="8">
+                                            <div nz-col [nzSpan]="8" class="row-title">确认Trap团体字:</div>
+                                            <div nz-col [nzSpan]="16">
+                                                <nz-select style="width: 100%" nzAllowClear [nzPlaceHolder]="'确认Trap团体字'"
+                                                           [(ngModel)]="serverInfo.cabinetId"
+                                                           (ngModelChange)="cabinetChange($event)"
+                                                           [nzShowSearch]="true">
+                                                    <nz-option *ngFor="let cabinet of cabinets" [nzLabel]="cabinet.cabinetName" [nzValue]="cabinet.cabinetId"></nz-option>
+                                                </nz-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </nz-tab>
+                        </nz-tabset>
                     </div>
                 </nz-collapse>
             </nz-collapseset>
@@ -127,7 +363,7 @@
                 </nz-collapse>
             </nz-collapseset>
         </nz-tab>
-        <nz-tab>
+        <nz-tab *ngIf="hardwareInfo">
             <ng-template #nzTabHeading>
                 <i class="anticon anticon-qrcode"></i>
                 服务器信息
@@ -138,19 +374,19 @@
                         <div nz-col class="gutter-row" [nzSpan]="8">
                             <div nz-col [nzSpan]="8" class="row-title">主板厂商:</div>
                             <div nz-col [nzSpan]="16">
-                                <span>cxxxxxxxxxx</span>
+                                <span>{{hardwareInfo.motherboardVendor}}</span>
                             </div>
                         </div>
                         <div nz-col class="gutter-row" [nzSpan]="8">
                             <div nz-col [nzSpan]="8" class="row-title">主板序列号:</div>
                             <div nz-col [nzSpan]="16">
-                                <span>cxxxxxxxxxx</span>
+                                <span>{{hardwareInfo.motherboardSerialNumber}}</span>
                             </div>
                         </div>
                         <div nz-col class="gutter-row" [nzSpan]="8">
                             <div nz-col [nzSpan]="8" class="row-title">主板产品ID:</div>
                             <div nz-col [nzSpan]="16">
-                                <span>cxxxxxxxxxx</span>
+                                <span>{{hardwareInfo.motherboardproductsId}}</span>
                             </div>
                         </div>
                     </div>
@@ -158,19 +394,19 @@
                         <div nz-col class="gutter-row" [nzSpan]="8">
                             <div nz-col [nzSpan]="8" class="row-title">设备型号:</div>
                             <div nz-col [nzSpan]="16">
-                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                                <span>{{hardwareInfo.equipmentType}}</span>
                             </div>
                         </div>
                         <div nz-col class="gutter-row" [nzSpan]="8">
                             <div nz-col [nzSpan]="8" class="row-title">设备厂家:</div>
                             <div nz-col [nzSpan]="16">
-                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                                <span>{{hardwareInfo.equipmentManufacturers}}</span>
                             </div>
                         </div>
                         <div nz-col class="gutter-row" [nzSpan]="8">
                             <div nz-col [nzSpan]="8" class="row-title">设备序列号:</div>
                             <div nz-col [nzSpan]="16">
-                                <nz-input [nzPlaceHolder]="'请输入'"></nz-input>
+                                <span>{{hardwareInfo.deviceserialNumber}}</span>
                             </div>
                         </div>
                     </div>

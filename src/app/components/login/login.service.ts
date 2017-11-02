@@ -15,15 +15,18 @@ export class LoginService {
      * @param {string} password
      * @param callback
      */
-    public login(userCode: string, password: string, callback) {
-        let body = { userCode, password };
+    public login(userCode: string, password: string, imageCode: string, imageKey: string, callback) {
+        let body = { userCode, password, imageCode, imageKey };
         console.log(body);
         this.$http.post(`/itm/login`, body).subscribe((result: Result) => {
             if (result.code === 0) {
                 let Authorization = result.data['Authorization'];
                 sessionStorage.setItem('authorization', Authorization);
-                callback(result.data);
+                callback({ok: true, user: result.data.user});
+            } else {
+                callback({ok: false})
             }
         });
     }
+
 }

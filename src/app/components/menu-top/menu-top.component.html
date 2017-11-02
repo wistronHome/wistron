@@ -1,6 +1,5 @@
 
 <div class="menu-wrap">
-    <!-- 一级目录 -->
     <ul class="custom-ul">
         <li *ngFor="let item of menuData;let index = index"
             (click)="navigate(item)"
@@ -40,4 +39,56 @@
     <div class="alarm">
         <app-alarm-badge></app-alarm-badge>
     </div>
+    <div class="login-area" *ngIf="loginUser">
+        <nz-dropdown [nzPlacement]="'bottomCenter'" [nzTrigger]="'click'">
+            <a class="ant-dropdown-link" nz-dropdown>
+                {{loginUser.userName}}
+            </a>
+            <ul nz-menu>
+                <li nz-menu-item>
+                    <a rel="noopener noreferrer">用户资料</a>
+                </li>
+                <li nz-menu-item><a (click)="openModal()" rel="noopener noreferrer">修改密码</a></li>
+                <li nz-menu-item><a (click)="logout()" rel="noopener noreferrer">注销</a></li>
+            </ul>
+        </nz-dropdown>
+    </div>
+    <nz-modal [nzVisible]="isModifyModalShow"
+              [nzTitle]="'修改密码'"
+              [nzContent]="modalContent"
+              [nzFooter]="modalFooter"
+              (nzOnCancel)="handleCancel($event)"
+              (nzOnOk)="handleOk($event)">
+        <ng-template #modalContent>
+            <div class="m-pwd">
+                <div nz-row class="m-row">
+                    <div nz-col class="m-title" [nzSpan]="6">旧密码</div>
+                    <div nz-col class="m-content" [nzSpan]="18">
+                        <nz-input (nzBlur)="blur('old')" [(ngModel)]="oldPwd"></nz-input>
+                        <p class="error-tip">{{oldMsg}}</p>
+                    </div>
+                </div>
+                <div nz-row class="m-row">
+                    <div nz-col class="m-title" [nzSpan]="6">新密码</div>
+                    <div nz-col class="m-content" [nzSpan]="18">
+                        <nz-input (nzBlur)="blur('new')" [(ngModel)]="newPwd"></nz-input>
+                        <p class="error-tip">{{newMsg}}</p>
+                    </div>
+                </div>
+                <div nz-row class="m-row">
+                    <div nz-col class="m-title" [nzSpan]="6">确认密码</div>
+                    <div nz-col class="m-content" [nzSpan]="18">
+                        <nz-input (nzBlur)="blur('re')" [(ngModel)]="rePwd"></nz-input>
+                        <p class="error-tip">{{reMsg}}</p>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #modalFooter>
+            <div class="modal-footer">
+                <button (click)="handleCancel()" class="m-btn" type="button">取&nbsp;&nbsp;消</button>
+                <button (click)="handleOk()" class="m-btn" type="button">保&nbsp;&nbsp;存</button>
+            </div>
+        </ng-template>
+    </nz-modal>
 </div>

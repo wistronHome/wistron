@@ -18,7 +18,7 @@ export class UserRolesComponent implements OnInit {
     };
     pageSize: number = 20;
     pageIndex: number = 1;
-    total: number = 1;
+    total: number = 0;
     constructor(
         private $mission: MissionService,
         private $service: UserService,
@@ -28,17 +28,10 @@ export class UserRolesComponent implements OnInit {
         $mission.pageChangeHook.subscribe(page => {
             this.pageSize = page.pageSize;
             this.pageIndex = page.pageIndex;
-            this.$service.getRolesPagination(this.pageIndex, this.pageSize, result => {
-            //     // this.data = result.roles;
-            //     // this.total = result.total;
-            });
+            this.refreshRoles();
         });
     }
     ngOnInit() {
-        // this.$service.getRolePagination( this.pageIndex, this.pageSize ).then(result => {
-        //     this.data = result.roles;
-        //     this.total = result.total;
-        // });
     }
     searchByField() {
         console.log(this.search);
@@ -57,5 +50,15 @@ export class UserRolesComponent implements OnInit {
     cancel() { }
     confirmDelete(role: Role) {
         console.log(role);
+    }
+
+    /**
+     * 刷新列表
+     */
+    private refreshRoles() {
+        this.$service.getRolesPagination(this.pageIndex, this.pageSize, result => {
+            this.data = result.roles;
+            this.total = result.total;
+        });
     }
 }
