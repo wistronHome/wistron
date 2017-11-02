@@ -24,7 +24,7 @@
         <span >编辑大小</span>
       </button>
   </div>
-  <div class="machine-room" id="mcRoom" style="width: 70%; height: 100%;"></div>
+  <div class="machine-room" id="mcRoom" [ngStyle]="{'width': '70%', 'height': '100%','background': 'url('+roomBackgroundImg+')'}"></div>
   <div class="tools" id="tools">
     <nz-collapseset [nzAccordion]="true">
       <nz-collapse  nzTitle="机柜" nzActive="false">
@@ -40,7 +40,7 @@
       <nz-collapse  nzTitle="后台机柜列表" nzActive="false">
 
           <div *ngFor="let list of cabinetTypeList"><div class="cabinetType" draggable="true" [ngStyle]="{'width': list.cabinetTypeWidth/15+'px',
-          'height': list.cabinetTypeHeight/15+'px','background': 'green'}" [attr._width]="list.cabinetTypeWidth/20" [attr._height]='list.cabinetTypeHeight/20'></div><p>{{list.cabinetTypeName}}</p></div>
+          'height': list.cabinetTypeHeight/15+'px','background': '#f9a56a'}" [attr._width]="list.cabinetTypeWidth/20" [attr._height]='list.cabinetTypeHeight/20'></div><p>{{list.cabinetTypeName}}</p></div>
       </nz-collapse>
       <nz-collapse  nzTitle="自定义" nzActive="false">
           <div><img class="img" draggable="true" src="assets/room/mx-cabinet2.svg" alt="" width="40px;" _width= '15' _height= '80' _type='roomWall'><p>基建</p></div>
@@ -48,6 +48,7 @@
       </nz-collapse>
     </nz-collapseset>
   </div>
+    <!--<img [src]="roomBackgroundImg" alt="">-->
   <div class="cabinet-info" [@attributeState]="state">
     <h5>设备属性</h5>
     <!--搜索框-->

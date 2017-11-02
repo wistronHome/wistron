@@ -45,7 +45,7 @@
                     {{item.name}}
                     <div class="deal-area">
                         <em title="批量添加机柜">
-                            <i class="anticon anticon-plus-square-o" (click)="addCabinetBatch()"></i>
+                            <i class="anticon anticon-plus-square-o" ></i>
                         </em>
                         <em title="删除机房">
                             <i class="anticon anticon-minus-square-o"></i>
@@ -100,7 +100,7 @@
                     {{item.roomName}}
                     <div class="deal-area">
                         <em title="批量添加机柜">
-                            <i class="anticon anticon-plus-square-o" (click)="addCabinetBatch()"></i>
+                            <i class="anticon anticon-plus-square-o" (click)="addCabinetBatch(item.roomName,item.roomId)"></i>
                         </em>
                         <em title="删除机房">
                             <nz-popconfirm [nzTitle]="'确定要删除吗？'"
@@ -172,7 +172,7 @@
     <app-create-room-modal
         [isVisible]="isVisible" (onVoted)="onVoted($event)">
     </app-create-room-modal>
-    <app-add-cabinets [isAddVisible] ='isAddVisible' (close)="closeModal($event)">
+    <app-add-cabinets [isAddVisible] ='isAddVisible' [roomName]="roomName" [roomId] ='roomId' (close)="closeModal($event)">
 
     </app-add-cabinets>
 </div>

@@ -70,6 +70,8 @@ export class RoomComponent implements OnInit {
     height = ''; // 自定义机柜的高
     Unumber = ''; // 自定义机柜的u数
     cabinetTypeList = '';
+    roomBackgroundImg: any;
+
     constructor(private router: Router,
                 private routerInfo: ActivatedRoute,
                 private RoomSerService: RoomSerService,
@@ -82,10 +84,13 @@ export class RoomComponent implements OnInit {
         this.roomId = this.routerInfo.params.subscribe((params) => {
             if (this.graph) {
                 this.graph.clear();
-                tools.drawRoom(this.Q, this.graph, 600, 600)
+                // tools.drawRoomBackground(this.Q,this.graph,this.roomBackgroundImg);
+                tools.drawRoom(this.Q, this.graph, 600, 600);
+
             }
             this.roomId = params['id'];
             this.getRoomInfo(this.roomId);
+
         });
         // 通过参数查询来获取路由参数
         this.roomId = this.routerInfo.snapshot.params['id'];
@@ -96,6 +101,7 @@ export class RoomComponent implements OnInit {
         });
         this.graph = new this.Q.Graph('mcRoom');
         // 设置坐标原点
+
         this.graph.originAtCenter = false;
         // 机房宽12米 高12米 比例1米=100px 方格为10px*10px 20cm*20cm 的正方形 1px= 2cm;
         const roomWidth = 600, // px
@@ -161,7 +167,7 @@ export class RoomComponent implements OnInit {
                 tools.drawCustomCabinet(this.Q, this.graph, p.x, p.y);
                 return;
             }
-            tools.drawCabinet(this.Q, this.graph, '007', p.x, p.y, _width, _height, 0,'');
+            tools.drawCabinet(this.Q, this.graph, '007', p.x, p.y, _width, _height, 0, '');
         };
 
 
@@ -278,10 +284,10 @@ export class RoomComponent implements OnInit {
     }
 
     delCabinet(): void {
-        if(this.graph.getUI(this.id).data&&this.graph.getUI(this.id).data.get('cabinetId')===''){
+        if (this.graph.getUI(this.id).data && this.graph.getUI(this.id).data.get('cabinetId') === '') {
             this.model['removeById'](this.id);
             this.model['removeById'](this.ChildId);
-        }else {
+        } else {
 
             let cabinetId = this.graph.getUI(this.id).data.get('cabinetId');
             this.http.delete(`/itm/cabinet/deleteCabinet/${cabinetId}`).subscribe(data => {
@@ -442,9 +448,11 @@ export class RoomComponent implements OnInit {
         this.http.get(`/itm/rooms/queryRoom/${roomId}`).subscribe(data => {
             if (data['code'] === 0) {
                 console.log(data);
+
                 let info = data['data']['cabinetSet'];
+                this.roomBackgroundImg = "http://10.5.31.18:8080/itm/" + data['data']['roomImage'];
                 for (let i = 0; i < info['length']; i++) {
-                    tools.drawCabinet(this.Q, this.graph, info[i].cabinetName, info[i].cabinetX, info[i].cabinetY, info[i].cabinetWidth, info[i].cabinetHeight, info[i].cabinetImage,info[i].cabinetId)
+                    tools.drawCabinet(this.Q, this.graph, info[i].cabinetName, info[i].cabinetX, info[i].cabinetY, info[i].cabinetWidth, info[i].cabinetHeight, info[i].cabinetImage, info[i].cabinetId)
                 }
             } else {
                 alert(data['msg']);
@@ -619,6 +627,18 @@ class tools {
         demo.setStyle(Q.Styles.LABEL_OFFSET_Y, -50 / 2);
         demo.setStyle(Q.Styles.BORDER, 1);
         demo.setStyle(Q.Styles.BORDER_RADIUS, 0);
+    }
+
+    /**
+     * 绘制机房背景
+     * @param Q
+     * @param graph
+     */
+    public static drawRoomBackground(Q, graph, image): void {
+        let demo = graph.createNode('', 250, 250);
+        demo.image = image;
+        demo.set('type', 'roomBackground');
+        demo.zIndex = 1;
     }
 
 }

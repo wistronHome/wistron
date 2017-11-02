@@ -17,6 +17,8 @@ import {HttpClient} from '@angular/common/http';
     ]
 })
 export class MachineComponent implements OnInit {
+    roomName; // 当前点击的room名称
+    roomId;
     data: Room[] = [];
     isCollapse: boolean = true;
     isVisible: boolean = false;
@@ -142,9 +144,13 @@ export class MachineComponent implements OnInit {
         })
     }
 
+
+
     /*批量添加机房*/
-    addCabinetBatch() {
+    addCabinetBatch(roomName, roomId) {
         this.isAddVisible = true;
+        this.roomName= roomName;
+        this.roomId = roomId;
     }
 
     /*关闭批量添加机房模态框*/

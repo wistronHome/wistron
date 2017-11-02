@@ -1,4 +1,5 @@
 <nz-modal [nzVisible]="isAddVisible"
+          [nzTitle]="'批量生成机柜'"
           [nzClosable]="false"
           [nzMaskClosable]="false"
           [nzContent]="modalContent"
@@ -7,32 +8,35 @@
     <ng-template #modalContent>
         <div style="padding: 20px 50px;">
             <div class="c-item">
+                <p>机房名称</p>
                 <nz-input
                     [(ngModel)]="roomName"
                     [nzSize]="'large'"
                     [nzPlaceHolder]="'机房名称'">
-
                 </nz-input>
             </div>
             <div class="c-item">
+                <p>添加机柜行数</p>
                 <nz-input
-                    [(ngModel)]="roomWith"
+                    [(ngModel)]="cabinetRow"
                     [nzSize]="'large'"
                     [nzPlaceHolder]="'添加机柜行数'">
 
                 </nz-input>
             </div>
             <div class="c-item">
+                <p>添加机柜列数</p>
                 <nz-input
-                    [(ngModel)]="roomLength"
+                    [(ngModel)]="cabinetCol"
                     [nzSize]="'large'"
                     [nzPlaceHolder]="'添加机柜列数'">
 
                 </nz-input>
             </div>
             <div class="c-item">
+                <p>机柜名称</p>
                 <nz-input
-                    [(ngModel)]="roomLength"
+                    [(ngModel)]="cabinetname"
                     [nzSize]="'large'"
                     [nzPlaceHolder]="'输入机柜名字'">
                 </nz-input>
@@ -42,12 +46,12 @@
                     style="width: 200px;"
                     nzAllowClear
                     [nzPlaceHolder]="'请选择机柜型号'"
-                    [(ngModel)]="selectedSeries"
+                    [(ngModel)]="selectedCabinetType"
                     [nzShowSearch]="true">
                     <nz-option
-                        *ngFor="let series of series let index = index"
-                        [nzLabel]="series.name"
-                        [nzValue]="series.id">
+                        *ngFor="let cabinetType of cabinetType let index = index"
+                        [nzLabel]="cabinetType.cabinetTypeName"
+                        [nzValue]="index">
                     </nz-option>
                 </nz-select>
             </div>
