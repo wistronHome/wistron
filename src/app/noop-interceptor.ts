@@ -1,8 +1,19 @@
+/**
+ * @author gyjlovelh
+ * @createTime 2017/10/8
+ */
 import { Injectable } from '@angular/core'
-import { HttpEvent, HttpHeaders , HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http'
+import { HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http'
 
 @Injectable()
 export class NoopInterceptor implements HttpInterceptor {
+    /**
+     * 拦截器  给请求设置 authorization 的头
+     * @param {HttpRequest<any>} req
+     * @param {HttpHandler} next
+     * @description
+     * @returns {Observable<HttpEvent<any>>}
+     */
     intercept(req: HttpRequest<any>, next: HttpHandler) {
         let token = sessionStorage.getItem('authorization');
         let authReq = null;

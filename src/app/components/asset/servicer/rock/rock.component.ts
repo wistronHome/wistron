@@ -135,7 +135,7 @@ export class RockComponent implements OnInit {
     _console(value) {
         console.log(value);
     }
-    createUser() {
+    createRack() {
         this.$router.navigate(['/asset/servicer/rock/-1']);
     }
 

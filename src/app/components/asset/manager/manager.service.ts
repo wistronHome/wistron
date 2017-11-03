@@ -110,12 +110,12 @@ export class ManagerService {
 
     /**
      * 判断name和code是否已经存在
-     * @param {string} name
+     * @param {string} brand
      * @param {string} code
      * @param callback
      */
     public validateRepeat(brand: string, code: string, callback) {
-        this.$http.post(`/itm/bsm`, {name, code}).subscribe((result: Result) => {
+        this.$http.post(`/itm/bsm`, {brand, code}).subscribe((result: Result) => {
             console.log(result);
             callback(result.code === 0);
         });

@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
     usercode: string = '';
     password: string = '';
     checkCode: string = '';
-    image: string = `http://10.5.31.24:8080/itm/getImageCode/${ this.imageKey }?time=${ Utils.getUUID() }`;
+    image: string = `http://10.5.43.20:8080/itm/getImageCode/${ this.imageKey }?time=${ Utils.getUUID() }`;
     constructor(
         private $mission: MissionService,
         private $service: LoginService,

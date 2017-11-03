@@ -31,7 +31,7 @@ export class BrandComponent implements OnInit {
         $mission.pageChangeHook.subscribe(page => {
             this.pageIndex = page.pageIndex;
             this.pageSize = page.pageSize;
-           this.refreBrand();
+            this.refreshBrand();
         });
     }
     ngOnInit() {
@@ -53,12 +53,12 @@ export class BrandComponent implements OnInit {
         if (this.currentBrand.id) {
             this.$service.modifyBrand(this.currentBrand, result => {
                 this.isBrandDetailShow = false;
-                this.refreBrand();
+                this.refreshBrand();
             });
         } else {
             this.$service.insertBrand(this.currentBrand, result => {
                 this.isBrandDetailShow = false;
-                this.refreBrand();
+                this.refreshBrand();
             });
         }
     }
@@ -79,13 +79,15 @@ export class BrandComponent implements OnInit {
     confirmDelete(brand: Brand) {
         this.$service.deleteBrand(brand.id, result => {
             this.$message.success('删除成功');
-            this.refreBrand();
+            this.refreshBrand();
         });
     }
     cancel() {}
 
-
-    private refreBrand() {
+    /**
+     * 刷新列表
+     */
+    private refreshBrand() {
         this.$service.getBrandPagination(this.pageIndex, this.pageSize, result => {
             this.data = result.data;
             this.total = result.totalCount;
