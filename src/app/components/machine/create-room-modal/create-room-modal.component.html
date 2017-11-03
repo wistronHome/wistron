@@ -1,4 +1,5 @@
 <nz-modal [nzVisible]="isVisible"
+          [nzTitle]="'新增机房'"
           [nzClosable]="false"
           [nzMaskClosable]="false"
           [nzContent]="modalContent"
@@ -52,6 +53,11 @@
                 </div>
             </div>
         </div>
+        <!--<form action="http://10.5.31.18:8080/itm/rooms/addRoom" method="post" enctype="multipart/form-data">-->
+            <!--<input type="text" name="roomName">-->
+            <!--<input type="file" name="pic">-->
+            <!--<input type="submit" >-->
+        <!--</form>-->
     </ng-template>
     <ng-template #modalFooter>
         <div class="modal-footer">
